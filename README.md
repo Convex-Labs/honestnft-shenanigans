@@ -225,13 +225,13 @@ improve our code, check out our [contributing guide].
 
 [Paradigm's Guide to Designing Effective NFT Launches]: https://www.paradigm.xyz/2021/10/a-guide-to-designing-effective-nft-launches/
 [traitsniper.com]: https://www.traitsniper.com/
-[pulling.py]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/main/metadata/pulling.py
-[rarity.py]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/main/metadata/rarity.py
+[pulling.py]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/pulling.py
+[rarity.py]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/rarity.py
 [rarity.tools]: https://rarity.tools/
-[rarity_map.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/main/fair_drop/rarity_map.ipynb
-[find_minting_data.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/main/fair_drop/find_minting_data.ipynb
-[ks_test.ipynb]: https://github.com/Convex-Labs/nft-grifter-hunting/blob/main/fair_drop/ks_test.ipynb
+[rarity_map.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/rarity_map.ipynb
+[find_minting_data.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/find_minting_data.ipynb
+[ks_test.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/ks_test.ipynb
 [Discord]: https://discord.gg/gJFw7R8bys
 [Website]: https://www.honestnft.xyz/
 [Twitter]: https://twitter.com/Honest_NFT
-[contributing guide]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/main/CONTRIBUTING.md
+[contributing guide]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/CONTRIBUTING.md
