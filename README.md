@@ -34,7 +34,7 @@ have appeared. We’ve open sourced our tools, describing how we use them, and h
 to detect when someone else has used similar methods to gain an advantage in an 
 NFT launch.
   
-Continue reading about our motivation / background here: https://medium.com/@convexlabs/a76143ef8ad8
+Continue reading about our motivation / background [here](https://medium.com/@convexlabs/a76143ef8ad8)
 
 <a name="bounty">
   
