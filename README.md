@@ -34,7 +34,7 @@ have appeared. We’ve open sourced our tools, describing how we use them, and h
 to detect when someone else has used similar methods to gain an advantage in an 
 NFT launch.
   
-Continue reading about our motivation / background here: (INSERT_MEDIUM_ARTICLE)
+Continue reading about our motivation / background here: https://medium.com/@convexlabs/a76143ef8ad8
 
 <a name="bounty">
   
@@ -49,7 +49,7 @@ NFTs with our code. We encourage others to donate to our bounty pool multisig.
   
 Our Gnosis Safe Multisig: 0xa94a1B82B441DAA23890FF5eEb84a66D323Fd6c1 
 
-Read more about our rewards program here: (INSERT_REWARDS_ARTICLE)
+Read more about our rewards program here: Coming Soon!
   
 <a name="installation"/>
   
@@ -76,14 +76,13 @@ of test data so the repository is rather large.
 algorithm - we reverse engineered it)
 3) Generate rarity map (scatterplot) with [rarity_map.ipynb]
 5) Pull minting data with [find_minting_data.ipynb]
-6) Generate ks-test scores with [ks_test.ipynb] (ignore ks-test for drops with 
-skewed rarity maps - more details here (INSERT_HERE))
+6) Generate ks-test scores with [ks_test.ipynb] (ignore ks-test results for drops with skewed rarity maps)
 7) Tell us what you find! 
 
 <a name="video"/>
 
 ## Video Tutorial
-Tutorial: (INSERT_HERE)
+Tutorial: Coming Soon!
 
 <img width="600" alt="Screen Shot 2021-10-19 at 4 35 44 PM" src="https://user-images.githubusercontent.com/35337224/138004714-d16bf4af-ee31-4419-bb8f-e629dcb67f0e.png">
 
