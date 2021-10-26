@@ -82,7 +82,7 @@ algorithm - we reverse engineered it)
 <a name="video"/>
 
 ## Video Tutorial
-Tutorial: Coming Soon!
+Tutorial: https://vimeo.com/638878051
 
 <img width="600" alt="Screen Shot 2021-10-19 at 4 35 44 PM" src="https://user-images.githubusercontent.com/35337224/138004714-d16bf4af-ee31-4419-bb8f-e629dcb67f0e.png">
 
