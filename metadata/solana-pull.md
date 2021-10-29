@@ -8,10 +8,10 @@ yarn
 ```
 
 ## Args
-- contract [https://explorer.solana.com/address/CwXveCXpWmwUdVLKbQg2t6vhrj6pNWvsyfnFvqcPCxsP](Explorer) > `Update Authority`
-- collection Collection name
+- `contract` [Solana Explorer](https://explorer.solana.com/address/CwXveCXpWmwUdVLKbQg2t6vhrj6pNWvsyfnFvqcPCxsP) > `Update Authority`
+- `collection` Collection name
 
-## Example 
+## Example
 ``` shell
 node solana-pull.js -contract F5FKqzjucNDYymjHLxMR2uBT43QmaqBAMJwjwkvRRw4A -collection SolPunks
 ```
