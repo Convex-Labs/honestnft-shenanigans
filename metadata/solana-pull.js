@@ -66,7 +66,7 @@ async function fetchMetadata(item, baseFolder) {
     tokenMeta = data;
   }
 
-  console.log(item.name)
+  // console.log(item.name)
   const traits = {}
 
   traits['TOKEN_NAME'] = item.name;
