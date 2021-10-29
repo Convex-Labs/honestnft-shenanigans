@@ -101,6 +101,7 @@ async function fetchMetadataWithRetry(item, collectionDir, maxRetry = 5) {
 }
 
 async function main(opts) {
+  console.log(opts);
 
   const collectionName = opts.Collection;
   const collectionAuthority = opts.Contract;
@@ -130,7 +131,9 @@ async function main(opts) {
     fs.writeFileSync(cacheFile, JSON.stringify(collectionTokens, null, 2));
   }
 
-  const batcthLimit = 5;
+  console.log('found', collectionTokens.length, 'tokens')
+
+  const batcthLimit = opts.Batch ? parseInt(opts.Batch) : 5;
   let pendingTasks = [];
   const maxRetry = 5;
   let allTraits = [];
@@ -183,6 +186,7 @@ async function main(opts) {
 program
   .requiredOption('-contract <authority>', 'Collection contract id')
   .requiredOption('-collection <name>', 'Collection name')
+  .option('-batch <number>', 'Batch limit')
   .description("CLI for pulling NFT metadata.")
   .action(async (opts, command) => {
     try {

@@ -12,7 +12,6 @@ yarn
 - collection Collection name
 
 ## Example 
-Monke Babies https://alpha.art/t/CwXveCXpWmwUdVLKbQg2t6vhrj6pNWvsyfnFvqcPCxsP
 ``` shell
-node solana-pull.js -contract AdLvZNKBZ8vpDuNFKahxnWLDpULvAnq4zxvKjVyKyLE8 -collection MonkeBabies
+node solana-pull.js -contract F5FKqzjucNDYymjHLxMR2uBT43QmaqBAMJwjwkvRRw4A -collection SolPunks
 ```
