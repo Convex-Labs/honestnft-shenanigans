@@ -90,7 +90,7 @@ Tutorial: https://vimeo.com/638878051
 
 ## API References
 
-Infura: https://infura.io/
+Web3 Provider: https://www.alchemy.com/ (Recommended)
 
 Basic IPFS Endpoints: https://ipfs.github.io/public-gateway-checker/
 
