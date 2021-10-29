@@ -132,6 +132,7 @@ async function main(opts) {
   }
 
   console.log('found', collectionTokens.length, 'tokens')
+  console.log('sample', collectionTokens[0]);
 
   const batcthLimit = opts.Batch ? parseInt(opts.Batch) : 5;
   let pendingTasks = [];
