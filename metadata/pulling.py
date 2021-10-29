@@ -8,13 +8,13 @@ import sys
 from web3 import Web3
 
 ABI_ENDPOINT = 'https://api.etherscan.io/api?module=contract&action=getabi&address='
-INFURA_ENDPOINT = ''
+ENDPOINT = ''
 ATTRIBUTES_FOLDER = 'raw_attributes'
 IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
 IPFS_GATEWAY = ''
 
 
-"""
+""" 
 Smart contract helper methods
 """
 
@@ -34,12 +34,12 @@ def get_contract_abi(address):
 
 def get_contract(address, abi):
     # Connect to web3
-    if INFURA_ENDPOINT == "":
-        print("You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the INFURA_ENDPOINT constant. See: https://ipfs.github.io/public-gateway-checker/")
+    if ENDPOINT == "":
+        print("You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/")
         sys.exit()
         
         
-    w3 = Web3(Web3.HTTPProvider(INFURA_ENDPOINT))
+    w3 = Web3(Web3.HTTPProvider(ENDPOINT))
 
     # Check if abi contains the tokenURI function
     contract_functions = [func['name'] for func in abi if 'name' in func]
