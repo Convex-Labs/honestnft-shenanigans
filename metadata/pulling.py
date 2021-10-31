@@ -28,7 +28,66 @@ def get_contract_abi(address):
         abi = json.loads(response.json()['result'])
         return abi
     except Exception as err:
-        print(err)
+        print(f'Failed to get contract ABI from Etherscan: {err}')
+        print(f'Falling back to direct ABI checking')
+        if ENDPOINT != "":
+            # We can check the ABI of non-verified Etherscan contracts
+            # if they support ERC165 (which most of them do)
+            erc165_abi = [
+                {
+                    "inputs": [{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],
+                    "name": "supportsInterface",
+                    "outputs": [{"internalType":"bool","name":"","type":"bool"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+
+            w3 = Web3(Web3.HTTPProvider(ENDPOINT))
+            contract = w3.eth.contract(Web3.toChecksumAddress(address), abi=erc165_abi)
+
+            # Array of contract methods that were verified via ERC165
+            contract_abi = []
+
+            # List of common ERC721 methods to check
+            common_abis = {}
+            # ERC721 metadata interface id
+            common_abis["0x5b5e139f"] = [
+                {
+                    "inputs": [],
+                    "name": "name",
+                    "outputs": [{"internalType":"string","name":"","type":"string"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [{"internalType":"uint256","name":"tokenId","type":"uint256"}],
+                    "name": "tokenURI",
+                    "outputs": [{"internalType":"string","name":"","type":"string"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+            # ERC721 enumerable interface id
+            common_abis["0x780e9d63"] = [{
+                "inputs": [],
+                "name": "totalSupply",
+                "outputs": [{"internalType":"uint256","name":"","type":"uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            }]
+
+            for selector, abi in common_abis.items():
+                try:
+                    supports_abi = contract.functions.supportsInterface(selector).call()
+                    if supports_abi:
+                        contract_abi += abi
+                except Exception as err:
+                    print(f'Could not check selector {selector}')
+
+            if len(contract_abi) > 0:
+                return contract_abi
+
         raise Exception(f'Failed to get contract ABI.\nURL: {abi_url}\nResponse: {response.json()}')
 
 
