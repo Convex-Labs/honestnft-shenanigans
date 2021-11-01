@@ -166,16 +166,16 @@ def get_metadata(uri, destination):
 
 def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix):
 
+    # Create raw attribute folder for collection if it doesnt already exist
+    folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+    
     # Initiate list of dicts that will be converted to DataFrame
     dictionary_list = []
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
-
-        # Create raw attribute folder for collection if it doesnt already exist
-        folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
-        if not os.path.exists(folder):
-            os.mkdir(folder)
 
         # Initiate json result
         result_json = None
