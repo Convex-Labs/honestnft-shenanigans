@@ -399,9 +399,12 @@ if __name__ == '__main__':
     ARG_PARSER.add_argument('-max_supply', type=int, default=None, help='Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).')
     ARG_PARSER.add_argument('-ipfs_gateway', type=str, default=None, help=f'IPFS gateway. (default: {IPFS_GATEWAY}).')
     ARG_PARSER.add_argument('-sleep', type=float, default=0.05, help='Sleep time between metadata pulls. (default: 0.05).')
+    ARG_PARSER.add_argument('-web3_provider', type=str, default=None, help='Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)')
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
         IPFS_GATEWAY = ARGS.ipfs_gateway
+    if ARGS.web3_provider is not None:
+        ENDPOINT = ARGS.web3_provider
 
     pull_metadata(ARGS)
