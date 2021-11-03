@@ -27,6 +27,7 @@ setup(
         "pandas>=1.1.5",
         "web3>=5.13.1",
         "requests>=2.25.1",
-        "matplotlib>=3.3.4"
+        "matplotlib>=3.3.4",
+        "ipfshttpclient>=0.8.0"
     ],
 )
