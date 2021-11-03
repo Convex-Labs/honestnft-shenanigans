@@ -287,11 +287,24 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
         # Fetch token URI from on-chain
         BATCH_SIZE = 50
         for i in range(0, len(token_ids), BATCH_SIZE):
-            print(f'Fetching [{i}, {i + BATCH_SIZE}]')
-            token_ids_batch = token_ids[i : i + BATCH_SIZE]
+            print(f'Handling token id range [{i}, {i + BATCH_SIZE}]')
+            token_ids_batch = token_ids[i : min(len(token_ids), i + BATCH_SIZE)]
+
             # Skip on-chain fetch if we already have the metadata
-            token_ids_batch = list(filter(lambda token_id: not os.path.exists(f'{folder}/{token_id}.json'), token_ids_batch))
-            for token_id, metadata_uri in get_contract_uri_batch(contract, token_ids_batch, uri_func, abi).items():
+            covered_token_ids = []
+            uncovered_token_ids = []
+            for token_id in token_ids_batch:
+                if os.path.exists(f'{folder}/{token_id}.json'):
+                    covered_token_ids.append(token_id)
+                else:
+                    uncovered_token_ids.append(token_id)
+
+            # For already covered token ids, use the existing local attributes
+            for token_id in covered_token_ids:
+                fetch(token_id, "")
+            
+            # For uncovered token ids, fetch the URI in bulk
+            for token_id, metadata_uri in get_contract_uri_batch(contract, uncovered_token_ids, uri_func, abi).items():
                 fetch(token_id, metadata_uri)
     else:
         raise ValueError(
@@ -363,7 +376,7 @@ def pull_metadata(args):
     print(f'Max supply: {max_supply}')
 
     # Fetch all attribute records from the remote server
-    token_ids = range(lower_id, upper_id + 1)
+    token_ids = range(lower_id, upper_id)
     records = fetch_all_metadata(
         token_ids=token_ids,
         collection=collection,
