@@ -28,6 +28,6 @@ setup(
         "web3>=5.13.1",
         "requests>=2.25.1",
         "matplotlib>=3.3.4",
-        "ipfshttpclient>=0.8.0"
+        "ipfshttpclient>=0.8.0a2"
     ],
 )
