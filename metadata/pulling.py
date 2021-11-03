@@ -335,7 +335,7 @@ def get_file_suffix(filename, token_id="\\d+"):
     """
     regex = rf"^{token_id}(\.(?P<extension>\w+))?$"
     matches = re.search(regex, filename)
-    if matches.group("extension"):
+    if matches and matches.group("extension"):
         return matches.group(1)
     return ""
 
