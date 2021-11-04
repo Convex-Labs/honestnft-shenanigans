@@ -6,6 +6,7 @@ import json
 import argparse
 import sys
 from web3 import Web3
+from web3.exceptions import ContractLogicError
 
 ABI_ENDPOINT = 'https://api.etherscan.io/api?module=contract&action=getabi&address='
 ENDPOINT = ''
@@ -112,9 +113,13 @@ def format_ipfs_uri(uri):
 def get_contract_uri(contract, token_id, uri_func, abi):
     # Fetch URI from contract
     uri_contract_func = get_contract_function(contract, uri_func, abi)
-    uri = uri_contract_func(token_id).call()
-    uri = format_ipfs_uri(uri)
-    return uri
+
+    try:
+        uri = uri_contract_func(token_id).call()
+        uri = format_ipfs_uri(uri)
+        return uri
+    except ContractLogicError as err:
+        return err
 
 
 def get_lower_id(contract, uri_func, abi):
@@ -204,6 +209,11 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
                 metadata_uri = get_contract_uri(contract, token_id, uri_func, abi)
+
+                if isinstance(metadata_uri, ContractLogicError):
+                    print(f'{metadata_uri} {token_id}')
+                    continue
+
             else:
                 raise ValueError(
                     'Failed to get metadata URI. Must either provide a uri_base or contract')
