@@ -343,15 +343,18 @@ def get_file_suffix(filename, token_id="\\d+"):
 def infer_cid_from_uri(uri):
     """
     Given a URI, this function returns the CID.
-    
+    Returns None if the CID is not found.
+
     :param uri
     :type uri: str
-    :return: cid
-    :rtype: str
+    :return: cid   
+    :rtype: str | None
     """
-    ipfs_hash_identifier = "Qm"
-    starting_index_of_hash = uri.find(ipfs_hash_identifier)
-    return uri[starting_index_of_hash:]
+    cid_pattern = r"Qm[a-zA-Z0-9-_]+"
+    matches = re.search(cid_pattern, uri)
+    if matches:
+        return matches.group(0)
+    return None
 
 
 """
