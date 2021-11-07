@@ -9,8 +9,11 @@ from web3 import Web3
 
 ABI_ENDPOINT = 'https://api.etherscan.io/api?module=contract&action=getabi&address='
 ENDPOINT = ''
+
 ATTRIBUTES_FOLDER = 'raw_attributes'
 IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
+
+# https://ipfs.github.io/public-gateway-checker/
 IPFS_GATEWAY = ''
 
 
@@ -19,17 +22,17 @@ Smart contract helper methods
 """
 
 
-def get_contract_abi(address): 
+def get_contract_abi(address):
     # Get contract ABI
     abi_url = f'{ABI_ENDPOINT}{address}'
     response = requests.get(abi_url)
-    print(response)
     try:
         abi = json.loads(response.json()['result'])
         return abi
     except Exception as err:
         print(err)
-        raise Exception(f'Failed to get contract ABI.\nURL: {abi_url}\nResponse: {response.json()}')
+        raise Exception(
+            f'Failed to get contract ABI.\nURL: {abi_url}\nResponse: {response.json()}')
 
 
 def get_contract(address, abi):
@@ -37,8 +40,7 @@ def get_contract(address, abi):
     if ENDPOINT == "":
         print("You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/")
         sys.exit()
-        
-        
+
     w3 = Web3(Web3.HTTPProvider(ENDPOINT))
 
     # Check if abi contains the tokenURI function
@@ -47,11 +49,13 @@ def get_contract(address, abi):
     if 'implementation' in contract_functions:
         # Handle case where the contract is a proxy contract
         # Fetch address for the implementation contract
-        impl_contract = w3.toHex(w3.eth.get_storage_at(address, IMPLEMENTATION_SLOT))
+        impl_contract = w3.toHex(
+            w3.eth.get_storage_at(address, IMPLEMENTATION_SLOT))
 
         # Strip the padded zeros from the implementation contract address
         impl_address = '0x' + impl_contract[-40:]
-        print(f'Contract is a proxy contract. Using implementation address: {impl_address}')
+        print(
+            f'Contract is a proxy contract. Using implementation address: {impl_address}')
 
         # Sleep to respect etherscan API limit
         time.sleep(5)
@@ -114,7 +118,7 @@ def get_contract_uri(contract, token_id, uri_func, abi):
     uri_contract_func = get_contract_function(contract, uri_func, abi)
     uri = uri_contract_func(token_id).call()
     uri = format_ipfs_uri(uri)
-    return uri
+    return uri  
 
 
 def get_lower_id(contract, uri_func, abi):
@@ -125,7 +129,7 @@ def get_lower_id(contract, uri_func, abi):
     for token_id in [0, 1]:
         try:
             # Fetch the metadata url from the contract
-            uri = get_contract_uri(contract, token_id, uri_func, abi)
+            uri = get_contract_uri(contract, token_id, uri_func, abi)   
             print(f'Metadata for lower bound token id is at: {uri}')
             lower_token_id = token_id
             break
@@ -154,7 +158,8 @@ def get_metadata(uri, destination):
         response_json = uri_response.json()
     except Exception as err:
         print(err)
-        raise Exception(f'Failed to get metadata from server using {uri}. Got {uri_response}.')
+        raise Exception(
+            f'Failed to get metadata from server using {uri}. Got {uri_response}.')
 
     # Write raw metadata json file to disk
     with open(destination, "w") as destination_file:
@@ -203,7 +208,8 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
                     metadata_uri += uri_suffix
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
-                metadata_uri = get_contract_uri(contract, token_id, uri_func, abi)
+                metadata_uri = get_contract_uri(
+                    contract, token_id, uri_func, abi)
             else:
                 raise ValueError(
                     'Failed to get metadata URI. Must either provide a uri_base or contract')
@@ -216,7 +222,8 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             while retries < max_retries:
                 try:
                     # Try to get metadata file from server
-                    result_json = get_metadata(uri=metadata_uri, destination=filename)
+                    result_json = get_metadata(
+                        uri=metadata_uri, destination=filename)
                     if token_id % 50 == 0:
                         print(token_id)
                     time.sleep(sleep)
@@ -272,7 +279,8 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             # Handle exceptions result from URI does not contain attributes
             except Exception as err:
                 print(err)
-                print(f'Failed to get metadata for id {token_id}. Url response was {result_json}.')
+                print(
+                    f'Failed to get metadata for id {token_id}. Url response was {result_json}.')
 
     return dictionary_list
 
@@ -295,28 +303,32 @@ def pull_metadata(args):
     # Get the max supply of the contract
     if args.max_supply is None and contract is not None and abi is not None:
         # Supply function not provided so will infer max supply from the contract object
-        supply_func = get_contract_function(contract=contract, func_name=args.supply_func, abi=abi)
+        supply_func = get_contract_function(
+            contract=contract, func_name=args.supply_func, abi=abi)
         max_supply = supply_func().call()
     elif args.max_supply is not None:
         # Setting max supply as provided
         max_supply = args.max_supply
     else:
-        raise ValueError('Failed to get max supply. Must either provide contract or max_supply.')
+        raise ValueError(
+            'Failed to get max supply. Must either provide contract or max_supply.')
 
     # Get the lower bound token id of the contract
     if args.lower_id is None and contract is not None and abi is not None:
         # Lower id not provided so will infer it from the contract object
-        lower_id = get_lower_id(contract=contract, uri_func=args.uri_func, abi=abi)
+        lower_id = get_lower_id(
+            contract=contract, uri_func=args.uri_func, abi=abi)
     elif args.lower_id is not None:
         # Setting lower id as provided
         lower_id = args.lower_id
     else:
-        raise ValueError('Failed to get lower id. Must either provide contract or lower_id.')
+        raise ValueError(
+            'Failed to get lower id. Must either provide contract or lower_id.')
 
     # Get the upper bound token id of the contract
     if args.upper_id is None and contract is not None and abi is not None:
-        # Lower id not provided so will infer it from the contract object
-        upper_id = max_supply + lower_id
+        # upper id not provided so will infer it from the contract object
+        upper_id = max_supply + lower_id - 1
     elif args.upper_id is not None:
         # Setting upper id as provided
         upper_id = args.upper_id
@@ -325,12 +337,14 @@ def pull_metadata(args):
 
     # Get collection name
     if args.collection is None and contract is not None and abi is not None:
-        name_func = get_contract_function(contract=contract, func_name=args.name_func, abi=abi)
+        name_func = get_contract_function(
+            contract=contract, func_name=args.name_func, abi=abi)
         collection = name_func().call()
     elif args.collection is not None:
         collection = args.collection
     else:
-        raise ValueError('Failed to get collection. Must either provide contract or collection.')
+        raise ValueError(
+            'Failed to get collection. Must either provide contract or collection.')
     collection = collection.replace(' ', '_')
 
     # Print configuration
@@ -340,7 +354,9 @@ def pull_metadata(args):
     print(f'Max supply: {max_supply}')
 
     # Fetch all attribute records from the remote server
-    token_ids = range(lower_id, upper_id + 1)
+    # token_ids = range(lower_id, upper_id + 1)
+    token_ids = range(lower_id, upper_id)  # for 0-indexed collections
+
     records = fetch_all_metadata(
         token_ids=token_ids,
         collection=collection,
@@ -386,19 +402,32 @@ if __name__ == '__main__':
     """
 
     # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(description='CLI for pulling NFT metadata.')
-    ARG_PARSER.add_argument('-contract', type=str, default=None, help='Collection contract id (use if want to infer params from contract).')
-    ARG_PARSER.add_argument('-uri_base', type=str, default=None, help='URI base. Not used if contract is provided. (use if want to pull direct from URL).')
-    ARG_PARSER.add_argument('-uri_suffix', type=str, default=None, help='URI suffix. Not used if contract is provided. (default: No suffix).')
-    ARG_PARSER.add_argument('-collection', type=str, default=None, help='Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).')
-    ARG_PARSER.add_argument('-supply_func', type=str, default='totalSupply', help='Total supply contract function. Not used if pulling direct from URL. (default: "totalSupply").')
-    ARG_PARSER.add_argument('-name_func', type=str, default='name', help='Collection name contract function. Not used if pulling direct from URL. (default: "name").')
-    ARG_PARSER.add_argument('-uri_func', type=str, default='tokenURI', help='URI contract function. Not used if pulling direct from URL. (default: "tokenURI").')
-    ARG_PARSER.add_argument('-lower_id', type=int, default=None, help='Lower bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).')
-    ARG_PARSER.add_argument('-upper_id', type=int, default=None, help='Upper bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).')
-    ARG_PARSER.add_argument('-max_supply', type=int, default=None, help='Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).')
-    ARG_PARSER.add_argument('-ipfs_gateway', type=str, default=None, help=f'IPFS gateway. (default: {IPFS_GATEWAY}).')
-    ARG_PARSER.add_argument('-sleep', type=float, default=0.05, help='Sleep time between metadata pulls. (default: 0.05).')
+    ARG_PARSER = argparse.ArgumentParser(
+        description='CLI for pulling NFT metadata.')
+    ARG_PARSER.add_argument('-contract', type=str, default=None,
+                            help='Collection contract id (use if want to infer params from contract).')
+    ARG_PARSER.add_argument('-uri_base', type=str, default=None,
+                            help='URI base. Not used if contract is provided. (use if want to pull direct from URL).')
+    ARG_PARSER.add_argument('-uri_suffix', type=str, default=None,
+                            help='URI suffix. Not used if contract is provided. (default: No suffix).')
+    ARG_PARSER.add_argument('-collection', type=str, default=None,
+                            help='Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-supply_func', type=str, default='totalSupply',
+                            help='Total supply contract function. Not used if pulling direct from URL. (default: "totalSupply").')
+    ARG_PARSER.add_argument('-name_func', type=str, default='name',
+                            help='Collection name contract function. Not used if pulling direct from URL. (default: "name").')
+    ARG_PARSER.add_argument('-uri_func', type=str, default='tokenURI',
+                            help='URI contract function. Not used if pulling direct from URL. (default: "tokenURI").')
+    ARG_PARSER.add_argument('-lower_id', type=int, default=None,
+                            help='Lower bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-upper_id', type=int, default=None,
+                            help='Upper bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-max_supply', type=int, default=None,
+                            help='Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-ipfs_gateway', type=str, default=None,
+                            help=f'IPFS gateway. (default: {IPFS_GATEWAY}).')
+    ARG_PARSER.add_argument('-sleep', type=float, default=0.05,
+                            help='Sleep time between metadata pulls. (default: 0.05).')
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
