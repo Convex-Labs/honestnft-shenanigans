@@ -36,7 +36,8 @@ def get_contract_abi(address):
 def get_contract(address, abi):
     # Connect to web3
     if ENDPOINT == "":
-        print("You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/")
+        print("\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n")
+        print("Optional: Use -web3_provider as a command line argument")
         sys.exit()
         
         
