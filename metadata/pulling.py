@@ -6,6 +6,7 @@ import json
 import argparse
 import sys
 from web3 import Web3
+from web3.exceptions import ContractLogicError
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
 ENDPOINT = ""
@@ -32,18 +33,74 @@ def get_contract_abi(address):
         abi = json.loads(response.json()["result"])
         return abi
     except Exception as err:
-        print(err)
-        raise Exception(
-            f"Failed to get contract ABI.\nURL: {abi_url}\nResponse: {response.json()}"
-        )
+        print(f'Failed to get contract ABI from Etherscan: {err}')
+        print(f'Falling back to direct ABI checking')
+        if ENDPOINT != "":
+            # We can check the ABI of non-verified Etherscan contracts
+            # if they support ERC165 (which most of them do)
+            erc165_abi = [
+                {
+                    "inputs": [{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],
+                    "name": "supportsInterface",
+                    "outputs": [{"internalType":"bool","name":"","type":"bool"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+
+            w3 = Web3(Web3.HTTPProvider(ENDPOINT))
+            contract = w3.eth.contract(Web3.toChecksumAddress(address), abi=erc165_abi)
+
+            # Array of contract methods that were verified via ERC165
+            contract_abi = []
+
+            # List of common ERC721 methods to check
+            common_abis = {}
+            # ERC721 metadata interface id
+            common_abis["0x5b5e139f"] = [
+                {
+                    "inputs": [],
+                    "name": "name",
+                    "outputs": [{"internalType":"string","name":"","type":"string"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [{"internalType":"uint256","name":"tokenId","type":"uint256"}],
+                    "name": "tokenURI",
+                    "outputs": [{"internalType":"string","name":"","type":"string"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+            # ERC721 enumerable interface id
+            common_abis["0x780e9d63"] = [{
+                "inputs": [],
+                "name": "totalSupply",
+                "outputs": [{"internalType":"uint256","name":"","type":"uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            }]
+
+            for selector, abi in common_abis.items():
+                try:
+                    supports_abi = contract.functions.supportsInterface(selector).call()
+                    if supports_abi:
+                        contract_abi += abi
+                except Exception as err:
+                    print(f'Could not check selector {selector}')
+
+            if len(contract_abi) > 0:
+                return contract_abi
+
+        raise Exception(f'Failed to get contract ABI.\nURL: {abi_url}\nResponse: {response.json()}')
 
 
 def get_contract(address, abi):
     # Connect to web3
     if ENDPOINT == "":
-        print(
-            "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
-        )
+        print("\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n")
+        print("Optional: Use -web3_provider as a command line argument")
         sys.exit()
 
     w3 = Web3(Web3.HTTPProvider(ENDPOINT))
@@ -121,9 +178,13 @@ def format_ipfs_uri(uri):
 def get_contract_uri(contract, token_id, uri_func, abi):
     # Fetch URI from contract
     uri_contract_func = get_contract_function(contract, uri_func, abi)
-    uri = uri_contract_func(token_id).call()
-    uri = format_ipfs_uri(uri)
-    return uri
+
+    try:
+        uri = uri_contract_func(token_id).call()
+        uri = format_ipfs_uri(uri)
+        return uri
+    except ContractLogicError as err:
+        return err
 
 
 def get_lower_id(contract, uri_func, abi):
@@ -179,17 +240,16 @@ def fetch_all_metadata(
     token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix
 ):
 
+    # Create raw attribute folder for collection if it doesnt already exist
+    folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+    
     # Initiate list of dicts that will be converted to DataFrame
     dictionary_list = []
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
-
-        # Create raw attribute folder for collection if it doesnt already exist
-        folder = f"{ATTRIBUTES_FOLDER}/{collection}/"
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-
         # Initiate json result
         result_json = None
 
@@ -217,6 +277,11 @@ def fetch_all_metadata(
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
                 metadata_uri = get_contract_uri(contract, token_id, uri_func, abi)
+
+                if isinstance(metadata_uri, ContractLogicError):
+                    print(f'{metadata_uri} {token_id}')
+                    continue
+
             else:
                 raise ValueError(
                     "Failed to get metadata URI. Must either provide a uri_base or contract"
@@ -418,82 +483,25 @@ if __name__ == "__main__":
     """
 
     # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(description="CLI for pulling NFT metadata.")
-    ARG_PARSER.add_argument(
-        "-contract",
-        type=str,
-        default=None,
-        help="Collection contract id (use if want to infer params from contract).",
-    )
-    ARG_PARSER.add_argument(
-        "-uri_base",
-        type=str,
-        default=None,
-        help="URI base. Not used if contract is provided. (use if want to pull direct from URL).",
-    )
-    ARG_PARSER.add_argument(
-        "-uri_suffix",
-        type=str,
-        default=None,
-        help="URI suffix. Not used if contract is provided. (default: No suffix).",
-    )
-    ARG_PARSER.add_argument(
-        "-collection",
-        type=str,
-        default=None,
-        help="Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-supply_func",
-        type=str,
-        default="totalSupply",
-        help='Total supply contract function. Not used if pulling direct from URL. (default: "totalSupply").',
-    )
-    ARG_PARSER.add_argument(
-        "-name_func",
-        type=str,
-        default="name",
-        help='Collection name contract function. Not used if pulling direct from URL. (default: "name").',
-    )
-    ARG_PARSER.add_argument(
-        "-uri_func",
-        type=str,
-        default="tokenURI",
-        help='URI contract function. Not used if pulling direct from URL. (default: "tokenURI").',
-    )
-    ARG_PARSER.add_argument(
-        "-lower_id",
-        type=int,
-        default=None,
-        help="Lower bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-upper_id",
-        type=int,
-        default=None,
-        help="Upper bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-max_supply",
-        type=int,
-        default=None,
-        help="Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-ipfs_gateway",
-        type=str,
-        default=None,
-        help=f"IPFS gateway. (default: {IPFS_GATEWAY}).",
-    )
-    ARG_PARSER.add_argument(
-        "-sleep",
-        type=float,
-        default=0.05,
-        help="Sleep time between metadata pulls. (default: 0.05).",
-    )
+    ARG_PARSER = argparse.ArgumentParser(description='CLI for pulling NFT metadata.')
+    ARG_PARSER.add_argument('-contract', type=str, default=None, help='Collection contract id (use if want to infer params from contract).')
+    ARG_PARSER.add_argument('-uri_base', type=str, default=None, help='URI base. Not used if contract is provided. (use if want to pull direct from URL).')
+    ARG_PARSER.add_argument('-uri_suffix', type=str, default=None, help='URI suffix. Not used if contract is provided. (default: No suffix).')
+    ARG_PARSER.add_argument('-collection', type=str, default=None, help='Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-supply_func', type=str, default='totalSupply', help='Total supply contract function. Not used if pulling direct from URL. (default: "totalSupply").')
+    ARG_PARSER.add_argument('-name_func', type=str, default='name', help='Collection name contract function. Not used if pulling direct from URL. (default: "name").')
+    ARG_PARSER.add_argument('-uri_func', type=str, default='tokenURI', help='URI contract function. Not used if pulling direct from URL. (default: "tokenURI").')
+    ARG_PARSER.add_argument('-lower_id', type=int, default=None, help='Lower bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-upper_id', type=int, default=None, help='Upper bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-max_supply', type=int, default=None, help='Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).')
+    ARG_PARSER.add_argument('-ipfs_gateway', type=str, default=None, help=f'IPFS gateway. (default: {IPFS_GATEWAY}).')
+    ARG_PARSER.add_argument('-sleep', type=float, default=0.05, help='Sleep time between metadata pulls. (default: 0.05).')
+    ARG_PARSER.add_argument('-web3_provider', type=str, default=None, help='Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)')
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
         IPFS_GATEWAY = ARGS.ipfs_gateway
+    if ARGS.web3_provider is not None:
+        ENDPOINT = ARGS.web3_provider
 
     pull_metadata(ARGS)
