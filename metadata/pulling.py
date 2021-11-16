@@ -6,6 +6,7 @@ import json
 import argparse
 import sys
 from web3 import Web3
+import base64
 from web3.exceptions import ContractLogicError
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
@@ -218,15 +219,23 @@ Metadata helper methods
 
 
 def get_metadata(uri, destination):
-    # Fetch metadata from server
-    uri_response = requests.request("GET", uri, timeout=10)
-    try:
-        response_json = uri_response.json()
-    except Exception as err:
-        print(err)
-        raise Exception(
-            f"Failed to get metadata from server using {uri}. Got {uri_response}."
-        )
+    if uri.startswith("data:application/json;base64"):
+        try:
+            encoded_metadata = uri.split(",")[1]
+            decoded_metadata = base64.b64decode(encoded_metadata).decode("utf-8")
+            response_json = json.loads(decoded_metadata)
+        except Exception as err:
+            print(err)
+            raise Exception(f'Failed to decode on-chain metadata: {uri}')
+    else:
+        # Fetch metadata from server
+        uri_response = requests.request("GET", uri, timeout=10)
+        try:
+            response_json = uri_response.json()
+        except Exception as err:
+            print(err)
+            raise Exception(f'Failed to get metadata from server using {uri}. Got {uri_response}.')
+
 
     # Write raw metadata json file to disk
     with open(destination, "w") as destination_file:
