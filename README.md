@@ -93,7 +93,18 @@ Tutorial: https://vimeo.com/638878051
 Web3 Provider: https://www.alchemy.com/ (Recommended)
 
 Basic IPFS Endpoints: https://ipfs.github.io/public-gateway-checker/
-
+<details>
+  <summary>Note</summary>
+  
+  When you click one the gateways, you might be redirected to a long URL. Please note that only the hostname + /ipfs/ part is necessary.  
+  E.g.  
+  
+  ```
+  Correct: gateway.ipfs.io/ipfs/  
+  Wrong: gateway.ipfs.io/ipfs/bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m#x-ipfs-companion-no-redirect  
+  ```
+  
+  </details>
 Pinata IPFS Endpoints: https://www.pinata.cloud/ (IPFS_GATEWAY in pulling.py is 
 set to a public endpoint; can pull faster w Pinata)
 
