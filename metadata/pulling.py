@@ -8,11 +8,16 @@ import sys
 from web3 import Web3
 from web3.exceptions import ContractLogicError
 
-ABI_ENDPOINT = 'https://api.etherscan.io/api?module=contract&action=getabi&address='
-ENDPOINT = ''
-ATTRIBUTES_FOLDER = 'raw_attributes'
-IMPLEMENTATION_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
-IPFS_GATEWAY = ''
+ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
+ENDPOINT = ""
+
+ATTRIBUTES_FOLDER = "raw_attributes"
+IMPLEMENTATION_SLOT = (
+    "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+)
+
+# https://ipfs.github.io/public-gateway-checker/
+IPFS_GATEWAY = ""
 
 
 """ 
@@ -20,13 +25,12 @@ Smart contract helper methods
 """
 
 
-def get_contract_abi(address): 
+def get_contract_abi(address):
     # Get contract ABI
-    abi_url = f'{ABI_ENDPOINT}{address}'
+    abi_url = f"{ABI_ENDPOINT}{address}"
     response = requests.get(abi_url)
-    print(response)
     try:
-        abi = json.loads(response.json()['result'])
+        abi = json.loads(response.json()["result"])
         return abi
     except Exception as err:
         print(f'Failed to get contract ABI from Etherscan: {err}')
@@ -98,21 +102,22 @@ def get_contract(address, abi):
         print("\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n")
         print("Optional: Use -web3_provider as a command line argument")
         sys.exit()
-        
-        
+
     w3 = Web3(Web3.HTTPProvider(ENDPOINT))
 
     # Check if abi contains the tokenURI function
-    contract_functions = [func['name'] for func in abi if 'name' in func]
+    contract_functions = [func["name"] for func in abi if "name" in func]
 
-    if 'implementation' in contract_functions:
+    if "implementation" in contract_functions:
         # Handle case where the contract is a proxy contract
         # Fetch address for the implementation contract
         impl_contract = w3.toHex(w3.eth.get_storage_at(address, IMPLEMENTATION_SLOT))
 
         # Strip the padded zeros from the implementation contract address
-        impl_address = '0x' + impl_contract[-40:]
-        print(f'Contract is a proxy contract. Using implementation address: {impl_address}')
+        impl_address = "0x" + impl_contract[-40:]
+        print(
+            f"Contract is a proxy contract. Using implementation address: {impl_address}"
+        )
 
         # Sleep to respect etherscan API limit
         time.sleep(5)
@@ -139,31 +144,31 @@ def get_contract_function(contract, func_name, abi):
         return getattr(contract.functions, func_name)
     else:
         # The function name provided is not in the contract ABI, so throw an error
-        func_names = [f['name'] for f in abi if 'name' in f]
+        func_names = [f["name"] for f in abi if "name" in f]
         raise ValueError(
-            f'{func_name} is not in the contract ABI. Inspect the following function names '
-            f'for candidates and pass to the command line arguments: {func_names}'
+            f"{func_name} is not in the contract ABI. Inspect the following function names "
+            f"for candidates and pass to the command line arguments: {func_names}"
         )
 
 
 def format_ipfs_uri(uri):
     # Reformat IPFS gateway
-    ipfs_1 = 'ipfs://'
-    ipfs_2 = 'https://ipfs.io/ipfs/'
-    ipfs_3 = 'https://gateway.pinata.cloud/ipfs/'
+    ipfs_1 = "ipfs://"
+    ipfs_2 = "https://ipfs.io/ipfs/"
+    ipfs_3 = "https://gateway.pinata.cloud/ipfs/"
     ipfs_hash_identifier = "Qm"
 
-    if IPFS_GATEWAY == '':
+    if IPFS_GATEWAY == "":
         if uri.startswith(ipfs_1):
-            uri = ipfs_2 + uri[len(ipfs_1):]
+            uri = ipfs_2 + uri[len(ipfs_1) :]
     else:
         if uri.startswith(ipfs_1):
-            uri = IPFS_GATEWAY + uri[len(ipfs_1):]
+            uri = IPFS_GATEWAY + uri[len(ipfs_1) :]
         elif uri.startswith(ipfs_2):
-            uri = IPFS_GATEWAY + uri[len(ipfs_2):]
+            uri = IPFS_GATEWAY + uri[len(ipfs_2) :]
         elif uri.startswith(ipfs_3):
-            uri = IPFS_GATEWAY + uri[len(ipfs_3):]
-        elif 'pinata' in uri:
+            uri = IPFS_GATEWAY + uri[len(ipfs_3) :]
+        elif "pinata" in uri:
             starting_index_of_hash = uri.find(ipfs_hash_identifier)
             uri = IPFS_GATEWAY + uri[starting_index_of_hash:]
 
@@ -191,7 +196,7 @@ def get_lower_id(contract, uri_func, abi):
         try:
             # Fetch the metadata url from the contract
             uri = get_contract_uri(contract, token_id, uri_func, abi)
-            print(f'Metadata for lower bound token id is at: {uri}')
+            print(f"Metadata for lower bound token id is at: {uri}")
             lower_token_id = token_id
             break
         except Exception as err:
@@ -201,7 +206,7 @@ def get_lower_id(contract, uri_func, abi):
 
     # Raise exception if method fails to find the metadata url
     if lower_token_id is None:
-        raise Exception('Unable to get the metadata url.')
+        raise Exception("Unable to get the metadata url.")
 
     # Return lower id
     return lower_token_id
@@ -219,7 +224,9 @@ def get_metadata(uri, destination):
         response_json = uri_response.json()
     except Exception as err:
         print(err)
-        raise Exception(f'Failed to get metadata from server using {uri}. Got {uri_response}.')
+        raise Exception(
+            f"Failed to get metadata from server using {uri}. Got {uri_response}."
+        )
 
     # Write raw metadata json file to disk
     with open(destination, "w") as destination_file:
@@ -229,7 +236,9 @@ def get_metadata(uri, destination):
     return response_json
 
 
-def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix):
+def fetch_all_metadata(
+    token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix
+):
 
     # Create raw attribute folder for collection if it doesnt already exist
     folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
@@ -241,15 +250,14 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
-
         # Initiate json result
         result_json = None
 
         # Check if metadata file already exists
-        filename = f'{folder}/{token_id}.json'
+        filename = f"{folder}/{token_id}.json"
         if os.path.exists(filename):
             # Load existing file from disk
-            with open(filename, 'r') as f:
+            with open(filename, "r") as f:
                 result_json = json.load(f)
 
         else:
@@ -258,12 +266,12 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             if uri_base is not None:
                 # Build URI from base URI and URI suffix provided
                 uri_base = format_ipfs_uri(uri_base)
-                if uri_base.endswith('/'):
+                if uri_base.endswith("/"):
                     uri_base = uri_base[:-1]
-                if uri_base.endswith('='):
-                    metadata_uri = f'{uri_base}{token_id}'
+                if uri_base.endswith("="):
+                    metadata_uri = f"{uri_base}{token_id}"
                 else:
-                    metadata_uri = f'{uri_base}/{token_id}'
+                    metadata_uri = f"{uri_base}/{token_id}"
                 if uri_suffix is not None:
                     metadata_uri += uri_suffix
             elif uri_func is not None and contract is not None and abi is not None:
@@ -276,7 +284,8 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
 
             else:
                 raise ValueError(
-                    'Failed to get metadata URI. Must either provide a uri_base or contract')
+                    "Failed to get metadata URI. Must either provide a uri_base or contract"
+                )
 
             # Set parameters for retrying to pull from server
             max_retries = 5
@@ -293,8 +302,10 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
                     break
                 except Exception as err:
                     # Handle throttling, pause and then try again up to max_retries number of times
-                    print(f'Got below error when trying to get metadata for token id {token_id}. '
-                          f'Will sleep and retry...')
+                    print(
+                        f"Got below error when trying to get metadata for token id {token_id}. "
+                        f"Will sleep and retry..."
+                    )
                     print(err)
                     retries += 1
 
@@ -304,7 +315,7 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
                     # Throw an error when max retries is exceeded
                     if retries >= max_retries:
                         # raise Exception('Max retries exceeded. Shutting down.')
-                        print('Max retries exceeded. Moving to next...')
+                        print("Max retries exceeded. Moving to next...")
                         break
 
         if result_json is not None:
@@ -312,37 +323,41 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             # TODO: What are other variations of name?
             # Add token name and token URI traits to the trait dictionary
             traits = dict()
-            if 'name' in result_json:
-                traits['TOKEN_NAME'] = result_json['name']
+            if "name" in result_json:
+                traits["TOKEN_NAME"] = result_json["name"]
             else:
-                traits['TOKEN_NAME'] = f'UNKNOWN'
-            traits['TOKEN_ID'] = token_id
+                traits["TOKEN_NAME"] = f"UNKNOWN"
+            traits["TOKEN_ID"] = token_id
 
             # Find the attribute key from the server response
-            if 'attributes' in result_json:
-                attribute_key = 'attributes'
-            elif 'traits' in result_json:
-                attribute_key = 'traits'
+            if "attributes" in result_json:
+                attribute_key = "attributes"
+            elif "traits" in result_json:
+                attribute_key = "traits"
             else:
-                raise ValueError(f'Failed to find the attribute key in the token {token_id} '
-                                 f'metadata result. Tried "attributes" and "traits".\nAvailable '
-                                 f'keys: {result_json.keys()}')
+                raise ValueError(
+                    f"Failed to find the attribute key in the token {token_id} "
+                    f'metadata result. Tried "attributes" and "traits".\nAvailable '
+                    f"keys: {result_json.keys()}"
+                )
 
             # Add traits from the server response JSON to the traits dictionary
             try:
                 for attribute in result_json[attribute_key]:
-                    if 'value' in attribute and 'trait_type' in attribute:
-                        traits[attribute['trait_type']] = attribute['value']
-                    elif 'value' not in attribute and isinstance(attribute, dict):
+                    if "value" in attribute and "trait_type" in attribute:
+                        traits[attribute["trait_type"]] = attribute["value"]
+                    elif "value" not in attribute and isinstance(attribute, dict):
                         if len(attribute.keys()) == 1:
-                            traits[attribute['trait_type']] = 'None'
+                            traits[attribute["trait_type"]] = "None"
                     elif isinstance(attribute, str):
                         traits[attribute] = result_json[attribute_key][attribute]
                 dictionary_list.append(traits)
             # Handle exceptions result from URI does not contain attributes
             except Exception as err:
                 print(err)
-                print(f'Failed to get metadata for id {token_id}. Url response was {result_json}.')
+                print(
+                    f"Failed to get metadata for id {token_id}. Url response was {result_json}."
+                )
 
     return dictionary_list
 
@@ -365,13 +380,17 @@ def pull_metadata(args):
     # Get the max supply of the contract
     if args.max_supply is None and contract is not None and abi is not None:
         # Supply function not provided so will infer max supply from the contract object
-        supply_func = get_contract_function(contract=contract, func_name=args.supply_func, abi=abi)
+        supply_func = get_contract_function(
+            contract=contract, func_name=args.supply_func, abi=abi
+        )
         max_supply = supply_func().call()
     elif args.max_supply is not None:
         # Setting max supply as provided
         max_supply = args.max_supply
     else:
-        raise ValueError('Failed to get max supply. Must either provide contract or max_supply.')
+        raise ValueError(
+            "Failed to get max supply. Must either provide contract or max_supply."
+        )
 
     # Get the lower bound token id of the contract
     if args.lower_id is None and contract is not None and abi is not None:
@@ -381,12 +400,14 @@ def pull_metadata(args):
         # Setting lower id as provided
         lower_id = args.lower_id
     else:
-        raise ValueError('Failed to get lower id. Must either provide contract or lower_id.')
+        raise ValueError(
+            "Failed to get lower id. Must either provide contract or lower_id."
+        )
 
     # Get the upper bound token id of the contract
     if args.upper_id is None and contract is not None and abi is not None:
-        # Lower id not provided so will infer it from the contract object
-        upper_id = max_supply + lower_id
+        # upper id not provided so will infer it from the contract object
+        upper_id = max_supply + lower_id - 1
     elif args.upper_id is not None:
         # Setting upper id as provided
         upper_id = args.upper_id
@@ -395,22 +416,28 @@ def pull_metadata(args):
 
     # Get collection name
     if args.collection is None and contract is not None and abi is not None:
-        name_func = get_contract_function(contract=contract, func_name=args.name_func, abi=abi)
+        name_func = get_contract_function(
+            contract=contract, func_name=args.name_func, abi=abi
+        )
         collection = name_func().call()
     elif args.collection is not None:
         collection = args.collection
     else:
-        raise ValueError('Failed to get collection. Must either provide contract or collection.')
-    collection = collection.replace(' ', '_')
+        raise ValueError(
+            "Failed to get collection. Must either provide contract or collection."
+        )
+    collection = collection.replace(" ", "_")
 
     # Print configuration
-    print(f'Fetching data for {collection}')
-    print(f'Lower ID: {lower_id}')
-    print(f'Upper ID: {upper_id}')
-    print(f'Max supply: {max_supply}')
+    print(f"Fetching data for {collection}")
+    print(f"Lower ID: {lower_id}")
+    print(f"Upper ID: {upper_id}")
+    print(f"Max supply: {max_supply}")
 
     # Fetch all attribute records from the remote server
-    token_ids = range(lower_id, upper_id + 1)
+    # token_ids = range(lower_id, upper_id + 1)
+    token_ids = range(lower_id, upper_id)  # for 0-indexed collections
+
     records = fetch_all_metadata(
         token_ids=token_ids,
         collection=collection,
@@ -424,12 +451,12 @@ def pull_metadata(args):
 
     # Generate traits DataFrame and save to disk as csv
     trait_db = pd.DataFrame.from_records(records)
-    trait_db = trait_db.set_index('TOKEN_ID')
+    trait_db = trait_db.set_index("TOKEN_ID")
     print(trait_db.head())
-    trait_db.to_csv(f'{ATTRIBUTES_FOLDER}/{collection}.csv')
+    trait_db.to_csv(f"{ATTRIBUTES_FOLDER}/{collection}.csv")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     """
     There are some cases we have found that are not covered by this script:
