@@ -8,6 +8,8 @@ import sys
 from web3 import Web3
 import base64
 from web3.exceptions import ContractLogicError
+import ipfshttpclient
+import re
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
 ENDPOINT = ""
@@ -256,6 +258,28 @@ def fetch_all_metadata(
     
     # Initiate list of dicts that will be converted to DataFrame
     dictionary_list = []
+    file_suffix = ""
+
+    # Create raw attribute folder for collection if it doesnt already exist
+    folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+    if uri_base is not None and uri_base.find("ipfs") != -1:
+        folder_walk = os.walk(folder, topdown=True,
+                              onerror=None, followlinks=False)
+        _files = next(folder_walk)[2]
+
+        if len(_files) == 0:
+            cid = infer_cid_from_uri(uri_base)
+            fetch_ipfs_folder(collection_name=collection,
+                              cid=cid)
+            folder_walk = os.walk(folder, topdown=True,
+                                  onerror=None, followlinks=False)
+            _files = next(folder_walk)[2]
+
+        first_file = _files[0]
+        file_suffix = get_file_suffix(first_file)
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
@@ -263,7 +287,9 @@ def fetch_all_metadata(
         result_json = None
 
         # Check if metadata file already exists
-        filename = f"{folder}/{token_id}.json"
+        filename = "{folder}{token_id}{file_extension}".format(folder=folder,
+                                                               token_id=token_id,
+                                                               file_extension=file_suffix)
         if os.path.exists(filename):
             # Load existing file from disk
             with open(filename, "r") as f:
@@ -369,6 +395,65 @@ def fetch_all_metadata(
                 )
 
     return dictionary_list
+
+
+def fetch_ipfs_folder(collection_name, cid, timeout=3600):
+    """
+    Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
+
+    :param collection_name
+    :type collection_name: str
+    :param cid:
+    :type cid: str
+    :param timeout:
+    :type timeout: int | None
+    """
+    folder = f'{ATTRIBUTES_FOLDER}/{collection_name}/'
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+    infura = "/dns/infura-ipfs.io/tcp/5001/https"
+    ipfs_io = "/dns/ipfs.io/tcp/443/https"
+    ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
+    client = ipfshttpclient.connect(addr=ipfs_gateway_io, timeout=timeout)
+    client.get(f"/ipfs/{cid}/", target="./raw_attributes/")
+    os.rename(
+        f"./raw_attributes/{cid}", f"./raw_attributes/{collection_name}")
+
+
+def get_file_suffix(filename, token_id="\\d+"):
+    """
+    Given a filename and an optional token_id, this function returns the file suffix.
+    If the file has no extension, an empty string is returned.
+
+    :param filename
+    :type filename: str
+    :param token_id
+    :type token_id: str | int | None
+    :return: file_suffix
+    :rtype: str
+    """
+    regex = rf"^{token_id}(\.(?P<extension>\w+))?$"
+    matches = re.search(regex, filename)
+    if matches and matches.group("extension"):
+        return matches.group(1)
+    return ""
+
+
+def infer_cid_from_uri(uri):
+    """
+    Given a URI, this function returns the CID.
+    Returns None if the CID is not found.
+
+    :param uri
+    :type uri: str
+    :return: cid   
+    :rtype: str | None
+    """
+    cid_pattern = r"Qm[a-zA-Z0-9-_]+"
+    matches = re.search(cid_pattern, uri)
+    if matches:
+        return matches.group(0)
+    return None
 
 
 """
