@@ -12,9 +12,13 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
     dt_now = datetime.datetime.utcnow()
     start_time = time.time()
     script_dir = os.path.dirname(__file__)
-
+    script_dir += "/from_raritytools/{}".format(project_name)
+    print("script dir: ", script_dir)
     
-
+    
+    if not os.path.exists(script_dir):
+        os.makedirs(script_dir)
+    
     metadata_file_name = os.path.join(script_dir,  project_name +"_metadata.json")
     metadata_scoring_file_name = os.path.join(script_dir,  project_name +"_scoring_metadata.json")
     metadata_scoring_csv_file_name = os.path.join(script_dir,  project_name +"_raritytools.csv")
@@ -91,8 +95,6 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
     number_of_traits_types = len(all_traits) - 1
     nft_metadata = response_data[u'items']
 
-    print(len(nft_metadata[0]))
-
     metadata_scoring = {}
     metadata_to_save = {}
     
@@ -100,18 +102,14 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
     if thematic_match:
         nft_metadata_len = len(nft_metadata[0]) - target_project[u'trailing_metadata'] + 1
         themematic_match_position = nft_metadata_len - 1
-        #print(nft_metadata_len)
     else:
         nft_metadata_len = len(nft_metadata[0]) - target_project[u'trailing_metadata']
-        #print(nft_metadata_len)
 
     total_tokens_len = len(nft_metadata)
     constant_number = 1000000 / total_tokens_len
-    #print(str(nft_metadata_len))
+
     rarity_table = {}
     for x in range(0,total_tokens_len):
-    #for x in range(1819,1823):
-        #print("Token: " + str(x) +  " | " + str(nft_metadata[x][0]))
         token_id = str(nft_metadata[x][0])
         metadata_to_save.update({token_id: {u'nft_traits' : []}})
 
@@ -123,17 +121,13 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
         each_trait_score = {}
         
         for y in range(starting_count_y,nft_metadata_len):
-            #print("count : " + str(nft_metadata[x][y]))
-            #print(str(all_traits[y][u'name']) + " : " + str(all_traits[y][u'pvs'][nft_metadata[x][y]][0]) + " | " + str(all_traits[y][u'pvs'][nft_metadata[x][y]][1]))
             this_trait_rarity_score = 0
             temp_scoring = 0
             if thematic_match and y == themematic_match_position:
-                #all_sets = []
                 if target_project[u'isList']:
                     temp_scoring = 0
                     
                     for each_theme in nft_metadata[x][y]:
-                        #all_sets.append(each_theme)
                         if normalize_trait:
                             number_of_category = len(all_traits[y][u'pvs'])
                             
@@ -147,20 +141,15 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
 
                 elif target_project[u'thematic_key'] == "derivedPropDefs":
                         theme = nft_metadata[x][y][0]
-                        #print("theme : " + str(theme))
                         matching_set = response_data[u'derivedPropDefs'][0][u'pvs']
                         for each_matching_set in matching_set:
                             if (theme == each_matching_set[0]):
-                                #print(str(each_matching_set[0]) + " Number: " + str(each_matching_set[1]))
-                                
                                 token_rarity_score = token_rarity_score + 1/(each_matching_set[1]/total_tokens_len)
                                 this_trait_rarity_score = 1/(each_matching_set[1]/total_tokens_len)
-                #print("Match: " + str(y))
-                #print( "sets: " + str(all_sets))
+
             else:
                 if target_project[u'itemToAvoid'] == None:
                     if isinstance(nft_metadata[x][y], list):
-                    # if target_project[u'isList']:
                         temp_scoring = 0
                         if len(nft_metadata[x][y]) == 0:
                             if normalize_trait:
@@ -168,7 +157,7 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
                                     number_of_category = len(all_traits[y][u'pvs'])
                                 except:
                                     print(y)
-                                    pprint(all_traits[y])
+                                    print(all_traits[y])
                                     input("preessss")
                                 
                                 token_rarity_score = token_rarity_score + (constant_number/(number_of_traits_types * number_of_category))/(all_traits[y][u'pvs'][0][1]/total_tokens_len)
@@ -214,16 +203,12 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
             else:
                 this_token_trait.append({u'node' : {u'traitType' : all_traits[y][u'name'], u'value' : all_traits[y][u'pvs'][nft_metadata[x][y]][0]}})
                 each_trait_score.update({all_traits[y][u'name'] : this_trait_rarity_score})
-            #print(str(all_traits[y][u'pvs'][nft_metadata[x][y]][0]))
         
-        #print(str(token_id) + " : " + str(token_rarity_score))
         rarity_table.update({str(token_id) : float(token_rarity_score)})
         metadata_to_save[token_id].update({u'nft_traits' : this_token_trait})
         metadata_scoring[token_id].update(each_trait_score)
     
     sorted_rarity_table = sorted(rarity_table.items(), key = lambda item : item[1],reverse=True)
-    print(len(metadata_to_save))
-
     
     rarity_table_upload = {}
     count = 1
@@ -241,7 +226,6 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
 
     for each_token in metadata_scoring:
         this_row = []
-        # print(metadata_scoring[each_token])
         for each_col in metadata_scoring[each_token]:
             this_row.append(metadata_scoring[each_token][each_col])
         scoring_csv.append(this_row)
@@ -256,8 +240,6 @@ def download(project_name = "vogu", starting_count_y = 1, thematic_match = False
     
     
 
-
-    print(len(rarity_table_upload))
     
     with open(file_name, 'w') as fp:
         json.dump(rarity_table_upload, fp)
@@ -378,8 +360,6 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
     number_of_traits_types = len(all_traits) - 1
     nft_metadata = response_data[u'items']
 
-    print(len(nft_metadata[0]))
-
     metadata_scoring = {}
     metadata_to_save = {}
     
@@ -387,18 +367,16 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
     if thematic_match:
         nft_metadata_len = len(nft_metadata[0]) - target_project[u'trailing_metadata'] + 1
         themematic_match_position = nft_metadata_len - 1
-        #print(nft_metadata_len)
+
     else:
         nft_metadata_len = len(nft_metadata[0]) - target_project[u'trailing_metadata']
-        #print(nft_metadata_len)
+
 
     total_tokens_len = len(nft_metadata)
     constant_number = 1000000 / total_tokens_len
-    #print(str(nft_metadata_len))
+
     rarity_table = {}
     for x in range(0,total_tokens_len):
-    #for x in range(1819,1823):
-        #print("Token: " + str(x) +  " | " + str(nft_metadata[x][0]))
         token_id = str(nft_metadata[x][0])
         metadata_to_save.update({token_id: {u'nft_traits' : []}})
 
@@ -410,8 +388,6 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
         each_trait_score = {}
         
         for y in range(starting_count_y,nft_metadata_len):
-            #print("count : " + str(nft_metadata[x][y]))
-            #print(str(all_traits[y][u'name']) + " : " + str(all_traits[y][u'pvs'][nft_metadata[x][y]][0]) + " | " + str(all_traits[y][u'pvs'][nft_metadata[x][y]][1]))
             this_trait_rarity_score = 0
             temp_scoring = 0
             if thematic_match and y == themematic_match_position:
@@ -420,7 +396,6 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
                     temp_scoring = 0
                     
                     for each_theme in nft_metadata[x][y]:
-                        #all_sets.append(each_theme)
                         if normalize_trait:
                             number_of_category = len(all_traits[y][u'pvs'])
                             
@@ -434,20 +409,16 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
 
                 elif target_project[u'thematic_key'] == "derivedPropDefs":
                         theme = nft_metadata[x][y][0]
-                        #print("theme : " + str(theme))
                         matching_set = response_data[u'derivedPropDefs'][0][u'pvs']
                         for each_matching_set in matching_set:
                             if (theme == each_matching_set[0]):
-                                #print(str(each_matching_set[0]) + " Number: " + str(each_matching_set[1]))
                                 
                                 token_rarity_score = token_rarity_score + 1/(each_matching_set[1]/total_tokens_len)
                                 this_trait_rarity_score = 1/(each_matching_set[1]/total_tokens_len)
-                #print("Match: " + str(y))
-                #print( "sets: " + str(all_sets))
+
             else:
                 if target_project[u'itemToAvoid'] == None:
                     if isinstance(nft_metadata[x][y], list):
-                    # if target_project[u'isList']:
                         temp_scoring = 0
                         if len(nft_metadata[x][y]) == 0:
                             if normalize_trait:
@@ -498,15 +469,14 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
             else:
                 this_token_trait.append({u'node' : {u'traitType' : all_traits[y][u'name'], u'value' : all_traits[y][u'pvs'][nft_metadata[x][y]][0]}})
                 each_trait_score.update({all_traits[y][u'name'] : this_trait_rarity_score})
-            #print(str(all_traits[y][u'pvs'][nft_metadata[x][y]][0]))
         
-        #print(str(token_id) + " : " + str(token_rarity_score))
+
         rarity_table.update({str(token_id) : float(token_rarity_score)})
         metadata_to_save[token_id].update({u'nft_traits' : this_token_trait})
         metadata_scoring[token_id].update(each_trait_score)
     
     sorted_rarity_table = sorted(rarity_table.items(), key = lambda item : item[1],reverse=True)
-    print(len(metadata_to_save))
+
 
     
     rarity_table_upload = {}
@@ -525,7 +495,6 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
 
     for each_token in metadata_scoring:
         this_row = []
-        # print(metadata_scoring[each_token])
         for each_col in metadata_scoring[each_token]:
             this_row.append(metadata_scoring[each_token][each_col])
         scoring_csv.append(this_row)
@@ -538,11 +507,7 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
     for each_col in metadata_scoring["1"]:
         header_row.append(each_col)
     
-    
-
-
-    print(len(rarity_table_upload))
-    
+        
     with open(file_name, 'w') as fp:
         json.dump(rarity_table_upload, fp)
     
@@ -554,10 +519,6 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
     with open(metadata_scoring_file_name, 'w') as fp:
         json.dump(metadata_scoring, fp)
 
-
-    # text_file = open(metadata_scoring_csv_file_name, "w")
-    # text_file.write(scoring_csv)
-    # text_file.close()
     with open(metadata_scoring_csv_file_name, 'w') as f: 
         write = csv.writer(f) 
         write.writerow(header_row) 
@@ -565,5 +526,4 @@ def build_rarity_and_traits_adv(project_name = "vogu", starting_count_y = 1, the
         
     
     print("--- %s seconds TO Load ---" % (time.time() - start_time))
-
 
