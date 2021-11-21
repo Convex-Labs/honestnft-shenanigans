@@ -255,15 +255,11 @@ def fetch_all_metadata(
     folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
     if not os.path.exists(folder):
         os.mkdir(folder)
-    
+
     # Initiate list of dicts that will be converted to DataFrame
     dictionary_list = []
     file_suffix = ""
 
-    # Create raw attribute folder for collection if it doesnt already exist
-    folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
-    if not os.path.exists(folder):
-        os.mkdir(folder)
 
     if uri_base is not None and uri_base.find("ipfs") != -1:
         folder_walk = os.walk(folder, topdown=True,
