@@ -13,17 +13,14 @@ import re
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
 ENDPOINT = ""
-
 ATTRIBUTES_FOLDER = "raw_attributes"
 IMPLEMENTATION_SLOT = (
     "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
 )
-
-# https://ipfs.github.io/public-gateway-checker/
 IPFS_GATEWAY = ""
 
 
-""" 
+"""
 Smart contract helper methods
 """
 
@@ -442,7 +439,7 @@ def infer_cid_from_uri(uri):
 
     :param uri
     :type uri: str
-    :return: cid   
+    :return: cid
     :rtype: str | None
     """
     cid_pattern = r"Qm[a-zA-Z0-9-_]+"
