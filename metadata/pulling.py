@@ -584,7 +584,6 @@ def pull_metadata(args):
     print(f"Max supply: {max_supply}")
 
     # Fetch all attribute records from the remote server
-    # token_ids = range(lower_id, upper_id + 1)
     token_ids = range(lower_id, upper_id)  # for 0-indexed collections
 
     records = fetch_all_metadata(
