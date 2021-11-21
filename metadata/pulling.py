@@ -5,9 +5,10 @@ import time
 import json
 import argparse
 import sys
-from web3 import Web3
 import base64
+from web3 import Web3
 from web3.exceptions import ContractLogicError
+from web3_multicall import Multicall
 import ipfshttpclient
 import re
 
@@ -187,6 +188,29 @@ def get_contract_uri(contract, token_id, uri_func, abi):
         return err
 
 
+def get_contract_uri_batch(contract, token_ids, uri_func, abi):
+    if len(token_ids) > 0:
+        if ENDPOINT == "":
+            print(
+                "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
+            )
+            sys.exit()
+
+        def get_func(token_id):
+            uri_contract_func = get_contract_function(contract, uri_func, abi)
+            return uri_contract_func(token_id)
+
+        w3 = Web3(Web3.HTTPProvider(ENDPOINT))
+        multicall = Multicall(w3.eth)
+        multicall_result = multicall.aggregate(list(map(get_func, token_ids)))
+        return {
+            x["inputs"][0]["value"]: format_ipfs_uri(x["results"][0])
+            for x in multicall_result.json["results"]
+        }
+    else:
+        return {}
+
+
 def get_lower_id(contract, uri_func, abi):
     # Initiate parameters
     lower_token_id = None
@@ -256,8 +280,9 @@ def fetch_all_metadata(
     # Initiate list of dicts that will be converted to DataFrame
     dictionary_list = []
     file_suffix = ""
+    bulk_ipfs_success = False
 
-
+    # First try to get all metadata files from ipfs in bulk
     if uri_base is not None and uri_base.find("ipfs") != -1:
         folder_walk = os.walk(folder, topdown=True,
                               onerror=None, followlinks=False)
@@ -273,6 +298,72 @@ def fetch_all_metadata(
 
         first_file = _files[0]
         file_suffix = get_file_suffix(first_file)
+        bulk_ipfs_success = True
+
+    else:
+        file_suffix = ".json"
+
+    def fetch(token_id, metadata_uri, filename):
+        # Set parameters for retrying to pull from server
+        max_retries = 5
+        retries = 0
+
+        # Load non- file from server
+        while retries < max_retries:
+            try:
+                # Try to get metadata file from server
+                get_metadata(uri=metadata_uri, destination=filename)
+                if token_id % 50 == 0:
+                    print(token_id)
+                time.sleep(sleep)
+                break
+            except Exception as err:
+                # Handle throttling, pause and then try again up to max_retries number of times
+                print(
+                    f"Got below error when trying to get metadata for token id {token_id}. "
+                    f"Will sleep and retry..."
+                )
+                print(err)
+                retries += 1
+
+                # Sleep for successively longer periods of time before restarting
+                time.sleep(sleep * retries)
+
+                # Throw an error when max retries is exceeded
+                if retries >= max_retries:
+                    # raise Exception('Max retries exceeded. Shutting down.')
+                    print("Max retries exceeded. Moving to next...")
+                    break
+        return True
+
+    if (
+        bulk_ipfs_success is not True
+        and uri_func is not None
+        and contract is not None
+        and abi is not None
+    ):
+        # Fetch token URI from on-chain
+        BATCH_SIZE = 50
+        for i in range(0, len(token_ids), BATCH_SIZE):
+            print(f"Fetching [{i}, {i + BATCH_SIZE}]")
+            token_ids_batch = token_ids[i: i + BATCH_SIZE]
+            # Skip on-chain fetch if we already have the metadata
+            token_ids_batch = list(
+                filter(
+                    lambda token_id: not os.path.exists(f"{folder}/{token_id}.json"),
+                    token_ids_batch,
+                )
+            )
+            for token_id, metadata_uri in get_contract_uri_batch(
+                contract, token_ids_batch, uri_func, abi
+            ).items():
+                fetch(
+                    token_id,
+                    metadata_uri,
+                    filename="{folder}{token_id}{file_extension}".format(
+                        folder=folder, token_id=token_id, file_extension=file_suffix
+                    ),
+                )
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
@@ -315,36 +406,7 @@ def fetch_all_metadata(
                     "Failed to get metadata URI. Must either provide a uri_base or contract"
                 )
 
-            # Set parameters for retrying to pull from server
-            max_retries = 5
-            retries = 0
-
-            # Load non-existing file from server
-            while retries < max_retries:
-                try:
-                    # Try to get metadata file from server
-                    result_json = get_metadata(uri=metadata_uri, destination=filename)
-                    if token_id % 50 == 0:
-                        print(token_id)
-                    time.sleep(sleep)
-                    break
-                except Exception as err:
-                    # Handle throttling, pause and then try again up to max_retries number of times
-                    print(
-                        f"Got below error when trying to get metadata for token id {token_id}. "
-                        f"Will sleep and retry..."
-                    )
-                    print(err)
-                    retries += 1
-
-                    # Sleep for successively longer periods of time before restarting
-                    time.sleep(sleep * retries)
-
-                    # Throw an error when max retries is exceeded
-                    if retries >= max_retries:
-                        # raise Exception('Max retries exceeded. Shutting down.')
-                        print("Max retries exceeded. Moving to next...")
-                        break
+            fetch(token_id, metadata_uri, filename)
 
         if result_json is not None:
 
