@@ -313,8 +313,6 @@ def fetch_all_metadata(
             try:
                 # Try to get metadata file from server
                 get_metadata(uri=metadata_uri, destination=filename)
-                if token_id % 50 == 0:
-                    print(token_id)
                 time.sleep(sleep)
                 break
             except Exception as err:
@@ -406,6 +404,8 @@ def fetch_all_metadata(
                     "Failed to get metadata URI. Must either provide a uri_base or contract"
                 )
 
+            if token_id % 50 == 0:
+                print(token_id)
             fetch(token_id, metadata_uri, filename)
 
         if result_json is not None:
