@@ -185,7 +185,7 @@ def get_contract_uri(contract, token_id, uri_func, abi):
         uri = format_ipfs_uri(uri)
         return uri
     except ContractLogicError as err:
-        return err
+        raise Exception(err)
 
 
 def get_contract_uri_batch(contract, token_ids, uri_func, abi):
