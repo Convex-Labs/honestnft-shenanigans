@@ -5,26 +5,23 @@ import time
 import json
 import argparse
 import sys
-from web3 import Web3
-from web3_multicall import Multicall
 import base64
+from web3 import Web3
 from web3.exceptions import ContractLogicError
+from web3_multicall import Multicall
 import ipfshttpclient
 import re
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
 ENDPOINT = ""
-
 ATTRIBUTES_FOLDER = "raw_attributes"
 IMPLEMENTATION_SLOT = (
     "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
 )
-
-# https://ipfs.github.io/public-gateway-checker/
 IPFS_GATEWAY = ""
 
 
-""" 
+"""
 Smart contract helper methods
 """
 
@@ -188,12 +185,15 @@ def get_contract_uri(contract, token_id, uri_func, abi):
         uri = format_ipfs_uri(uri)
         return uri
     except ContractLogicError as err:
-        return err
+        raise Exception(err)
+
 
 def get_contract_uri_batch(contract, token_ids, uri_func, abi):
     if len(token_ids) > 0:
         if ENDPOINT == "":
-            print("You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/")
+            print(
+                "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
+            )
             sys.exit()
 
         def get_func(token_id):
@@ -203,7 +203,10 @@ def get_contract_uri_batch(contract, token_ids, uri_func, abi):
         w3 = Web3(Web3.HTTPProvider(ENDPOINT))
         multicall = Multicall(w3.eth)
         multicall_result = multicall.aggregate(list(map(get_func, token_ids)))
-        return { x["inputs"][0]["value"]: format_ipfs_uri(x["results"][0]) for x in multicall_result.json["results"]}
+        return {
+            x["inputs"][0]["value"]: format_ipfs_uri(x["results"][0])
+            for x in multicall_result.json["results"]
+        }
     else:
         return {}
 
@@ -265,17 +268,103 @@ def get_metadata(uri, destination):
     return response_json
 
 
-def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix):
-    # Initiate list of dicts that will be converted to DataFrame
-    dictionary_list = []
-    file_suffix = ".json"
+def fetch_all_metadata(
+    token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix
+):
 
     # Create raw attribute folder for collection if it doesnt already exist
     folder = f'{ATTRIBUTES_FOLDER}/{collection}/'
     if not os.path.exists(folder):
         os.mkdir(folder)
 
-    def fetch(token_id, metadata_uri):
+    # Initiate list of dicts that will be converted to DataFrame
+    dictionary_list = []
+    file_suffix = ""
+    bulk_ipfs_success = False
+
+    # First try to get all metadata files from ipfs in bulk
+    if uri_base is not None and uri_base.find("ipfs") != -1:
+        folder_walk = os.walk(folder, topdown=True,
+                              onerror=None, followlinks=False)
+        _files = next(folder_walk)[2]
+
+        if len(_files) == 0:
+            cid = infer_cid_from_uri(uri_base)
+            fetch_ipfs_folder(collection_name=collection,
+                              cid=cid)
+            folder_walk = os.walk(folder, topdown=True,
+                                  onerror=None, followlinks=False)
+            _files = next(folder_walk)[2]
+
+        first_file = _files[0]
+        file_suffix = get_file_suffix(first_file)
+        bulk_ipfs_success = True
+
+    else:
+        file_suffix = ".json"
+
+    def fetch(token_id, metadata_uri, filename):
+        # Set parameters for retrying to pull from server
+        max_retries = 5
+        retries = 0
+
+        # Load non- file from server
+        while retries < max_retries:
+            try:
+                # Try to get metadata file from server
+                get_metadata(uri=metadata_uri, destination=filename)
+                time.sleep(sleep)
+                break
+            except Exception as err:
+                # Handle throttling, pause and then try again up to max_retries number of times
+                print(
+                    f"Got below error when trying to get metadata for token id {token_id}. "
+                    f"Will sleep and retry..."
+                )
+                print(err)
+                retries += 1
+
+                # Sleep for successively longer periods of time before restarting
+                time.sleep(sleep * retries)
+
+                # Throw an error when max retries is exceeded
+                if retries >= max_retries:
+                    # raise Exception('Max retries exceeded. Shutting down.')
+                    print("Max retries exceeded. Moving to next...")
+                    break
+        return True
+
+    if (
+        bulk_ipfs_success is not True
+        and uri_func is not None
+        and contract is not None
+        and abi is not None
+    ):
+        # Fetch token URI from on-chain
+        BATCH_SIZE = 50
+        for i in range(0, len(token_ids), BATCH_SIZE):
+            print(f"Fetching [{i}, {i + BATCH_SIZE}]")
+            token_ids_batch = token_ids[i: i + BATCH_SIZE]
+            # Skip on-chain fetch if we already have the metadata
+            token_ids_batch = list(
+                filter(
+                    lambda token_id: not os.path.exists(f"{folder}/{token_id}.json"),
+                    token_ids_batch,
+                )
+            )
+            for token_id, metadata_uri in get_contract_uri_batch(
+                contract, token_ids_batch, uri_func, abi
+            ).items():
+                fetch(
+                    token_id,
+                    metadata_uri,
+                    filename="{folder}{token_id}{file_extension}".format(
+                        folder=folder, token_id=token_id, file_extension=file_suffix
+                    ),
+                )
+
+    # Fetch metadata for all token ids
+    for token_id in token_ids:
         # Initiate json result
         result_json = None
 
@@ -287,35 +376,40 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             # Load existing file from disk
             with open(filename, "r") as f:
                 result_json = json.load(f)
+
         else:
-            # Set parameters for retrying to pull from server
-            max_retries = 5
-            retries = 0
 
-            # Load non-existing file from server
-            while retries < max_retries:
-                try:
-                    # Try to get metadata file from server
-                    result_json = get_metadata(uri=metadata_uri, destination=filename)
-                    time.sleep(sleep)
-                    break
-                except Exception as err:
-                    # Handle throttling, pause and then try again up to max_retries number of times
-                    print(f'Got below error when trying to get metadata for token id {token_id}. '
-                        f'Will sleep and retry...')
-                    print(err)
-                    retries += 1
+            # Get the metadata URI
+            if uri_base is not None:
+                # Build URI from base URI and URI suffix provided
+                uri_base = format_ipfs_uri(uri_base)
+                if uri_base.endswith("/"):
+                    uri_base = uri_base[:-1]
+                if uri_base.endswith("="):
+                    metadata_uri = f"{uri_base}{token_id}"
+                else:
+                    metadata_uri = f"{uri_base}/{token_id}"
+                if uri_suffix is not None:
+                    metadata_uri += uri_suffix
+            elif uri_func is not None and contract is not None and abi is not None:
+                # Fetch URI for the given token id from the contract
+                metadata_uri = get_contract_uri(contract, token_id, uri_func, abi)
 
-                    # Sleep for successively longer periods of time before restarting
-                    time.sleep(sleep * retries)
+                if isinstance(metadata_uri, ContractLogicError):
+                    print(f'{metadata_uri} {token_id}')
+                    continue
 
-                    # Throw an error when max retries is exceeded
-                    if retries >= max_retries:
-                        # raise Exception('Max retries exceeded. Shutting down.')
-                        print("Max retries exceeded. Moving to next...")
-                        break
+            else:
+                raise ValueError(
+                    "Failed to get metadata URI. Must either provide a uri_base or contract"
+                )
+
+            if token_id % 50 == 0:
+                print(token_id)
+            fetch(token_id, metadata_uri, filename)
 
         if result_json is not None:
+
             # TODO: What are other variations of name?
             # Add token name and token URI traits to the trait dictionary
             traits = dict()
@@ -331,9 +425,11 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
             elif "traits" in result_json:
                 attribute_key = "traits"
             else:
-                raise ValueError(f'Failed to find the attribute key in the token {token_id} '
-                                f'metadata result. Tried "attributes" and "traits".\nAvailable '
-                                f'keys: {result_json.keys()}')
+                raise ValueError(
+                    f"Failed to find the attribute key in the token {token_id} "
+                    f'metadata result. Tried "attributes" and "traits".\nAvailable '
+                    f"keys: {result_json.keys()}"
+                )
 
             # Add traits from the server response JSON to the traits dictionary
             try:
@@ -352,49 +448,6 @@ def fetch_all_metadata(token_ids, collection, sleep, uri_func, contract, abi, ur
                 print(
                     f"Failed to get metadata for id {token_id}. Url response was {result_json}."
                 )
-
-    if uri_base is not None:
-        # Build token URI from base URI
-        for token_id in token_ids:
-            uri_base = format_ipfs_uri(uri_base)
-            if uri_base.endswith('/'):
-                uri_base = uri_base[:-1]
-
-            if uri_base.endswith('='):
-                metadata_uri = f'{uri_base}{token_id}'
-            else:
-                metadata_uri = f'{uri_base}/{token_id}'
-
-            if uri_suffix is not None:
-                metadata_uri += uri_suffix
-
-            fetch(token_id, metadata_uri)
-    elif uri_func is not None and contract is not None and abi is not None:
-        # Fetch token URI from on-chain
-        BATCH_SIZE = 50
-        for i in range(0, len(token_ids), BATCH_SIZE):
-            print(f'Handling token id range [{i}, {i + BATCH_SIZE}]')
-            token_ids_batch = token_ids[i : min(len(token_ids), i + BATCH_SIZE)]
-
-            # Skip on-chain fetch if we already have the metadata
-            covered_token_ids = []
-            uncovered_token_ids = []
-            for token_id in token_ids_batch:
-                if os.path.exists(f'{folder}/{token_id}.json'):
-                    covered_token_ids.append(token_id)
-                else:
-                    uncovered_token_ids.append(token_id)
-
-            # For already covered token ids, use the existing local attributes
-            for token_id in covered_token_ids:
-                fetch(token_id, "")
-            
-            # For uncovered token ids, fetch the URI in bulk
-            for token_id, metadata_uri in get_contract_uri_batch(contract, uncovered_token_ids, uri_func, abi).items():
-                fetch(token_id, metadata_uri)
-    else:
-        raise ValueError(
-            'Failed to get metadata URI. Must either provide a uri_base or contract')
 
     return dictionary_list
 
@@ -448,7 +501,7 @@ def infer_cid_from_uri(uri):
 
     :param uri
     :type uri: str
-    :return: cid   
+    :return: cid
     :rtype: str | None
     """
     cid_pattern = r"Qm[a-zA-Z0-9-_]+"
@@ -531,7 +584,8 @@ def pull_metadata(args):
     print(f"Max supply: {max_supply}")
 
     # Fetch all attribute records from the remote server
-    token_ids = range(lower_id, upper_id)
+    token_ids = range(lower_id, upper_id)  # for 0-indexed collections
+
     records = fetch_all_metadata(
         token_ids=token_ids,
         collection=collection,
