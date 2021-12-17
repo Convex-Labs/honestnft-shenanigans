@@ -453,7 +453,7 @@ def fetch_all_metadata(
     return dictionary_list
 
 
-def fetch_ipfs_folder(collection_name, cid, timeout=3600):
+def fetch_ipfs_folder(collection_name, cid, timeout=120):
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
@@ -461,7 +461,7 @@ def fetch_ipfs_folder(collection_name, cid, timeout=3600):
     :type collection_name: str
     :param cid:
     :type cid: str
-    :param timeout:
+    :param timeout: Connection timeout (in seconds) when connecting to the API daemon
     :type timeout: int | None
     """
     folder = f'{ATTRIBUTES_FOLDER}/{collection_name}/'
