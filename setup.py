@@ -30,6 +30,7 @@ setup(
         "requests>=2.25.1",
         "matplotlib>=3.3.4",
         "seaborn>=0.11.1",
-        "ipfshttpclient>=0.8.0a2"
+        "ipfshttpclient>=0.8.0a2",
+        "pyyaml>=6.0"
     ],
 )
