@@ -467,12 +467,26 @@ def fetch_ipfs_folder(collection_name, cid, timeout=120):
     infura = "/dns/infura-ipfs.io/tcp/5001/https"
     ipfs_io = "/dns/ipfs.io/tcp/443/https"
     ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
+    dweb_link = "/dns/dweb.link/tcp/443/https"
+    pinata = "/dns/gateway.pinata.cloud/tcp/443/https"
     warnings.filterwarnings("ignore", category=ipfshttpclient.exceptions.VersionMismatch)
-    client = ipfshttpclient.connect(addr=ipfs_gateway_io, timeout=timeout)
-    print("Attempting to download metadata folder from IPFS")
-    client.get(f"/ipfs/{cid}/", target="./raw_attributes/")
-    os.rename(
-        f"./raw_attributes/{cid}", f"./raw_attributes/{collection_name}")
+    gateways = [ipfs_gateway_io, infura, dweb_link, ipfs_io,pinata]
+    print("Attempting to download metadata folder from IPFS...\nPlease wait...")
+
+    for gateway in range(len(gateways)):
+        try:
+            client = ipfshttpclient.connect(addr=gateways[gateway], timeout=timeout)
+            client.get(f"/ipfs/{cid}", target=f"./{ATTRIBUTES_FOLDER}/")
+            print(f"Successfully downloaded metadata folder from IPFS")
+            os.rename(f"./{ATTRIBUTES_FOLDER}/{cid}", f"./{ATTRIBUTES_FOLDER}/{collection_name}")
+            client.close()
+            break
+        except Exception:
+            if gateway < len(gateways)-1:
+                print("Failed to download metadata folder from IPFS. Trying next gateway...")
+            else:
+                print("Failed to download metadata folder from IPFS.\nFalling back to individual file downloads...")
+            pass
 
 
 def get_file_suffix(filename, token_id="\\d+"):
