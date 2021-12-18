@@ -282,25 +282,37 @@ def fetch_all_metadata(
     dictionary_list = []
     file_suffix = ""
     bulk_ipfs_success = False
+    uri = ""
+    if uri_base is None:
+        for token_id in [0, 1]:
+            try:
+                # Fetch the metadata url from the contract
+                uri = get_contract_uri(contract, token_id, uri_func, abi)
+                break
+            except Exception as err:
+                pass
+        cid = infer_cid_from_uri(uri)
+        if cid is not None:
+            uri_base = IPFS_GATEWAY + cid + "/"
+
 
     # First try to get all metadata files from ipfs in bulk
     if uri_base is not None and uri_base.find("ipfs") != -1:
-        folder_walk = os.walk(folder, topdown=True,
-                              onerror=None, followlinks=False)
+        folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
         _files = next(folder_walk)[2]
 
         if len(_files) == 0:
             cid = infer_cid_from_uri(uri_base)
-            fetch_ipfs_folder(collection_name=collection,
-                              cid=cid)
-            folder_walk = os.walk(folder, topdown=True,
-                                  onerror=None, followlinks=False)
-            _files = next(folder_walk)[2]
-
-        first_file = _files[0]
-        file_suffix = get_file_suffix(first_file)
-        bulk_ipfs_success = True
-
+            try:
+                fetch_ipfs_folder(collection_name=collection, cid=cid)
+                folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
+                _files = next(folder_walk)[2]
+                first_file = _files[0]
+                file_suffix = get_file_suffix(first_file)
+                bulk_ipfs_success = True
+            except Exception:
+                file_suffix = ".json"
+                pass
     else:
         file_suffix = ".json"
 
