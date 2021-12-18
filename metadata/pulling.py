@@ -464,9 +464,6 @@ def fetch_ipfs_folder(collection_name, cid, timeout=120):
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
     :type timeout: int | None
     """
-    folder = f'{ATTRIBUTES_FOLDER}/{collection_name}/'
-    if not os.path.exists(folder):
-        os.mkdir(folder)
     infura = "/dns/infura-ipfs.io/tcp/5001/https"
     ipfs_io = "/dns/ipfs.io/tcp/443/https"
     ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
