@@ -11,6 +11,7 @@ from web3.exceptions import ContractLogicError
 from web3_multicall import Multicall
 import ipfshttpclient
 import re
+import warnings
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
 ENDPOINT = ""
@@ -452,7 +453,7 @@ def fetch_all_metadata(
     return dictionary_list
 
 
-def fetch_ipfs_folder(collection_name, cid, timeout=3600):
+def fetch_ipfs_folder(collection_name, cid, timeout=120):
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
@@ -460,7 +461,7 @@ def fetch_ipfs_folder(collection_name, cid, timeout=3600):
     :type collection_name: str
     :param cid:
     :type cid: str
-    :param timeout:
+    :param timeout: Connection timeout (in seconds) when connecting to the API daemon
     :type timeout: int | None
     """
     folder = f'{ATTRIBUTES_FOLDER}/{collection_name}/'
@@ -469,7 +470,9 @@ def fetch_ipfs_folder(collection_name, cid, timeout=3600):
     infura = "/dns/infura-ipfs.io/tcp/5001/https"
     ipfs_io = "/dns/ipfs.io/tcp/443/https"
     ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
+    warnings.filterwarnings("ignore", category=ipfshttpclient.exceptions.VersionMismatch)
     client = ipfshttpclient.connect(addr=ipfs_gateway_io, timeout=timeout)
+    print("Attempting to download metadata folder from IPFS")
     client.get(f"/ipfs/{cid}/", target="./raw_attributes/")
     os.rename(
         f"./raw_attributes/{cid}", f"./raw_attributes/{collection_name}")
