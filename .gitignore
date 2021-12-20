@@ -135,8 +135,4 @@ dmypy.json
 .vscode
 
 # OSX
-.DS_Store
-
-.secrets.yml
-
-metadata/raw_attributes/*
+.DS_Store 

@@ -12,17 +12,14 @@ from web3_multicall import Multicall
 import ipfshttpclient
 import re
 import warnings
-import yaml
-
-credentials = yaml.load(open('../.secrets.yml'), Loader=yaml.FullLoader)
 
 ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
-ENDPOINT = credentials['personal']['web3_provider']
+ENDPOINT = ""
 ATTRIBUTES_FOLDER = "raw_attributes"
 IMPLEMENTATION_SLOT = (
     "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
 )
-IPFS_GATEWAY = credentials['personal']['ipfs_gateway']
+IPFS_GATEWAY = ""
 
 
 """
@@ -285,37 +282,25 @@ def fetch_all_metadata(
     dictionary_list = []
     file_suffix = ""
     bulk_ipfs_success = False
-    uri = ""
-    if uri_base is None:
-        for token_id in [0, 1]:
-            try:
-                # Fetch the metadata url from the contract
-                uri = get_contract_uri(contract, token_id, uri_func, abi)
-                break
-            except Exception as err:
-                pass
-        cid = infer_cid_from_uri(uri)
-        if cid is not None:
-            uri_base = IPFS_GATEWAY + cid + "/"
-
 
     # First try to get all metadata files from ipfs in bulk
     if uri_base is not None and uri_base.find("ipfs") != -1:
-        folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
+        folder_walk = os.walk(folder, topdown=True,
+                              onerror=None, followlinks=False)
         _files = next(folder_walk)[2]
 
         if len(_files) == 0:
             cid = infer_cid_from_uri(uri_base)
-            try:
-                fetch_ipfs_folder(collection_name=collection, cid=cid)
-                folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
-                _files = next(folder_walk)[2]
-                first_file = _files[0]
-                file_suffix = get_file_suffix(first_file)
-                bulk_ipfs_success = True
-            except Exception:
-                file_suffix = ".json"
-                pass
+            fetch_ipfs_folder(collection_name=collection,
+                              cid=cid)
+            folder_walk = os.walk(folder, topdown=True,
+                                  onerror=None, followlinks=False)
+            _files = next(folder_walk)[2]
+
+        first_file = _files[0]
+        file_suffix = get_file_suffix(first_file)
+        bulk_ipfs_success = True
+
     else:
         file_suffix = ".json"
 
@@ -479,29 +464,18 @@ def fetch_ipfs_folder(collection_name, cid, timeout=120):
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
     :type timeout: int | None
     """
+    folder = f'{ATTRIBUTES_FOLDER}/{collection_name}/'
+    if not os.path.exists(folder):
+        os.mkdir(folder)
     infura = "/dns/infura-ipfs.io/tcp/5001/https"
     ipfs_io = "/dns/ipfs.io/tcp/443/https"
     ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
-    dweb_link = "/dns/dweb.link/tcp/443/https"
-    pinata = "/dns/gateway.pinata.cloud/tcp/443/https"
     warnings.filterwarnings("ignore", category=ipfshttpclient.exceptions.VersionMismatch)
-    gateways = [ipfs_gateway_io, infura, dweb_link, ipfs_io,pinata]
-    print("Attempting to download metadata folder from IPFS...\nPlease wait...")
-
-    for gateway in range(len(gateways)):
-        try:
-            client = ipfshttpclient.connect(addr=gateways[gateway], timeout=timeout)
-            client.get(f"/ipfs/{cid}", target=f"./{ATTRIBUTES_FOLDER}/")
-            print(f"Successfully downloaded metadata folder from IPFS")
-            os.rename(f"./{ATTRIBUTES_FOLDER}/{cid}", f"./{ATTRIBUTES_FOLDER}/{collection_name}")
-            client.close()
-            break
-        except Exception:
-            if gateway < len(gateways)-1:
-                print("Failed to download metadata folder from IPFS. Trying next gateway...")
-            else:
-                print("Failed to download metadata folder from IPFS.\nFalling back to individual file downloads...")
-            pass
+    client = ipfshttpclient.connect(addr=ipfs_gateway_io, timeout=timeout)
+    print("Attempting to download metadata folder from IPFS")
+    client.get(f"/ipfs/{cid}/", target="./raw_attributes/")
+    os.rename(
+        f"./raw_attributes/{cid}", f"./raw_attributes/{collection_name}")
 
 
 def get_file_suffix(filename, token_id="\\d+"):
