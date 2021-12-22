@@ -20,7 +20,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["extras", "metadata", "fair_drop"],
+    packages=["metadata", "fair_drop"],
     include_package_data=True,
     install_requires=[
         "numpy>=1.18.4",
