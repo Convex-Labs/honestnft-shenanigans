@@ -138,5 +138,3 @@ dmypy.json
 .DS_Store
 
 .secrets.yml
-
-metadata/raw_attributes/*
