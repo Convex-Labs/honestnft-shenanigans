@@ -31,6 +31,6 @@ setup(
         "matplotlib>=3.3.4",
         "seaborn>=0.11.1",
         "ipfshttpclient>=0.8.0a2",
-        "pyyaml>=6.0"
+        "scikit-learn>=1.0.1"
     ],
 )
