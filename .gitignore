@@ -137,5 +137,8 @@ dmypy.json
 # OSX
 .DS_Store
 
+# Javascript
+metadata/yarn.lock 
+
 .secrets.yml
 metadata/raw_attributes/*/**
