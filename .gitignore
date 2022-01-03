@@ -139,3 +139,5 @@ dmypy.json
 
 .secrets.yml
 metadata/raw_attributes/*/**
+
+**/node_modules
