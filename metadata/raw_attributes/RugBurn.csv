@@ -1,0 +1,999 @@
+TOKEN_ID,TOKEN_NAME,background,character,shirts,pants,headflame,eyes,accessories,rugs,rugflame
+0,Rugburner #0,Black,Fan Dolger,None,None,None,None,None,Purple,Green
+1,Rugburner #1,Bishtank,Eternal Bings 2,Red,White,None,Red laser,None,Greenie,Red
+2,Rugburner #2,White,Eternal Bings 1,6969,Black,Red,Orange,Shoot from the hip,Purple,White
+3,Rugburner #3,Black,White skull,Red,Black,None,Orange,None,Maroon,White
+4,Rugburner #4,Halloween Bares,Black skull,6969,Khaki,Red,Orange,Owie,Purple,Blue
+5,Rugburner #5,Black,Eternal Bings 2,Red,Black,None,Orange,Smonk,Purple,Red
+6,Rugburner #6,Bishtank,Black skull,Flurp,White,None,Green,Shoot from the hip,Maroon,Red
+7,Rugburner #7,Black,White skull,Red,Black,White,Blue,None,Maroon,Green
+8,Rugburner #8,White,Gold skull,Red,Black,Red,Orange,Smonk,Purple,Green
+9,Rugburner #9,Halloween Bares,Eternal Bings 1,6969,White,Green,Red,Owie,Purple,Green
+10,Rugburner #10,Black,White skull,6969,White,None,Green,None,Purple,Red
+11,Rugburner #11,Black,Evolved Thiefs,None,None,None,None,None,Purple,Red
+12,Rugburner #12,Black,Eternal Bings 1,Digitz,Khaki,Red,Orange,eethurmonkeyz,Greenie,Green
+13,Rugburner #13,White,Black skull,6969,Black,Red,Orange,None,Purple,Green
+14,Rugburner #14,Black,Poonji,Digitz,White,None,None,Cosmic Rugverns,Greenie,White
+15,Rugburner #15,Black,LBAC,None,None,None,None,None,Purple,Blue
+16,Rugburner #16,Bishtank,Black skull,6969,White,Red,Blue,eethurmonkeyz,Purple,Green
+17,Rugburner #17,Black,Black skull,42069,Black,Green,Blue,None,Maroon,Green
+18,Rugburner #18,Halloween Bares,White skull,6969,White,None,Red,Shoot from the hip,Purple,White
+19,Rugburner #19,Bishtank,Eights,6969,Black,Red,None,eethurmonkeyz,Maroon,Green
+20,Rugburner #20,Black,White skull,6969,Khaki,None,Blue,Shoot from the hip,Purple,Green
+21,Rugburner #21,Halloween Bares,LBAC,None,None,None,None,0xBats,Maroon,Red
+22,Rugburner #22,Black,White skull,6969,Black,Red,Blue,None,Maroon,Red
+23,Rugburner #23,Black,Gold skull,6969,White,None,Red,None,Purple,Red
+24,Rugburner #24,Rugtroopers,Black skull,Red,White,Red,Blue,Owie,Maroon,White
+25,Rugburner #25,Black,White skull,Red,Black,None,Orange,None,Purple,Red
+26,Rugburner #26,Halloween Bares,Eternal Bings 1,42069,White,Red,Orange,Cosmic Rugverns,Purple,White
+27,Rugburner #27,Rugtroopers,Eternal Bings 2,Red,Black,None,Orange,None,Purple Kush,Green
+28,Rugburner #28,Black,White skull,6969,Black,None,Orange,Shoot from the hip,Maroon,Red
+29,Rugburner #29,Black,White skull,6969,Black,None,Green,None,Purple Kush,Red
+30,Rugburner #30,Halloween Bares,White skull,Digitz,Khaki,None,Red,0xBats,Maroon,White
+31,Rugburner #31,Ethereels,Eternal Bings 2,Digitz,White,Green,Orange,Smonk,Purple,Red
+32,Rugburner #32,Rugtroopers,Black skull,Digitz,Black,None,Green laser,Cosmic Rugverns,Maroon,Red
+33,Rugburner #33,White,White skull,6969,White,None,Red,Cosmic Rugverns,Purple,Green
+34,Rugburner #34,Halloween Bares,Black skull,42069,Black,None,Blue,Smonk,Purple,Red
+35,Rugburner #35,White,Black skull,Red,Black,White,Red,None,Maroon,Red
+36,Rugburner #36,Black,Eternal Bings 2,42069,White,Red,Red,None,Maroon,Green
+37,Rugburner #37,Halloween Bares,Poras,6969,Black,Red,None,None,Maroon,Red
+38,Rugburner #38,White,White skull,Digitz,White,None,Orange,Cosmic Rugverns,Shelby Red,Red
+39,Rugburner #39,Black,White skull,6969,Khaki,Red,Red,None,Purple,Red
+40,Rugburner #40,Halloween Bares,Eternal Bings 1,Digitz,White,None,Green,None,Maroon,White
+41,Rugburner #41,Bishtank,White skull,6969,White,Red,Blue,Shoot from the hip,Greenie,Green
+42,Rugburner #42,Halloween Bares,Black skull,Red,White,Green,Green,None,Maroon,White
+43,Rugburner #43,Black,Eights,Red,Khaki,Red,None,Smonk,Maroon,Red
+44,Rugburner #44,White,Eternal Bings 1,Flurp,White,None,Red,None,Purple,Red
+45,Rugburner #45,White,Black skull,6969,White,None,Red,None,Purple,Red
+46,Rugburner #46,White,LBCC,None,None,None,None,None,Purple,Red
+47,Rugburner #47,White,Black skull,Red,White,None,Blue,None,Greenie,Red
+48,Rugburner #48,Black,Gold skull,6969,Khaki,Red,Orange,eethurmonkeyz,Greenie,Red
+49,Rugburner #49,White,Black skull,6969,Black,Red,Blue,None,Purple Kush,Red
+50,Rugburner #50,White,LBCC,None,None,None,None,None,Maroon,Red
+51,Rugburner #51,the biggest rug of them all ,open ocean,team cant afford,full of eth ,daily rugs,watching all pumps killed ,cant afford a decent team ,only has 2 servers ,we still use them anyway 
+52,Rugburner #52,Halloween Bares,Eternal Bings 1,Red,White,Red,Red laser,None,Purple Kush,White
+53,Rugburner #53,White,Black skull,Red,White,Red,Green,None,Shelby Red,Red
+54,Rugburner #54,Dwellers,Eternal Bings 1,6969,White,None,Green,0xBats,Maroon,Red
+55,Rugburner #55,Bishtank,Black skull,Flurp,Black,None,Green,None,Maroon,Red
+56,Rugburner #56,Black,Black skull,Red,Khaki,Red,Blue,None,Maroon,Red
+57,Rugburner #57,Halloween Bares,Fan Dolger,None,None,None,None,None,Purple,Green
+58,Rugburner #58,White,Eternal Bings 2,Red,White,Red,Red laser,None,Purple,Red
+59,Rugburner #59,Black,White skull,6969,Black,None,Red,None,Purple,Red
+60,Rugburner #60,CreatureRugz,Poras,Red,Black,Blue,None,None,Maroon,White
+61,Rugburner #61,White,Black skull,Red,Khaki,None,Orange,Owie,Greenie,Green
+62,Rugburner #62,Black,DNNR,6969,White,Red,None,eethurmonkeyz,Maroon,Red
+63,Rugburner #63,White,Eternal Bings 2,Red,Black,Red,Red,None,Purple,Red
+64,Rugburner #64,White,Black skull,42069,White,None,Red,None,Greenie,Green
+65,Rugburner #65,Halloween Bares,White skull,6969,Black,Red,Orange,Cosmic Rugverns,Maroon,Red
+66,Rugburner #66,Black,White skull,6969,Black,None,Red,eethurmonkeyz,Purple Kush,Red
+67,Rugburner #67,Black,Eternal Bings 1,6969,Black,Red,Red,None,Purple,Red
+68,Rugburner #68,Halloween Bares,Black skull,Digitz,White,Red,Blue,Cosmic Rugverns,Maroon,Blue
+69,Rugburner #69,Black,LBAC,None,None,None,None,0xBats,Purple,Green
+70,Rugburner #70,Black,White skull,6969,Black,Red,Red,eethurmonkeyz,Greenie,Green
+71,Rugburner #71,Black,Gold skull,Red,Black,Red,Red,None,Maroon,Red
+72,Rugburner #72,Black,Fan Dolger,None,None,None,None,None,Greenie,Red
+73,Rugburner #73,White,LBAC,None,None,None,None,None,Maroon,Red
+74,Rugburner #74,Bishtank,Fan Dolger,None,None,None,None,None,Greenie,Blue
+75,Rugburner #75,Halloween Bares,White skull,Red,Fire,None,Blue,None,Purple Kush,Green
+76,Rugburner #76,CreatureRugz,Black skull,6969,White,None,Red,None,Maroon,Red
+77,Rugburner #77,Dwellers,White skull,6969,White,None,Red,None,Purple,Red
+78,Rugburner #78,Dwellers,Eternal Bings 1,Red,Black,None,Orange,None,Purple,Red
+79,Rugburner #79,Black,Eternal Bings 2,Red,White,None,Orange,None,Purple,Green
+80,Rugburner #80,Black,Black skull,Red,White,None,Red,None,Maroon,Red
+81,Rugburner #81,White,Black skull,Red,Khaki,None,Red,None,Maroon,White
+82,Rugburner #82,Bishtank,Gold skull,6969,Black,Red,Green,Cosmic Rugverns,Purple Kush,Red
+83,Rugburner #83,Bishtank,LBCC,None,None,None,None,None,Maroon,Red
+84,Rugburner #84,Black,Eternal Bings 1,6969,Fire,Red,Orange,Cosmic Rugverns,Greenie,Green
+85,Rugburner #85,Black,Black skull,6969,Black,Red,Red,None,Maroon,Red
+86,Rugburner #86,White,White skull,6969,Black,None,Purple laser,None,Greenie,White
+87,Rugburner #87,White,White skull,Red,White,Red,Orange,Smonk,Purple,White
+88,Rugburner #88,Black,Diamond skull,Red,Khaki,None,Red,eethurmonkeyz,Greenie,Red
+89,Rugburner #89,Halloween Bares,Eights,6969,Black,None,None,eethurmonkeyz,Purple,Green
+90,Rugburner #90,Black,White skull,Fartchick,White,White,Red,Smonk,Purple,White
+91,Rugburner #91,CreatureRugz,LBAC,None,None,None,None,None,Maroon,Red
+92,Rugburner #92,White,Poonji,6969,White,None,None,eethurmonkeyz,Maroon,Green
+93,Rugburner #93,Black,Eternal Bings 2,42069,Black,None,Red,eethurmonkeyz,Maroon,Red
+94,Rugburner #94,Black,Halloween Bare,None,None,None,None,None,Maroon,Red
+95,Rugburner #95,Black,Evolved Thiefs,None,None,None,None,0xBats,Maroon,Red
+96,Rugburner #96,Bishtank,Eternal Bings 2,Digitz,White,None,Orange,None,Maroon,Green
+97,Rugburner #97,White,Eternal Bings 2,6969,White,Red,Orange,None,Greenie,Red
+98,Rugburner #98,White,Poonji,6969,White,None,None,None,Maroon,Green
+99,Rugburner #99,Bishtank,LBAC,None,None,None,None,None,Greenie,White
+100,Rugburner #100,Halloween Bares,White skull,6969,Black,None,Green,None,Purple,Red
+101,Rugburner #101,Halloween Bares,Black skull,6969,White,None,Orange,Shoot from the hip,Greenie,Red
+102,Rugburner #102,Black,White skull,Red,Black,Red,Red,None,Maroon,Red
+103,Rugburner #103,Black,White skull,6969,White,Red,Red,None,Maroon,Red
+104,Rugburner #104,Rugtroopers,White skull,Flurp,Black,None,Blue,None,Maroon,Green
+105,Rugburner #105,Black,White skull,6969,White,None,Red,None,Maroon,Red
+106,Rugburner #106,Halloween Bares,Poras,Red,White,None,None,Cosmic Rugverns,Maroon,Green
+107,Rugburner #107,Black,Fan Dolger,None,None,None,None,None,Maroon,Red
+108,Rugburner #108,Black,Eternal Bings 1,6969,Black,Red,Orange,Shoot from the hip,Maroon,Red
+109,Rugburner #109,CreatureRugz,Eternal Bings 1,6969,Black,Red,Red,eethurmonkeyz,Greenie,Green
+110,Rugburner #110,Halloween Bares,White skull,42069,White,Green,Red,eethurmonkeyz,Purple,White
+111,Rugburner #111,Bishtank,LBAC,None,None,None,None,None,Maroon,Red
+112,Rugburner #112,Bishtank,Eternal Bings 1,Red,Black,Red,Orange,None,Purple,White
+113,Rugburner #113,White,Black skull,42069,Black,None,Blue,None,Greenie,Red
+114,Rugburner #114,White,Eternal Bings 2,6969,Black,Red,Orange,Owie,Purple,Red
+115,Rugburner #115,Black,Black skull,42069,Black,None,Orange,None,Maroon,Green
+116,Rugburner #116,Bishtank,White skull,Flurp,Black,None,Orange,eethurmonkeyz,Purple,Red
+117,Rugburner #117,Dwellers,White skull,6969,Black,Red,Red,None,Purple,Red
+118,Rugburner #118,Black,White skull,Red,Khaki,None,Orange,None,Maroon,Red
+119,Rugburner #119,Bishtank,Fan Dolger,None,None,None,None,None,Purple,Red
+120,Rugburner #120,Black,White skull,Red,White,None,Green,None,Purple,Red
+121,Rugburner #121,Black,DNNR,42069,Black,Red,None,None,Purple,Blue
+122,Rugburner #122,Black,White skull,6969,Black,None,Red,None,Maroon,White
+123,Rugburner #123,Black,Black skull,6969,Black,Red,Blue,eethurmonkeyz,Maroon,Red
+124,Rugburner #124,Dwellers,White skull,Red,White,None,Orange,Cosmic Rugverns,Purple,Green
+125,Rugburner #125,White,Eternal Bings 2,Red,Rainbow,None,Orange,Smonk,Purple,Green
+126,Rugburner #126,Black,LBCC,None,None,None,None,None,Purple,Red
+127,Rugburner #127,this is a long term play,bonerugs,devs are coming back,3d reveal soon LOL,let the devs work,looking for signs of life,people still think this is legit,devs havent posted in months,they gone
+128,Rugburner #128,Black,White skull,6969,Khaki,Blue,Red,Owie,Maroon,Red
+129,Rugburner #129,Dwellers,Eternal Bings 2,42069,Black,Red,Orange,None,Purple,Red
+130,Rugburner #130,Bishtank,Gold skull,6969,White,Green,Red,None,Purple Kush,White
+131,Rugburner #131,Black,LBCC,None,None,None,None,None,Purple,Red
+132,Rugburner #132,Black,Black skull,42069,Black,None,Red,None,Purple,White
+133,Rugburner #133,Bishtank,Black skull,Red,White,Red,Orange,None,Purple,Red
+134,Rugburner #134,White,White skull,42069,White,Red,Red,None,Purple,Red
+135,Rugburner #135,White,Fan Dolger,None,None,None,None,None,Purple,Red
+136,Rugburner #136,Dwellers,DNNR,Red,White,Red,None,None,Purple,Red
+137,Rugburner #137,Bishtank,Eternal Bings 2,6969,White,None,Red laser,None,Greenie,Green
+138,Rugburner #138,White,White skull,Digitz,White,Red,Purple laser,eethurmonkeyz,Maroon,White
+139,Rugburner #139,White,Eternal Bings 2,Red,White,Red,Red,None,Purple,Red
+140,Rugburner #140,CreatureRugz,Black skull,6969,White,Red,Red,Cosmic Rugverns,Purple,White
+141,Rugburner #141,Rugtroopers,Black skull,Red,Black,None,Green,Shoot from the hip,Purple,Green
+142,Rugburner #142,CreatureRugz,Black skull,42069,Black,None,Orange,None,Maroon,Red
+143,Rugburner #143,White,Poonji,Red,White,None,None,eethurmonkeyz,Greenie,Red
+144,Rugburner #144,CreatureRugz,Halloween Bare,None,None,None,None,None,Purple,Red
+145,Rugburner #145,CreatureRugz,White skull,6969,Black,Green,Red laser,None,Maroon,Red
+146,Rugburner #146,Black,Halloween Bare,None,None,None,None,None,Maroon,Red
+147,Rugburner #147,Black,Fan Dolger,None,None,None,None,None,Maroon,Green
+148,Rugburner #148,Black,White skull,42069,Black,Red,Green,Shoot from the hip,Greenie,Red
+149,Rugburner #149,Dwellers,White skull,6969,Black,None,Blue,None,Purple,Red
+150,Rugburner #150,Halloween Bares,Black skull,6969,White,Red,Red,Smonk,Greenie,Blue
+151,Rugburner #151,Black,Black skull,6969,White,Green,Blue,None,Purple,Red
+152,Rugburner #152,Ethereels,White skull,Red,Khaki,Red,Orange,Smonk,Purple,Red
+153,Rugburner #153,Bishtank,LBAC,None,None,None,None,None,Greenie,Red
+154,Rugburner #154,Black,Black skull,Digitz,White,Green,Orange,Cosmic Rugverns,Purple,White
+155,Rugburner #155,Black,Black skull,42069,White,None,Red,Smonk,Greenie,Blue
+156,Rugburner #156,White,White skull,Red,Black,None,Red,eethurmonkeyz,Maroon,Red
+157,Rugburner #157,White,White skull,6969,White,White,Orange,None,Greenie,Red
+158,Rugburner #158,Rugtroopers,White skull,6969,Black,Red,Red,eethurmonkeyz,Purple Kush,Red
+159,Rugburner #159,Black,Black skull,Red,Khaki,None,Red,None,Maroon,Green
+160,Rugburner #160,Bishtank,Eternal Bings 2,Red,Black,Red,Red laser,None,Maroon,Red
+161,Rugburner #161,Bishtank,LBCC,None,None,None,None,None,Greenie,Red
+162,Rugburner #162,Ethereels,Fan Dolger,None,None,None,None,None,Purple,Red
+163,Rugburner #163,White,Eights,42069,Black,None,None,None,Purple,Green
+164,Rugburner #164,Ethereels,Black skull,6969,Black,Red,Red,Smonk,Purple Kush,Red
+165,Rugburner #165,Rugtroopers,Black skull,42069,Black,None,Blue,Cosmic Rugverns,Purple,White
+166,Rugburner #166,Halloween Bares,Black skull,42069,White,None,Orange,None,Greenie,Red
+167,Rugburner #167,Rugtroopers,Black skull,Red,Rainbow,Blue,Blue,eethurmonkeyz,Purple,Green
+168,Rugburner #168,White,LBCC,None,None,None,None,None,Purple,Red
+169,Rugburner #169,White,White skull,Red,White,Green,Green,None,Maroon,Red
+170,Rugburner #170,Halloween Bares,Eternal Bings 1,6969,White,None,Red,eethurmonkeyz,Purple,Red
+171,Rugburner #171,Halloween Bares,LBAC,None,None,None,None,None,Purple,White
+172,Rugburner #172,Halloween Bares,Eights,Red,Black,None,None,Shoot from the hip,Purple,Red
+173,Rugburner #173,White,Black skull,Red,White,None,Purple laser,Shoot from the hip,Purple,Red
+174,Rugburner #174,Black,White skull,Red,Black,Red,Purple laser,eethurmonkeyz,Purple Kush,Red
+175,Rugburner #175,White,Eternal Bings 1,42069,White,None,Red,None,Maroon,Red
+176,Rugburner #176,your devs surfing off with the eth ,greedy dev,surfers don’t wear shrts,speedo,kook,watching u get rugged,ur eth,all of u ,gets away with it
+177,Rugburner #177,Dwellers,Eternal Bings 1,6969,White,White,Orange,Owie,Shelby Red,White
+178,Rugburner #178,Bishtank,White skull,42069,White,None,Red,Cosmic Rugverns,Purple,Red
+179,Rugburner #179,Halloween Bares,LBCC,None,None,None,None,None,Greenie,Green
+180,Rugburner #180,Halloween Bares,Black skull,42069,Black,None,Orange,None,Purple,White
+181,Rugburner #181,Black,Eternal Bings 1,Digitz,White,Red,Blue,None,Purple,Green
+182,Rugburner #182,White,Gold skull,Red,White,Green,Red,None,Maroon,Red
+183,Rugburner #183,Bishtank,White skull,Red,White,None,Red,None,Maroon,Red
+184,Rugburner #184,Bishtank,LBCC,None,None,None,None,None,Purple,Red
+185,Rugburner #185,White,Eternal Bings 2,Digitz,Black,Red,Red,None,Maroon,Red
+186,Rugburner #186,Dwellers,Black skull,6969,Black,Red,Orange,Cosmic Rugverns,Maroon,Red
+187,Rugburner #187,Black,White skull,42069,Black,None,Orange,None,Maroon,Blue
+188,Rugburner #188,White,Black skull,Red,Black,Red,Orange,None,Maroon,Red
+189,Rugburner #189,Black,White skull,Digitz,Black,None,Blue,Cosmic Rugverns,Purple,Red
+190,Rugburner #190,Black,White skull,Digitz,Black,Red,Purple laser,eethurmonkeyz,Purple,Red
+191,Rugburner #191,White,Halloween Bare,None,None,None,None,0xBats,Purple,Red
+192,Rugburner #192,Rugtroopers,Gold skull,6969,Black,Red,Red,None,Purple,Green
+193,Rugburner #193,Bishtank,Black skull,Digitz,Khaki,Green,Orange,Cosmic Rugverns,Greenie,Green
+194,Rugburner #194,Halloween Bares,Evolved Thiefs,None,None,None,None,None,Maroon,Green
+195,Rugburner #195,White,Eternal Bings 2,Red,White,None,Red,None,Greenie,Green
+196,Rugburner #196,Black,Black skull,6969,Khaki,Red,Orange,None,Purple,Green
+197,Rugburner #197,Dwellers,LBCC,None,None,None,None,None,Maroon,Red
+198,Rugburner #198,White,White skull,Red,White,None,Purple laser,None,Purple Kush,Red
+199,Rugburner #199,White,White skull,Red,Khaki,None,Orange,None,Purple,White
+200,Rugburner #200,Bishtank,Eights,Red,Rainbow,Red,None,None,Maroon,Red
+201,Rugburner #201,Bishtank,Evolved Thiefs,None,None,None,None,0xBats,Purple,Red
+202,Rugburner #202,Halloween Bares,White skull,6969,Black,None,Red,None,Purple,Red
+203,Rugburner #203,Ethereels,Black skull,Red,Black,Red,Red,eethurmonkeyz,Greenie,Red
+204,Rugburner #204,sold more NFTs than albums,rich the rug ,bought w ur mint money,"designer, thanks for the eth ",celeb rug,watching ur eth go to the rich ,worthless celeb collabs,"rug community at 8, concert at 9 ",ur money
+205,Rugburner #205,Black,Halloween Bare,None,None,None,None,None,Purple,Green
+206,Rugburner #206,White,White skull,Red,White,Red,Green laser,Cosmic Rugverns,Maroon,Green
+207,Rugburner #207,Black,White skull,42069,Khaki,Red,Red,Smonk,Maroon,Red
+208,Rugburner #208,Black,Halloween Bare,None,None,None,None,None,Purple,White
+209,Rugburner #209,Black,LBCC,None,None,None,None,None,Purple,Blue
+210,Rugburner #210,Bishtank,White skull,Red,White,None,Red,None,Purple,Green
+211,Rugburner #211,Halloween Bares,Poras,Red,White,None,None,Cosmic Rugverns,Greenie,Blue
+212,Rugburner #212,Ethereels,White skull,Red,Black,Red,Red,Cosmic Rugverns,Shelby Red,Red
+213,Rugburner #213,CreatureRugz,Poonji,Red,Black,Red,None,Cosmic Rugverns,Purple Kush,Red
+214,Rugburner #214,Bishtank,DNNR,Red,Black,Red,None,None,Purple,Green
+215,Rugburner #215,CreatureRugz,White skull,6969,Rainbow,None,Orange,None,Purple,Green
+216,Rugburner #216,Halloween Bares,White skull,Red,White,Red,Orange,eethurmonkeyz,Maroon,Red
+217,Rugburner #217,Black,LBAC,None,None,None,None,None,Purple,Green
+218,Rugburner #218,Black,Evolved Thiefs,None,None,None,None,None,Purple,Red
+219,Rugburner #219,Bishtank,Poonji,42069,White,Red,None,None,Maroon,White
+220,Rugburner #220,White,Black skull,6969,White,Red,Red,Smonk,Greenie,Red
+221,Rugburner #221,Black,Gold skull,Red,Black,None,Red,0xBats,Maroon,Red
+222,Rugburner #222,Black,White skull,6969,White,None,Red,Cosmic Rugverns,Purple,White
+223,Rugburner #223,Halloween Bares,Poras,Red,Black,Red,None,None,Purple,Red
+224,Rugburner #224,Black,White skull,Red,White,None,Green,0xBats,Maroon,Red
+225,Rugburner #225,Bishtank,Poras,Digitz,White,None,None,eethurmonkeyz,Purple,Red
+226,Rugburner #226,Bishtank,LBAC,None,None,None,None,0xBats,Maroon,Green
+227,Rugburner #227,Black,Eternal Bings 2,6969,Black,None,Blue,Owie,Purple Kush,Red
+228,Rugburner #228,Bishtank,Eternal Bings 2,42069,Black,Red,Green,None,Maroon,Green
+229,Rugburner #229,Black,Eights,Red,White,None,None,None,Maroon,Red
+230,Rugburner #230,White,Black skull,Red,White,None,Red,None,Purple Kush,Red
+231,Rugburner #231,Black,White skull,Red,Black,None,Red,Owie,Purple,Red
+232,Rugburner #232,Black,White skull,Flurp,White,None,Red,None,Purple Kush,White
+233,Rugburner #233,Black,Black skull,Red,White,None,Blue,eethurmonkeyz,Maroon,Red
+234,Rugburner #234,Halloween Bares,LBCC,None,None,None,None,None,Purple,Green
+235,Rugburner #235,Black,Poras,Red,Black,None,None,eethurmonkeyz,Purple,Blue
+236,Rugburner #236,Halloween Bares,LBCC,None,None,None,None,None,Purple,Red
+237,Rugburner #237,Black,Poonji,Red,Black,Green,None,None,Maroon,Red
+238,Rugburner #238,Black,White skull,Red,Black,Red,Red laser,None,Maroon,Red
+239,Rugburner #239,White,Poonji,42069,Khaki,Red,None,Cosmic Rugverns,Maroon,Red
+240,Rugburner #240,Black,White skull,Red,White,Red,Red,Cosmic Rugverns,Maroon,Red
+241,Rugburner #241,Black,White skull,6969,Rainbow,Red,Orange,None,Greenie,Red
+242,Rugburner #242,Black,White skull,6969,White,None,Orange,None,Maroon,Red
+243,Rugburner #243,Halloween Bares,Black skull,Flurp,White,Red,Red,None,Maroon,Red
+244,Rugburner #244,White,Eternal Bings 1,Red,White,White,Blue,Owie,Purple,Red
+245,Rugburner #245,Dwellers,Eternal Bings 2,Flurp,Black,Green,Red,Smonk,Purple,Green
+246,Rugburner #246,White,Black skull,42069,White,None,Red,0xBats,Maroon,Red
+247,Rugburner #247,CreatureRugz,Gold skull,Flurp,Black,None,Green,Cosmic Rugverns,Purple,Red
+248,Rugburner #248,Black,White skull,6969,Khaki,Green,Orange,None,Maroon,Red
+249,Rugburner #249,White,White skull,6969,White,Red,Orange,Cosmic Rugverns,Maroon,Blue
+250,Rugburner #250,Dwellers,White skull,Red,Rainbow,Red,Orange,None,Purple,Red
+251,Rugburner #251,Halloween Bares,Black skull,Red,Black,None,Red,Owie,Shelby Red,Red
+252,Rugburner #252,Dwellers,Poras,Red,Black,None,None,None,Maroon,White
+253,Rugburner #253,Black,Black skull,Red,Black,None,Orange,None,Maroon,Red
+254,Rugburner #254,White,White skull,Red,White,Red,Green,None,Maroon,Blue
+255,Rugburner #255,White,White skull,Red,Khaki,None,Orange,None,Maroon,Green
+256,Rugburner #256,Bishtank,Black skull,Red,Black,Green,Orange,None,Purple,Red
+257,Rugburner #257,Black,Black skull,6969,White,None,Orange,Shoot from the hip,Greenie,White
+258,Rugburner #258,Black,Poras,6969,White,None,None,None,Purple,White
+259,Rugburner #259,Black,Black skull,6969,Khaki,None,Orange,Shoot from the hip,Maroon,Green
+260,Rugburner #260,Dwellers,White skull,Red,White,Blue,Red,None,Purple,White
+261,Rugburner #261,White,Fan Dolger,None,None,None,None,None,Purple,Red
+262,Rugburner #262,Halloween Bares,White skull,Red,White,None,Green,Owie,Purple,Red
+263,Rugburner #263,Ethereels,Black skull,6969,White,Green,Blue,eethurmonkeyz,Maroon,Blue
+264,Rugburner #264,Halloween Bares,Black skull,6969,Black,None,Red,Shoot from the hip,Maroon,Red
+265,Rugburner #265,Black,White skull,Red,White,None,Orange,Owie,Maroon,Green
+266,Rugburner #266,Black,White skull,42069,Black,None,Green,Smonk,Shelby Red,Red
+267,Rugburner #267,Bishtank,White skull,42069,Khaki,None,Red,Shoot from the hip,Purple Kush,Red
+268,Rugburner #268,White,Black skull,6969,White,Red,Orange,Shoot from the hip,Purple,Red
+269,Rugburner #269,Bishtank,Fan Dolger,None,None,None,None,None,Greenie,Red
+270,Rugburner #270,White,Poras,6969,Khaki,Red,None,None,Purple Kush,Blue
+271,Rugburner #271,Black,Halloween Bare,None,None,None,None,None,Maroon,Red
+272,Rugburner #272,Black,LBCC,None,None,None,None,None,Purple,Red
+273,Rugburner #273,Black,White skull,Red,White,None,Green,Cosmic Rugverns,Purple Kush,Red
+274,Rugburner #274,Black,Eights,6969,Rainbow,Red,None,None,Purple,Red
+275,Rugburner #275,Dwellers,Eternal Bings 2,Digitz,Black,None,Orange,eethurmonkeyz,Greenie,Red
+276,Rugburner #276,Black,White skull,6969,White,White,Green,None,Purple,White
+277,Rugburner #277,Black,White skull,Digitz,White,Green,Orange,eethurmonkeyz,Purple,Green
+278,Rugburner #278,White,White skull,42069,Black,None,Blue,None,Purple Kush,Red
+279,Rugburner #279,Black,Eternal Bings 2,Red,White,Red,Blue,None,Purple,Red
+280,Rugburner #280,Black,LBAC,None,None,None,None,None,Purple,Green
+281,Rugburner #281,Black,White skull,Red,White,Green,Orange,Smonk,Maroon,Red
+282,Rugburner #282,Bishtank,Eights,42069,White,Green,None,Cosmic Rugverns,Purple,Red
+283,Rugburner #283,Black,Fan Dolger,None,None,None,None,None,Purple,Red
+284,Rugburner #284,White,White skull,6969,Rainbow,None,Red,None,Greenie,White
+285,Rugburner #285,CreatureRugz,White skull,Red,White,Red,Red,None,Maroon,Green
+286,Rugburner #286,Black,Gold skull,6969,Black,Red,Orange,None,Purple Kush,Red
+287,Rugburner #287,CreatureRugz,Gold skull,Digitz,Khaki,Red,Blue,Owie,Maroon,Green
+288,Rugburner #288,Halloween Bares,Black skull,Fartchick,Khaki,None,Green,Cosmic Rugverns,Maroon,Red
+289,Rugburner #289,Black,White skull,6969,Black,Red,Orange,None,Purple,Red
+290,Rugburner #290,Black,Eternal Bings 2,Digitz,Black,None,Orange,None,Purple,White
+291,Rugburner #291,Black,Eights,Red,White,None,None,None,Greenie,Blue
+292,Rugburner #292,Black,White skull,6969,Rainbow,Red,Green,None,Purple,Green
+293,Rugburner #293,Bishtank,LBCC,None,None,None,None,None,Maroon,Red
+294,Rugburner #294,Bishtank,Black skull,Red,White,Red,Red,None,Maroon,Blue
+295,Rugburner #295,White,Eternal Bings 1,6969,Black,None,Green laser,None,Maroon,Red
+296,Rugburner #296,Black,White skull,42069,White,Red,Green,Cosmic Rugverns,Purple,Red
+297,Rugburner #297,Black,LBCC,None,None,None,None,None,Purple,Red
+298,Rugburner #298,CreatureRugz,Black skull,6969,White,None,Red laser,None,Maroon,Red
+299,Rugburner #299,Black,Black skull,6969,White,None,Orange,Cosmic Rugverns,Purple,Red
+300,Rugburner #300,White,White skull,Digitz,Black,Red,Red,0xBats,Purple,Green
+301,Rugburner #301,White,Eternal Bings 2,6969,White,Red,Orange,None,Maroon,Red
+302,Rugburner #302,White,DNNR,6969,White,Red,None,eethurmonkeyz,Maroon,Red
+303,Rugburner #303,Black,White skull,42069,White,White,Red laser,eethurmonkeyz,Maroon,White
+304,Rugburner #304,Black,Black skull,Red,White,None,Orange,0xBats,Purple,Red
+305,Rugburner #305,White,White skull,6969,White,None,Orange,None,Maroon,White
+306,Rugburner #306,Black,LBCC,None,None,None,None,None,Purple Kush,Red
+307,Rugburner #307,Black,Black skull,Red,Khaki,None,Green,None,Maroon,Red
+308,Rugburner #308,Dwellers,White skull,Red,White,Red,Orange,None,Purple,White
+309,Rugburner #309,White,White skull,Red,Rainbow,None,Orange,None,Maroon,Red
+310,Rugburner #310,White,White skull,Red,Black,None,Red laser,Owie,Maroon,Red
+311,Rugburner #311,Black,Black skull,6969,Khaki,Green,Orange,Cosmic Rugverns,Maroon,Red
+312,Rugburner #312,Black,LBAC,None,None,None,None,None,Purple Kush,Red
+313,Rugburner #313,Halloween Bares,Black skull,6969,Black,Red,Red,None,Purple,Red
+314,Rugburner #314,White,LBCC,None,None,None,None,None,Maroon,White
+315,Rugburner #315,Halloween Bares,White skull,6969,White,Red,Green,0xBats,Purple,Red
+316,Rugburner #316,White,Eternal Bings 1,Red,White,None,Green,Cosmic Rugverns,Maroon,Red
+317,Rugburner #317,Black,Black skull,Red,Black,Red,Orange,Smonk,Greenie,White
+318,Rugburner #318,Black,LBCC,None,None,None,None,None,Purple,Blue
+319,Rugburner #319,Bishtank,Black skull,6969,Black,Red,Green laser,eethurmonkeyz,Purple Kush,Red
+320,Rugburner #320,Black,Poras,6969,White,None,None,None,Purple,White
+321,Rugburner #321,Black,Black skull,Red,Khaki,None,Green,Owie,Purple,White
+322,Rugburner #322,Bishtank,Diamond skull,Digitz,White,None,Green,Smonk,Purple,White
+323,Rugburner #323,Black,Black skull,Red,Black,None,Orange,Cosmic Rugverns,Purple,Red
+324,Rugburner #324,White,White skull,Red,Black,None,Blue,Owie,Maroon,Red
+325,Rugburner #325,White,Black skull,Red,Black,Green,Orange,None,Purple,White
+326,Rugburner #326,White,Poras,Red,White,None,None,Smonk,Maroon,Red
+327,Rugburner #327,CreatureRugz,Black skull,6969,White,Red,Green,eethurmonkeyz,Purple,Red
+328,Rugburner #328,Dwellers,Black skull,Red,White,Green,Orange,None,Purple,Red
+329,Rugburner #329,Rugtroopers,Fan Dolger,None,None,None,None,0xBats,Maroon,Blue
+330,Rugburner #330,Black,Poonji,TYO10,Black,None,None,Cosmic Rugverns,Greenie,Green
+331,Rugburner #331,White,Black skull,6969,Black,Red,Red,Cosmic Rugverns,Purple,Red
+332,Rugburner #332,White,Eternal Bings 1,42069,Rainbow,Green,Red,None,Purple,Red
+333,Rugburner #333,Black,White skull,Red,Khaki,None,Blue,None,Greenie,Red
+334,Rugburner #334,Black,White skull,Red,White,Green,Orange,None,Purple,Red
+335,Rugburner #335,Black,Poonji,Red,White,Red,None,Cosmic Rugverns,Maroon,Green
+336,Rugburner #336,Black,Black skull,Red,Black,Green,Red,Smonk,Purple,Green
+337,Rugburner #337,Dwellers,White skull,Digitz,Black,None,Red,Owie,Maroon,Red
+338,Rugburner #338,White,Black skull,6969,Black,None,Red,None,Maroon,White
+339,Rugburner #339,Ethereels,White skull,Red,Khaki,Red,Orange,None,Purple,Red
+340,Rugburner #340,Bishtank,Black skull,Digitz,Khaki,Red,Orange,0xBats,Greenie,Red
+341,Rugburner #341,Bishtank,White skull,42069,White,None,Blue,None,Purple,Green
+342,Rugburner #342,pump and dump,the rugluencer,worthless coin drop,fartchick is a dude,will pump any project,full of lies,using followers for exit liquidity,daily,unfollow
+343,Rugburner #343,CreatureRugz,Black skull,Red,White,None,Red,None,Purple,Green
+344,Rugburner #344,Black,Black skull,Flurp,White,None,Orange,Owie,Maroon,Green
+345,Rugburner #345,White,Eternal Bings 2,42069,Black,None,Orange,Cosmic Rugverns,Purple,Red
+346,Rugburner #346,Black,White skull,6969,Khaki,None,Orange,None,Maroon,Red
+347,Rugburner #347,White,Black skull,6969,White,White,Orange,Owie,Maroon,Red
+348,Rugburner #348,Black,Gold skull,Red,Black,Red,Orange,eethurmonkeyz,Maroon,Red
+349,Rugburner #349,Ethereels,White skull,Red,Black,None,Green,Smonk,Purple,Red
+350,Rugburner #350,Halloween Bares,Black skull,Digitz,White,None,Orange,Cosmic Rugverns,Shelby Red,White
+351,Rugburner #351,Ethereels,LBAC,None,None,None,None,None,Purple,Red
+352,Rugburner #352,White,Eternal Bings 1,6969,White,Red,Blue,Owie,Greenie,Green
+353,Rugburner #353,Rugtroopers,White skull,6969,White,None,Orange,None,Purple,Red
+354,Rugburner #354,Bishtank,White skull,6969,White,None,Red,Owie,Purple,White
+355,Rugburner #355,Dwellers,Eternal Bings 2,Red,White,None,Red,Smonk,Purple,Green
+356,Rugburner #356,Black,White skull,Red,White,None,Red,None,Maroon,Red
+357,Rugburner #357,Halloween Bares,White skull,Red,White,Green,Red,Smonk,Purple Kush,Red
+358,Rugburner #358,White,White skull,Red,Black,None,Red,None,Maroon,White
+359,Rugburner #359,Dwellers,Evolved Thiefs,None,None,None,None,0xBats,Purple,Red
+360,Rugburner #360,Bishtank,Black skull,6969,White,Red,Red,None,Purple,Green
+361,Rugburner #361,White,Black skull,6969,Black,None,Red,None,Purple,Red
+362,Rugburner #362,Black,White skull,Red,White,None,Green,Cosmic Rugverns,Greenie,White
+363,Rugburner #363,rugception,rug cleaning service,rug wearing rug,rugs on rugs,everything is a rug,looking for a decent project,"rug, rinse and repeat",many,clean
+364,Rugburner #364,Black,LBCC,None,None,None,None,None,Maroon,Red
+365,Rugburner #365,Bishtank,Black skull,6969,Rainbow,None,Red,None,Purple,Red
+366,Rugburner #366,Halloween Bares,Black skull,Digitz,White,None,Orange,Cosmic Rugverns,Purple Kush,Blue
+367,Rugburner #367,White,Black skull,6969,Black,Red,Red,None,Purple,Red
+368,Rugburner #368,Bishtank,Diamond skull,Red,Khaki,Green,Green,Smonk,Purple,Red
+369,Rugburner #369,Bishtank,Eternal Bings 2,Red,Khaki,Red,Green,None,Maroon,Red
+370,Rugburner #370,White,Eternal Bings 1,6969,Black,None,Blue,None,Purple,Red
+371,Rugburner #371,Black,Black skull,Red,Khaki,None,Red,Cosmic Rugverns,Maroon,Green
+372,Rugburner #372,Dwellers,White skull,6969,White,None,Red,Cosmic Rugverns,Maroon,White
+373,Rugburner #373,White,White skull,42069,Black,Red,Orange,None,Maroon,Red
+374,Rugburner #374,Black,Gold skull,6969,White,Red,Orange,eethurmonkeyz,Purple,Blue
+375,Rugburner #375,Black,Eternal Bings 2,6969,Black,None,Red laser,None,Purple,Red
+376,Rugburner #376,Black,Eternal Bings 2,Red,White,Red,Blue,eethurmonkeyz,Purple,Red
+377,Rugburner #377,Black,Poras,Digitz,Black,Red,None,eethurmonkeyz,Greenie,Red
+378,Rugburner #378,Black,Black skull,Red,White,None,Blue,None,Maroon,Red
+379,Rugburner #379,Black,White skull,Red,Black,None,Orange,None,Greenie,Green
+380,Rugburner #380,CreatureRugz,Black skull,Red,White,Red,Red laser,Smonk,Purple,Red
+381,Rugburner #381,Dwellers,Black skull,Red,Black,None,Blue,eethurmonkeyz,Purple,Red
+382,Rugburner #382,Black,White skull,42069,White,None,Orange,None,Purple,Red
+383,Rugburner #383,Bishtank,Black skull,6969,Rainbow,Red,Green,Cosmic Rugverns,Purple,Red
+384,Rugburner #384,Halloween Bares,LBCC,None,None,None,None,None,Maroon,Blue
+385,Rugburner #385,Bishtank,Black skull,Red,White,Red,Red,Smonk,Maroon,Red
+386,Rugburner #386,Black,Eternal Bings 2,42069,Black,None,Red,Cosmic Rugverns,Maroon,Green
+387,Rugburner #387,Bishtank,Poras,Red,White,None,None,Cosmic Rugverns,Maroon,White
+388,Rugburner #388,White,Halloween Bare,None,None,None,None,None,Maroon,Red
+389,Rugburner #389,Halloween Bares,White skull,42069,Black,None,Red,None,Greenie,White
+390,Rugburner #390,Dwellers,White skull,Flurp,Khaki,None,Green laser,Cosmic Rugverns,Purple,Red
+391,Rugburner #391,Black,White skull,Red,White,Green,Red,Shoot from the hip,Purple,Green
+392,Rugburner #392,Halloween Bares,LBAC,None,None,None,None,None,Purple,Red
+393,Rugburner #393,Black,Poonji,6969,Black,None,None,Smonk,Purple,Red
+394,Rugburner #394,Black,White skull,42069,Black,None,Orange,Shoot from the hip,Maroon,Red
+395,Rugburner #395,Black,Poras,6969,Black,None,None,None,Maroon,Red
+396,Rugburner #396,Halloween Bares,Black skull,6969,White,Red,Green laser,Smonk,Maroon,Red
+397,Rugburner #397,White,LBAC,None,None,None,None,None,Greenie,Green
+398,Rugburner #398,Bishtank,White skull,Red,Black,None,Red,None,Purple,Green
+399,Rugburner #399,Black,Gold skull,Flurp,White,Red,Blue,Shoot from the hip,Purple,Red
+400,Rugburner #400,CreatureRugz,White skull,42069,White,Red,Orange,Shoot from the hip,Greenie,Red
+401,Rugburner #401,White,White skull,Red,Black,Red,Red,Shoot from the hip,Greenie,Green
+402,Rugburner #402,Halloween Bares,White skull,Red,White,Red,Red,None,Greenie,Green
+403,Rugburner #403,Bishtank,White skull,Fartchick,Black,Red,Orange,Cosmic Rugverns,Purple,Red
+404,Rugburner #404,Bishtank,White skull,6969,Khaki,Green,Red,Shoot from the hip,Purple,Red
+405,Rugburner #405,Black,Eternal Bings 2,Red,White,None,Blue,None,Greenie,Blue
+406,Rugburner #406,Bishtank,Black skull,Digitz,Khaki,None,Green,None,Purple Kush,Red
+407,Rugburner #407,Black,Fan Dolger,None,None,None,None,None,Purple Kush,White
+408,Rugburner #408,Black,DNNR,42069,Rainbow,None,None,None,Greenie,White
+409,Rugburner #409,Dwellers,LBAC,None,None,None,None,None,Purple,Green
+410,Rugburner #410,Black,Eternal Bings 1,Fartchick,White,Red,Red,Shoot from the hip,Maroon,Red
+411,Rugburner #411,Black,Eternal Bings 1,6969,Khaki,None,Green laser,None,Maroon,Green
+412,Rugburner #412,CreatureRugz,Black skull,Digitz,White,None,Red,Smonk,Purple,Blue
+413,Rugburner #413,Black,White skull,Red,White,None,Green,None,Purple Kush,Red
+414,Rugburner #414,CreatureRugz,Black skull,Red,Black,Red,Orange,Smonk,Greenie,Red
+415,Rugburner #415,Halloween Bares,LBCC,None,None,None,None,0xBats,Greenie,Red
+416,Rugburner #416,White,Poras,6969,Black,None,None,None,Maroon,Red
+417,Rugburner #417,Bishtank,Black skull,Red,Khaki,Red,Orange,None,Purple,Red
+418,Rugburner #418,Halloween Bares,White skull,Digitz,White,Red,Blue,None,Purple Kush,Red
+419,Rugburner #419,White,Black skull,Red,Black,None,Orange,Owie,Greenie,White
+420,Rugburner #420,White,White skull,Digitz,White,Red,Red,None,Purple,White
+421,Rugburner #421,Rugtroopers,White skull,Red,White,Red,Orange,None,Purple,White
+422,Rugburner #422,Halloween Bares,White skull,Red,Khaki,Red,Orange,None,Maroon,White
+423,Rugburner #423,White,Eternal Bings 1,Red,Black,Blue,Blue,None,Maroon,Green
+424,Rugburner #424,Black,Poras,6969,Black,Red,None,eethurmonkeyz,Greenie,Red
+425,Rugburner #425,White,White skull,6969,Black,Red,Green,eethurmonkeyz,Purple,Red
+426,Rugburner #426,Ethereels,Black skull,6969,Rainbow,Green,Red,Smonk,Maroon,Red
+427,Rugburner #427,Bishtank,Eternal Bings 2,6969,Black,Green,Orange,eethurmonkeyz,Purple Kush,Green
+428,Rugburner #428,White,Black skull,6969,Rainbow,White,Red,None,Greenie,Green
+429,Rugburner #429,Black,LBCC,None,None,None,None,None,Purple Kush,Red
+430,Rugburner #430,Bishtank,Black skull,Red,Black,Red,Green,eethurmonkeyz,Purple Kush,Red
+431,Rugburner #431,Halloween Bares,White skull,42069,Black,Red,Red,Smonk,Maroon,Green
+432,Rugburner #432,Bishtank,LBAC,None,None,None,None,None,Purple,Red
+433,Rugburner #433,Black,White skull,Red,Khaki,None,Green,None,Maroon,Blue
+434,Rugburner #434,Halloween Bares,White skull,Digitz,Black,Green,Red,None,Maroon,Green
+435,Rugburner #435,Black,Black skull,Red,Black,Red,Red,Owie,Maroon,Red
+436,Rugburner #436,Black,Gold skull,Red,Khaki,None,Orange,Cosmic Rugverns,Purple,Green
+437,Rugburner #437,Halloween Bares,Eternal Bings 2,42069,White,None,Purple laser,Smonk,Greenie,Blue
+438,Rugburner #438,Black,White skull,Red,White,Red,Green,Shoot from the hip,Purple,Green
+439,Rugburner #439,Black,Eternal Bings 2,6969,White,Red,Orange,None,Maroon,Blue
+440,Rugburner #440,Bishtank,Black skull,Red,Black,Red,Red,None,Purple,Green
+441,Rugburner #441,Halloween Bares,Eternal Bings 2,Red,Khaki,None,Orange,Shoot from the hip,Maroon,Green
+442,Rugburner #442,Halloween Bares,White skull,42069,White,Red,Orange,None,Purple,Green
+443,Rugburner #443,Halloween Bares,Black skull,Red,Black,None,Blue,eethurmonkeyz,Purple,Red
+444,Rugburner #444,White,Poras,Digitz,Black,None,None,None,Maroon,Red
+445,Rugburner #445,Bishtank,Black skull,Red,White,None,Red,None,Shelby Red,Green
+446,Rugburner #446,Rugtroopers,White skull,Red,White,Red,Orange,None,Greenie,Red
+447,Rugburner #447,White,White skull,6969,Black,Red,Green,None,Purple,Red
+448,Rugburner #448,Bishtank,Black skull,Red,Khaki,Green,Red laser,None,Purple,Red
+449,Rugburner #449,Bishtank,Poonji,6969,Black,None,None,None,Purple,Red
+450,Rugburner #450,Black,White skull,6969,Black,Green,Blue,Shoot from the hip,Purple,Green
+451,Rugburner #451,Black,Gold skull,42069,Black,None,Red,None,Purple,Red
+452,Rugburner #452,White,Black skull,6969,Black,Green,Orange,eethurmonkeyz,Purple Kush,Blue
+453,Rugburner #453,Black,White skull,Red,White,Red,Blue,None,Maroon,White
+454,Rugburner #454,CreatureRugz,White skull,6969,Black,None,Orange,None,Purple,Red
+455,Rugburner #455,Black,Black skull,6969,Khaki,None,Red,None,Shelby Red,Red
+456,Rugburner #456,Bishtank,Eternal Bings 1,Digitz,White,Red,Red laser,None,Maroon,Red
+457,Rugburner #457,Black,Eternal Bings 2,Red,Black,None,Orange,None,Greenie,Red
+458,Rugburner #458,Black,Halloween Bare,None,None,None,None,None,Maroon,Green
+459,Rugburner #459,CreatureRugz,LBAC,None,None,None,None,None,Greenie,Red
+460,Rugburner #460,White,Evolved Thiefs,None,None,None,None,0xBats,Purple,Green
+461,Rugburner #461,Black,White skull,Red,White,Red,Red,None,Maroon,Red
+462,Rugburner #462,CreatureRugz,White skull,42069,White,None,Blue,0xBats,Purple,Red
+463,Rugburner #463,White,White skull,Fartchick,Black,Blue,Red,Smonk,Maroon,Red
+464,Rugburner #464,Dwellers,White skull,6969,Black,Red,Orange,None,Purple,White
+465,Rugburner #465,Black,Eternal Bings 2,Digitz,White,Green,Purple laser,None,Purple,Red
+466,Rugburner #466,Halloween Bares,Black skull,Red,Black,Red,Orange,Smonk,Purple,Red
+467,Rugburner #467,Dwellers,Black skull,Red,Black,Green,Blue,None,Purple Kush,Red
+468,Rugburner #468,CreatureRugz,LBAC,None,None,None,None,0xBats,Maroon,Green
+469,Rugburner #469,Black,White skull,6969,Black,Green,Red,None,Purple,Red
+470,Rugburner #470,Black,Black skull,6969,Black,None,Red,None,Maroon,Red
+471,Rugburner #471,Bishtank,Black skull,6969,White,Red,Blue,Cosmic Rugverns,Maroon,Red
+472,Rugburner #472,Bishtank,Eternal Bings 2,Red,White,Red,Green,Shoot from the hip,Greenie,Green
+473,Rugburner #473,Black,Eternal Bings 2,Red,Black,None,Red,eethurmonkeyz,Purple Kush,Red
+474,Rugburner #474,Dwellers,White skull,Red,White,None,Orange,None,Maroon,Red
+475,Rugburner #475,Black,Eternal Bings 2,Red,White,None,Orange,None,Maroon,Green
+476,Rugburner #476,Black,Poras,6969,Black,Red,None,None,Purple,Blue
+477,Rugburner #477,Black,Diamond skull,Digitz,White,Green,Green laser,Smonk,Purple Kush,Red
+478,Rugburner #478,CreatureRugz,Eternal Bings 1,6969,Fire,Green,Orange,Smonk,Greenie,Red
+479,Rugburner #479,Bishtank,DNNR,Red,Black,Green,None,eethurmonkeyz,Purple,Blue
+480,Rugburner #480,White,Evolved Thiefs,None,None,None,None,None,Purple Kush,Green
+481,Rugburner #481,Black,Black skull,Red,White,White,Red,None,Greenie,Blue
+482,Rugburner #482,Halloween Bares,Eternal Bings 1,Red,Black,None,Orange,Smonk,Maroon,Red
+483,Rugburner #483,Black,White skull,6969,Black,Green,Orange,None,Purple,White
+484,Rugburner #484,Halloween Bares,Eights,42069,Khaki,Red,None,None,Purple,Red
+485,Rugburner #485,Black,Black skull,Fartchick,Black,None,Blue,Owie,Maroon,Red
+486,Rugburner #486,Black,White skull,Red,White,Red,Red,None,Purple,Red
+487,Rugburner #487,Black,Black skull,Red,White,None,Orange,Cosmic Rugverns,Purple,Red
+488,Rugburner #488,Black,Poonji,Red,White,White,None,None,Purple,Red
+489,Rugburner #489,Bishtank,White skull,42069,Black,None,Orange,Shoot from the hip,Maroon,Red
+490,Rugburner #490,Black,White skull,Red,Black,Red,Red,None,Maroon,Green
+491,Rugburner #491,Bishtank,White skull,Red,Black,None,Orange,None,Maroon,Red
+492,Rugburner #492,White,White skull,Red,Black,Green,Orange,None,Purple,Green
+493,Rugburner #493,White,Black skull,Red,Black,White,Green,Cosmic Rugverns,Maroon,Red
+494,Rugburner #494,Dwellers,Fan Dolger,None,None,None,None,None,Greenie,White
+495,Rugburner #495,Black,White skull,6969,Black,Green,Purple laser,None,Purple,Red
+496,Rugburner #496,Black,Halloween Bare,None,None,None,None,None,Purple,Green
+497,Rugburner #497,White,LBAC,None,None,None,None,None,Maroon,Red
+498,Rugburner #498,Black,Eternal Bings 2,6969,White,Green,Orange,None,Purple,Blue
+499,Rugburner #499,Black,LBCC,None,None,None,None,None,Purple,Red
+500,Rugburner #500,Bishtank,Fan Dolger,None,None,None,None,0xBats,Maroon,Red
+501,Rugburner #501,Dwellers,White skull,Red,Black,Red,Orange,Cosmic Rugverns,Purple,Green
+502,Rugburner #502,Black,Black skull,Flurp,Khaki,Red,Green,eethurmonkeyz,Maroon,Red
+503,Rugburner #503,Black,White skull,6969,Black,Blue,Red laser,None,Purple,Red
+504,Rugburner #504,Halloween Bares,LBCC,None,None,None,None,None,Purple,Green
+505,Rugburner #505,Dwellers,Black skull,Digitz,Black,Red,Green,eethurmonkeyz,Maroon,Red
+506,Rugburner #506,Black,Black skull,Red,Black,Red,Green,Cosmic Rugverns,Purple,Green
+507,Rugburner #507,Halloween Bares,White skull,6969,White,Red,Red,None,Purple,Green
+508,Rugburner #508,Black,Black skull,6969,White,Red,Orange,Smonk,Purple Kush,Green
+509,Rugburner #509,White,DNNR,Red,Black,None,None,Shoot from the hip,Greenie,Red
+510,Rugburner #510,Halloween Bares,LBAC,None,None,None,None,None,Maroon,Red
+511,Rugburner #511,White,Eternal Bings 2,Digitz,Black,Green,Green,None,Maroon,Green
+512,Rugburner #512,Halloween Bares,White skull,6969,Black,None,Green,eethurmonkeyz,Greenie,Red
+513,Rugburner #513,Black,Black skull,Red,Black,None,Red,None,Greenie,White
+514,Rugburner #514,Halloween Bares,White skull,6969,Black,None,Red,None,Maroon,Red
+515,Rugburner #515,Black,Eternal Bings 1,Red,Black,None,Blue,eethurmonkeyz,Purple Kush,Green
+516,Rugburner #516,White,Eternal Bings 2,Red,Khaki,Red,Red,eethurmonkeyz,Maroon,Red
+517,Rugburner #517,CreatureRugz,Eternal Bings 2,Red,Black,Red,Red,0xBats,Maroon,Red
+518,Rugburner #518,Bishtank,Eternal Bings 1,6969,White,None,Red,Smonk,Purple,Blue
+519,Rugburner #519,Halloween Bares,Black skull,6969,White,Red,Blue,None,Purple,Red
+520,Rugburner #520,White,Black skull,Red,Khaki,None,Red,None,Purple,Red
+521,Rugburner #521,White,Eternal Bings 1,Flurp,Black,White,Orange,eethurmonkeyz,Purple,Blue
+522,Rugburner #522,Bishtank,Fan Dolger,None,None,None,None,0xBats,Maroon,Red
+523,Rugburner #523,Halloween Bares,Fan Dolger,None,None,None,None,None,Maroon,Green
+524,Rugburner #524,Black,Gold skull,6969,Black,None,Blue,Shoot from the hip,Maroon,Green
+525,Rugburner #525,Halloween Bares,Halloween Bare,None,None,None,None,None,Maroon,Green
+526,Rugburner #526,Halloween Bares,Eternal Bings 2,6969,White,Red,Red laser,None,Purple,White
+527,Rugburner #527,White,White skull,Red,White,None,Green,Shoot from the hip,Greenie,Red
+528,Rugburner #528,White,Halloween Bare,None,None,None,None,None,Maroon,Blue
+529,Rugburner #529,Dwellers,White skull,Red,Black,Red,Blue,None,Purple Kush,Red
+530,Rugburner #530,White,Fan Dolger,None,None,None,None,None,Maroon,Red
+531,Rugburner #531,Dwellers,Black skull,Red,White,Red,Fire,Owie,Purple Kush,Red
+532,Rugburner #532,Black,Fan Dolger,None,None,None,None,None,Maroon,Green
+533,Rugburner #533,White,White skull,Red,Black,None,Green,Smonk,Purple,Red
+534,Rugburner #534,Black,Black skull,Red,Khaki,None,Red,eethurmonkeyz,Maroon,Red
+535,Rugburner #535,Halloween Bares,White skull,Red,Khaki,Red,Red,None,Purple,Red
+536,Rugburner #536,Bishtank,Eights,6969,White,Red,None,None,Greenie,White
+537,Rugburner #537,White,White skull,6969,Black,Red,Orange,eethurmonkeyz,Purple,Blue
+538,Rugburner #538,Halloween Bares,Black skull,6969,White,None,Red,Smonk,Purple Kush,Red
+539,Rugburner #539,Black,LBCC,None,None,None,None,0xBats,Purple,Green
+540,Rugburner #540,White,Eternal Bings 2,Digitz,White,Red,Red laser,Shoot from the hip,Purple Kush,Red
+541,Rugburner #541,Bishtank,White skull,Red,Black,Green,Orange,Shoot from the hip,Purple,Red
+542,Rugburner #542,White,Poras,Red,Black,Red,None,None,Maroon,Red
+543,Rugburner #543,Bishtank,Halloween Bare,None,None,None,None,None,Maroon,White
+544,Rugburner #544,Halloween Bares,Black skull,42069,White,Red,Red laser,None,Greenie,Red
+545,Rugburner #545,White,Fan Dolger,None,None,None,None,None,Purple,Red
+546,Rugburner #546,Halloween Bares,White skull,42069,White,None,Green,eethurmonkeyz,Purple Kush,Red
+547,Rugburner #547,Black,Black skull,Red,White,None,Red,None,Purple,Red
+548,Rugburner #548,CreatureRugz,White skull,6969,Rainbow,None,Green,None,Maroon,Green
+549,Rugburner #549,CreatureRugz,DNNR,Digitz,White,None,None,Smonk,Maroon,Green
+550,Rugburner #550,Halloween Bares,White skull,6969,Black,Red,Red laser,None,Maroon,Red
+551,Rugburner #551,White,White skull,6969,Black,Red,Red laser,eethurmonkeyz,Purple,Green
+552,Rugburner #552,Bishtank,White skull,Red,Black,Red,Red,None,Maroon,Green
+553,Rugburner #553,Black,Eternal Bings 1,6969,Khaki,None,Blue,None,Purple,Green
+554,Rugburner #554,White,Black skull,6969,Black,None,Orange,None,Purple,Red
+555,Rugburner #555,White,White skull,Red,White,White,Green,None,Greenie,Red
+556,Rugburner #556,White,Eternal Bings 1,42069,White,Green,Orange,eethurmonkeyz,Maroon,Red
+557,Rugburner #557,Black,Black skull,Red,White,None,Red,None,Purple,Red
+558,Rugburner #558,Halloween Bares,Fan Dolger,None,None,None,None,None,Maroon,Green
+559,Rugburner #559,Black,Gold skull,Red,Black,Red,Green,Smonk,Purple Kush,Red
+560,Rugburner #560,Bishtank,White skull,Fartchick,Khaki,None,Orange,Owie,Maroon,Red
+561,Rugburner #561,Black,White skull,6969,White,White,Green,Smonk,Greenie,Blue
+562,Rugburner #562,CreatureRugz,White skull,Digitz,White,None,Green,Owie,Maroon,White
+563,Rugburner #563,Black,Black skull,Red,Black,None,Blue,None,Purple,Red
+564,Rugburner #564,Black,Black skull,Red,Khaki,None,Orange,Shoot from the hip,Purple,Red
+565,Rugburner #565,Halloween Bares,LBCC,None,None,None,None,None,Maroon,White
+566,Rugburner #566,Black,White skull,Red,White,None,Red,Shoot from the hip,Purple,White
+567,Rugburner #567,CreatureRugz,Eternal Bings 1,42069,Black,Red,Orange,eethurmonkeyz,Purple,Green
+568,Rugburner #568,Halloween Bares,Eternal Bings 2,6969,Rainbow,Green,Orange,Shoot from the hip,Purple,Red
+569,Rugburner #569,Halloween Bares,Evolved Thiefs,None,None,None,None,None,Maroon,White
+570,Rugburner #570,White,White skull,6969,White,Green,Red,None,Maroon,Red
+571,Rugburner #571,Black,White skull,6969,Black,Red,Green,Shoot from the hip,Maroon,White
+572,Rugburner #572,Black,DNNR,6969,White,None,None,None,Greenie,Red
+573,Rugburner #573,Black,Black skull,Red,Khaki,None,Orange,None,Purple,Red
+574,Rugburner #574,White,Eights,Red,Black,Red,None,eethurmonkeyz,Purple,Red
+575,Rugburner #575,Black,White skull,42069,White,Red,Blue,eethurmonkeyz,Maroon,White
+576,Rugburner #576,Halloween Bares,Black skull,6969,Khaki,Red,Red,Shoot from the hip,Purple,Red
+577,Rugburner #577,White,LBCC,None,None,None,None,None,Maroon,Red
+578,Rugburner #578,White,Fan Dolger,None,None,None,None,None,Purple Kush,Red
+579,Rugburner #579,Black,Black skull,6969,Rainbow,None,Orange,Cosmic Rugverns,Purple,Red
+580,Rugburner #580,CreatureRugz,Black skull,Digitz,White,None,Orange,Shoot from the hip,Maroon,Blue
+581,Rugburner #581,Halloween Bares,Black skull,Red,Black,None,Green,Smonk,Maroon,White
+582,Rugburner #582,Black,Eternal Bings 1,Red,Black,Green,Orange,None,Purple Kush,Red
+583,Rugburner #583,Black,White skull,6969,Khaki,Red,Green,None,Greenie,Green
+584,Rugburner #584,White,White skull,Red,White,Red,Blue,Smonk,Greenie,Red
+585,Rugburner #585,Black,Black skull,Red,Black,Red,Red,Cosmic Rugverns,Shelby Red,Red
+586,Rugburner #586,Black,White skull,Red,White,None,Green laser,eethurmonkeyz,Purple,Red
+587,Rugburner #587,Halloween Bares,White skull,Fartchick,White,Red,Red,None,Purple,Blue
+588,Rugburner #588,CreatureRugz,Eternal Bings 1,6969,White,Red,Red,Owie,Maroon,Red
+589,Rugburner #589,White,Black skull,6969,Black,Red,Red,Smonk,Purple,Red
+590,Rugburner #590,Rugtroopers,Eights,42069,Black,Red,None,Smonk,Purple,Red
+591,Rugburner #591,Ethereels,DNNR,6969,White,None,None,None,Purple,Red
+592,Rugburner #592,Black,Black skull,6969,Khaki,None,Red,Owie,Purple,Red
+593,Rugburner #593,Dwellers,Eternal Bings 1,6969,White,None,Orange,eethurmonkeyz,Purple,Blue
+594,Rugburner #594,Ethereels,LBCC,None,None,None,None,0xBats,Maroon,Blue
+595,Rugburner #595,White,White skull,Digitz,White,Red,Red,Owie,Greenie,Green
+596,Rugburner #596,White,White skull,Flurp,Khaki,Red,Orange,Owie,Maroon,Red
+597,Rugburner #597,White,Halloween Bare,None,None,None,None,None,Maroon,Red
+598,Rugburner #598,Bishtank,White skull,Digitz,White,None,Red,None,Purple,Red
+599,Rugburner #599,Dwellers,Fan Dolger,None,None,None,None,None,Greenie,White
+600,Rugburner #600,Black,Eternal Bings 2,6969,White,None,Red,eethurmonkeyz,Maroon,Red
+601,Rugburner #601,White,LBCC,None,None,None,None,None,Purple,Blue
+602,Rugburner #602,White,White skull,Red,Black,None,Red,None,Maroon,White
+603,Rugburner #603,CreatureRugz,Gold skull,Red,Khaki,None,Orange,None,Purple,Red
+604,Rugburner #604,White,White skull,6969,Khaki,None,Orange,None,Purple,Red
+605,Rugburner #605,White,Fan Dolger,None,None,None,None,None,Purple Kush,Red
+606,Rugburner #606,Rugtroopers,White skull,Red,White,None,Red,None,Purple,Red
+607,Rugburner #607,Black,Black skull,Red,Black,Green,Red,eethurmonkeyz,Greenie,White
+608,Rugburner #608,Black,White skull,Red,Black,White,Red,eethurmonkeyz,Maroon,Blue
+609,Rugburner #609,Bishtank,Black skull,Flurp,Black,None,Purple laser,None,Maroon,Green
+610,Rugburner #610,Halloween Bares,White skull,Red,Khaki,Green,Orange,None,Greenie,Green
+611,Rugburner #611,Black,White skull,6969,White,None,Blue,eethurmonkeyz,Purple,Blue
+612,Rugburner #612,Black,Black skull,Flurp,Black,Red,Purple laser,None,Purple Kush,Red
+613,Rugburner #613,Black,White skull,Red,Khaki,None,Red,Owie,Shelby Red,Blue
+614,Rugburner #614,Bishtank,White skull,Red,White,None,Purple laser,None,Maroon,Red
+615,Rugburner #615,Dwellers,LBCC,None,None,None,None,None,Purple Kush,White
+616,Rugburner #616,Ethereels,Poonji,Flurp,Black,Red,None,None,Purple,Green
+617,Rugburner #617,Halloween Bares,White skull,Red,Black,Green,Red,None,Maroon,Red
+618,Rugburner #618,Bishtank,Diamond skull,Red,Khaki,Red,Red,None,Purple Kush,Green
+619,Rugburner #619,Rugtroopers,Black skull,Red,Black,Red,Blue,None,Maroon,Red
+620,Rugburner #620,CreatureRugz,White skull,6969,White,Red,Red,Shoot from the hip,Purple,Red
+621,Rugburner #621,White,Diamond skull,Flurp,Black,None,Blue,Cosmic Rugverns,Greenie,Blue
+622,Rugburner #622,Black,Black skull,Red,White,Red,Blue,Shoot from the hip,Purple,Red
+623,Rugburner #623,Black,Black skull,Red,Rainbow,None,Orange,None,Purple Kush,Red
+624,Rugburner #624,Dwellers,White skull,Red,Black,None,Red,0xBats,Maroon,Blue
+625,Rugburner #625,Black,Gold skull,Red,White,None,Red,Cosmic Rugverns,Maroon,Red
+626,Rugburner #626,Black,LBCC,None,None,None,None,None,Purple,Red
+627,Rugburner #627,Dwellers,White skull,6969,Black,Red,Green,Owie,Purple Kush,Green
+628,Rugburner #628,Dwellers,Black skull,Flurp,White,Red,Red,eethurmonkeyz,Greenie,Red
+629,Rugburner #629,Ethereels,White skull,Red,White,None,Red,Owie,Maroon,Red
+630,Rugburner #630,Black,Black skull,Red,White,Red,Red,None,Purple,White
+631,Rugburner #631,Halloween Bares,Black skull,42069,Black,None,Orange,None,Greenie,Red
+632,Rugburner #632,White,White skull,Red,Rainbow,None,Green laser,Shoot from the hip,Purple,Blue
+633,Rugburner #633,Black,Black skull,6969,Fire,Red,Green,Shoot from the hip,Purple,Green
+634,Rugburner #634,Dwellers,Halloween Bare,None,None,None,None,None,Greenie,Blue
+635,Rugburner #635,Halloween Bares,DNNR,Red,Black,None,None,Smonk,Maroon,Red
+636,Rugburner #636,White,White skull,6969,White,None,Red,Shoot from the hip,Purple,Red
+637,Rugburner #637,Halloween Bares,Eternal Bings 2,Digitz,Khaki,Red,Purple laser,None,Purple,White
+638,Rugburner #638,got rugvern,"wen u see a rugvern, run",cosmic rug burn,rugvern joggers,fiverr dragon art,scared of rugvern,incomplete breeding contract,"just wait for staking, bro ",dragon flame
+639,Rugburner #639,CreatureRugz,White skull,Red,White,None,Red,None,Purple,Red
+640,Rugburner #640,Bishtank,Eternal Bings 2,Red,White,Red,Green,None,Purple,Red
+641,Rugburner #641,White,Black skull,6969,Black,None,Red,Smonk,Purple,Red
+642,Rugburner #642,Halloween Bares,Poras,6969,Black,None,None,None,Maroon,Red
+643,Rugburner #643,Black,White skull,6969,Black,None,Red,Owie,Maroon,Green
+644,Rugburner #644,Black,Black skull,42069,White,Green,Orange,Cosmic Rugverns,Maroon,Green
+645,Rugburner #645,Black,White skull,Digitz,Black,Red,Red,None,Purple,Green
+646,Rugburner #646,Halloween Bares,Black skull,Red,Black,Red,Blue,Owie,Purple Kush,Red
+647,Rugburner #647,Rugtroopers,White skull,Red,White,Red,Orange,Cosmic Rugverns,Maroon,Red
+648,Rugburner #648,Black,Black skull,Flurp,Rainbow,Red,Blue,eethurmonkeyz,Purple Kush,Red
+649,Rugburner #649,Black,Black skull,Digitz,Black,None,Green,None,Purple,Red
+650,Rugburner #650,Dwellers,Poras,6969,Khaki,Red,None,Cosmic Rugverns,Purple,White
+651,Rugburner #651,Black,Black skull,6969,White,None,Blue,Shoot from the hip,Greenie,Red
+652,Rugburner #652,White,Black skull,6969,Black,None,Orange,None,Maroon,Green
+653,Rugburner #653,White,White skull,6969,Black,Red,Blue,None,Purple,Red
+654,Rugburner #654,Black,LBAC,None,None,None,None,None,Purple,White
+655,Rugburner #655,Bishtank,Eternal Bings 1,Digitz,White,Green,Orange,Owie,Greenie,Red
+656,Rugburner #656,Bishtank,Poonji,Red,Khaki,White,None,None,Purple,Red
+657,Rugburner #657,Black,White skull,Red,Black,Green,Red,None,Purple,Green
+658,Rugburner #658,Dwellers,LBCC,None,None,None,None,0xBats,Purple Kush,Green
+659,Rugburner #659,White,DNNR,Red,Rainbow,Red,None,Smonk,Purple Kush,Red
+660,Rugburner #660,Halloween Bares,Poonji,Red,Black,Green,None,None,Greenie,White
+661,Rugburner #661,Bishtank,Poonji,42069,White,Red,None,None,Purple,Red
+662,Rugburner #662,Black,Gold skull,42069,White,None,Blue,Smonk,Purple,Blue
+663,Rugburner #663,White,Poras,Red,Black,None,None,Cosmic Rugverns,Maroon,Red
+664,Rugburner #664,Rugtroopers,White skull,Red,White,Red,Orange,Smonk,Maroon,White
+665,Rugburner #665,Black,LBAC,None,None,None,None,0xBats,Purple,Red
+666,Rugburner #666,Black,Black skull,Red,White,None,Green,None,Greenie,Red
+667,Rugburner #667,White,Black skull,Digitz,Khaki,Red,Red,None,Purple Kush,Red
+668,Rugburner #668,Rugtroopers,Eternal Bings 2,Red,Black,None,Red,None,Maroon,Green
+669,Rugburner #669,Black,White skull,6969,Black,None,Red,Cosmic Rugverns,Maroon,Red
+670,Rugburner #670,White,Eternal Bings 1,6969,Black,Red,Blue,eethurmonkeyz,Purple,Red
+671,Rugburner #671,White,Black skull,Red,White,None,Red,None,Maroon,Red
+672,Rugburner #672,Black,LBCC,None,None,None,None,None,Maroon,Green
+673,Rugburner #673,Halloween Bares,White skull,6969,Black,Red,Blue,eethurmonkeyz,Greenie,Red
+674,Rugburner #674,Black,Black skull,6969,Khaki,None,Red,Cosmic Rugverns,Maroon,Red
+675,Rugburner #675,Rugtroopers,Eights,42069,Black,None,None,None,Purple,White
+676,Rugburner #676,Black,Eternal Bings 2,Red,Black,Red,Orange,Owie,Purple,Red
+677,Rugburner #677,Black,Black skull,Digitz,Black,None,Red,eethurmonkeyz,Maroon,Green
+678,Rugburner #678,White,White skull,42069,White,None,Red,None,Purple,Green
+679,Rugburner #679,Black,Eternal Bings 2,Red,Black,None,Blue,Cosmic Rugverns,Greenie,Red
+680,Rugburner #680,Black,Eternal Bings 1,6969,White,Red,Green,Smonk,Shelby Red,Red
+681,Rugburner #681,White,Black skull,Fartchick,White,None,Blue,None,Purple,White
+682,Rugburner #682,White,Fan Dolger,None,None,None,None,0xBats,Purple,Blue
+683,Rugburner #683,Dwellers,White skull,6969,Black,None,Blue,eethurmonkeyz,Maroon,Red
+684,Rugburner #684,Black,Eternal Bings 2,Red,White,Red,Blue,None,Maroon,Red
+685,Rugburner #685,White,Black skull,Red,Khaki,None,Green,Smonk,Greenie,White
+686,Rugburner #686,Black,Black skull,42069,Black,Red,Orange,None,Purple,Red
+687,Rugburner #687,Bishtank,Halloween Bare,None,None,None,None,None,Purple,Red
+688,Rugburner #688,Black,Black skull,6969,White,Red,Red,None,Purple,Green
+689,Rugburner #689,Black,White skull,6969,Rainbow,None,Red,Cosmic Rugverns,Purple,Red
+690,Rugburner #690,White,White skull,42069,White,None,Red,None,Maroon,White
+691,Rugburner #691,White,White skull,42069,White,Red,Orange,eethurmonkeyz,Purple,Green
+692,Rugburner #692,Black,LBAC,None,None,None,None,None,Maroon,Green
+693,Rugburner #693,Bishtank,Eternal Bings 2,Red,Black,None,Red,None,Maroon,Red
+694,Rugburner #694,White,Fan Dolger,None,None,None,None,None,Maroon,Red
+695,Rugburner #695,White,Eternal Bings 2,Red,Black,None,Orange,Shoot from the hip,Purple Kush,Red
+696,Rugburner #696,Black,White skull,Digitz,Black,Red,Orange,None,Maroon,Green
+697,Rugburner #697,Dwellers,Black skull,6969,White,None,Red,None,Greenie,Red
+698,Rugburner #698,CreatureRugz,Fan Dolger,None,None,None,None,None,Purple,Green
+699,Rugburner #699,Dwellers,White skull,Red,Rainbow,None,Green,Owie,Purple,Red
+700,Rugburner #700,Black,White skull,6969,White,None,Red,None,Greenie,Green
+701,Rugburner #701,Halloween Bares,White skull,Flurp,Black,None,Orange,None,Maroon,Red
+702,Rugburner #702,Black,LBAC,None,None,None,None,None,Purple,Red
+703,Rugburner #703,CreatureRugz,White skull,Red,Black,None,Orange,Owie,Purple,Blue
+704,Rugburner #704,Black,Eternal Bings 1,TYO10,Black,Blue,Green laser,None,Greenie,Red
+705,Rugburner #705,Bishtank,Eternal Bings 1,6969,Khaki,None,Red,Cosmic Rugverns,Maroon,White
+706,Rugburner #706,Black,DNNR,6969,White,None,None,Cosmic Rugverns,Purple,Green
+707,Rugburner #707,Bishtank,White skull,Flurp,Khaki,Red,Red,None,Purple,Green
+708,Rugburner #708,Bishtank,Black skull,42069,White,None,Orange,Owie,Greenie,Red
+709,Rugburner #709,Halloween Bares,White skull,Red,White,Red,Red,Cosmic Rugverns,Maroon,Red
+710,Rugburner #710,Black,White skull,6969,Khaki,White,Green laser,None,Maroon,Red
+711,Rugburner #711,White,Eternal Bings 2,Red,Black,None,Orange,None,Purple,Green
+712,Rugburner #712,White,White skull,Digitz,White,Red,Red,Cosmic Rugverns,Purple Kush,Green
+713,Rugburner #713,Bishtank,Poras,Digitz,Black,Red,None,eethurmonkeyz,Purple,Red
+714,Rugburner #714,Rugtroopers,White skull,Red,White,None,Red,None,Greenie,Red
+715,Rugburner #715,White,White skull,6969,Black,None,Orange,Cosmic Rugverns,Purple Kush,Red
+716,Rugburner #716,Black,White skull,6969,Black,Green,Blue,eethurmonkeyz,Shelby Red,Red
+717,Rugburner #717,Black,Black skull,42069,White,Red,Red,None,Maroon,White
+718,Rugburner #718,Black,White skull,42069,White,Red,Orange,None,Purple,Red
+719,Rugburner #719,Dwellers,Eternal Bings 1,6969,White,Red,Blue,None,Purple,Red
+720,Rugburner #720,Black,Poras,6969,Black,None,None,None,Purple,Blue
+721,Rugburner #721,White,Halloween Bare,None,None,None,None,None,Greenie,Green
+722,Rugburner #722,White,White skull,6969,White,None,Orange,Owie,Purple Kush,Red
+723,Rugburner #723,Bishtank,Eternal Bings 1,6969,Black,Green,Orange,None,Purple,Red
+724,Rugburner #724,Halloween Bares,Black skull,Red,Khaki,Green,Red,Shoot from the hip,Maroon,Blue
+725,Rugburner #725,Rugtroopers,Halloween Bare,None,None,None,None,None,Purple,Blue
+726,Rugburner #726,Black,LBCC,None,None,None,None,None,Purple,Red
+727,Rugburner #727,Rugtroopers,Poras,Digitz,Black,Red,None,None,Maroon,Red
+728,Rugburner #728,Bishtank,Halloween Bare,None,None,None,None,None,Purple,White
+729,Rugburner #729,Halloween Bares,LBCC,None,None,None,None,None,Maroon,Green
+730,Rugburner #730,Black,Black skull,42069,Black,None,Red,Smonk,Purple,Red
+731,Rugburner #731,Halloween Bares,White skull,Red,Black,None,Red,None,Maroon,Red
+732,Rugburner #732,Black,Eternal Bings 2,6969,Black,Red,Red,Smonk,Maroon,White
+733,Rugburner #733,Dwellers,White skull,6969,Khaki,None,Orange,None,Purple,White
+734,Rugburner #734,Black,DNNR,6969,White,Red,None,None,Purple,White
+735,Rugburner #735,donut shops,froopy donuts,sugary rug,donuts dont wear pants,"we will rebuild, trust me bro",the devs are coming back ,are all breakfast projects just an auto rug,mods still believe in this project,we will sweep u 
+736,Rugburner #736,White,Halloween Bare,None,None,None,None,None,Purple,Red
+737,Rugburner #737,Black,White skull,42069,Black,None,Green,Owie,Purple,Blue
+738,Rugburner #738,White,Poonji,Red,Black,Red,None,Cosmic Rugverns,Purple,Red
+739,Rugburner #739,Black,White skull,Flurp,White,Green,Green laser,None,Maroon,Green
+740,Rugburner #740,Dwellers,Black skull,Red,White,None,Green,None,Maroon,Green
+741,Rugburner #741,Bishtank,Black skull,6969,Black,Red,Orange,None,Maroon,White
+742,Rugburner #742,Black,Black skull,Red,White,None,Green,Smonk,Purple,Red
+743,Rugburner #743,Black,Black skull,Red,Black,Red,Blue,None,Maroon,Red
+744,Rugburner #744,Halloween Bares,Black skull,6969,White,Red,Blue,eethurmonkeyz,Greenie,Red
+745,Rugburner #745,Black,White skull,Red,Black,None,Orange,Owie,Maroon,Red
+746,Rugburner #746,White,Evolved Thiefs,None,None,None,None,None,Maroon,Green
+747,Rugburner #747,White,Eights,Red,Khaki,None,None,None,Greenie,Green
+748,Rugburner #748,Rugtroopers,White skull,6969,Khaki,None,Blue,Cosmic Rugverns,Purple,Blue
+749,Rugburner #749,Halloween Bares,Poonji,Red,White,None,None,None,Greenie,Red
+750,Rugburner #750,Black,Black skull,Red,Black,None,Green,None,Maroon,Blue
+751,Rugburner #751,Black,Black skull,Red,Black,Red,Orange,Cosmic Rugverns,Maroon,Red
+752,Rugburner #752,White,Eights,Red,White,Red,None,Smonk,Shelby Red,Red
+753,Rugburner #753,White,White skull,6969,White,None,Orange,None,Purple Kush,Green
+754,Rugburner #754,Bishtank,Gold skull,Red,Black,None,Green,Shoot from the hip,Purple,Red
+755,Rugburner #755,White,Eternal Bings 1,Red,Black,Red,Red,None,Purple,White
+756,Rugburner #756,Black,Black skull,Red,White,None,Blue,eethurmonkeyz,Maroon,Red
+757,Rugburner #757,White,Poras,Red,Black,Red,None,None,Purple,Red
+758,Rugburner #758,Rugtroopers,DNNR,Red,White,None,None,eethurmonkeyz,Greenie,Red
+759,Rugburner #759,Halloween Bares,Poonji,42069,Black,None,None,eethurmonkeyz,Maroon,Red
+760,Rugburner #760,"bacon, egg and rug ",tasty sandwich ,breakfast rug,"none, just like project utility ",bacon,eggs,free coffee for life,dunkin collab soon?,cheese
+761,Rugburner #761,Black,White skull,6969,Black,None,Orange,eethurmonkeyz,Purple,Green
+762,Rugburner #762,Bishtank,White skull,Red,Black,White,Blue,None,Purple,Blue
+763,Rugburner #763,Black,Black skull,Fartchick,Black,None,Green,None,Maroon,Red
+764,Rugburner #764,Bishtank,Black skull,6969,Black,Red,Red,Shoot from the hip,Purple Kush,Red
+765,Rugburner #765,Black,Black skull,Red,White,None,Orange,None,Maroon,Red
+766,Rugburner #766,CreatureRugz,White skull,Digitz,Khaki,None,Orange,None,Greenie,Red
+767,Rugburner #767,Halloween Bares,Black skull,Digitz,Black,None,Orange,Shoot from the hip,Shelby Red,White
+768,Rugburner #768,Bishtank,White skull,6969,White,None,Green,None,Maroon,Red
+769,Rugburner #769,Halloween Bares,DNNR,Digitz,White,None,None,None,Purple,Red
+770,Rugburner #770,White,White skull,Red,White,None,Red laser,Cosmic Rugverns,Purple,Red
+771,Rugburner #771,Bishtank,Eternal Bings 1,Red,Khaki,None,Orange,Smonk,Maroon,Red
+772,Rugburner #772,Bishtank,Eternal Bings 2,Flurp,Black,Red,Red,Smonk,Purple,Red
+773,Rugburner #773,Bishtank,White skull,Red,Khaki,None,Red,None,Greenie,Red
+774,Rugburner #774,Halloween Bares,White skull,6969,White,None,Green,Smonk,Greenie,Red
+775,Rugburner #775,Dwellers,Eternal Bings 2,6969,White,None,Red,None,Purple,Red
+776,Rugburner #776,Black,LBAC,None,None,None,None,None,Maroon,White
+777,Rugburner #777,Black,White skull,Red,Rainbow,None,Orange,Cosmic Rugverns,Purple,Red
+778,Rugburner #778,Dwellers,Eternal Bings 2,6969,Black,None,Green,Cosmic Rugverns,Purple,Green
+779,Rugburner #779,White,Poras,6969,Khaki,Red,None,None,Purple Kush,Red
+780,Rugburner #780,Black,White skull,6969,White,None,Red laser,None,Purple,Red
+781,Rugburner #781,White,White skull,6969,Black,None,Orange,None,Purple,Red
+782,Rugburner #782,Halloween Bares,Fan Dolger,None,None,None,None,0xBats,Purple Kush,Green
+783,Rugburner #783,Halloween Bares,Eternal Bings 1,Digitz,Black,None,Blue,None,Purple Kush,Red
+784,Rugburner #784,Rugtroopers,Black skull,6969,White,Red,Red,None,Purple,Red
+785,Rugburner #785,Halloween Bares,Poras,Red,White,None,None,None,Purple,Red
+786,Rugburner #786,Bishtank,Fan Dolger,None,None,None,None,None,Maroon,White
+787,Rugburner #787,Halloween Bares,Eternal Bings 2,Red,Black,None,Purple laser,Smonk,Maroon,White
+788,Rugburner #788,Black,Black skull,6969,Khaki,None,Blue,None,Maroon,Green
+789,Rugburner #789,White,White skull,42069,Rainbow,None,Blue,None,Purple,Red
+790,Rugburner #790,Bishtank,White skull,6969,White,None,Green laser,Cosmic Rugverns,Maroon,Red
+791,Rugburner #791,Black,Black skull,Red,Black,Red,Orange,None,Maroon,Red
+792,Rugburner #792,Black,White skull,Digitz,Black,Red,Green,Smonk,Maroon,Green
+793,Rugburner #793,Dwellers,Halloween Bare,None,None,None,None,None,Purple,Red
+794,Rugburner #794,Black,Poonji,6969,White,Green,None,eethurmonkeyz,Maroon,Green
+795,Rugburner #795,Black,Black skull,Red,White,None,Blue,Owie,Maroon,White
+796,Rugburner #796,Black,Fan Dolger,None,None,None,None,None,Maroon,White
+797,Rugburner #797,Black,Black skull,Red,White,None,Red,Shoot from the hip,Maroon,Red
+798,Rugburner #798,Black,Black skull,Red,Khaki,None,Orange,None,Maroon,Blue
+799,Rugburner #799,Halloween Bares,White skull,Red,Black,Red,Orange,None,Greenie,Red
+800,Rugburner #800,Black,White skull,Red,White,Red,Red,None,Maroon,Red
+801,Rugburner #801,Black,White skull,6969,Black,None,Orange,None,Maroon,White
+802,Rugburner #802,Halloween Bares,Fan Dolger,None,None,None,None,None,Purple,Red
+803,Rugburner #803,White,LBCC,None,None,None,None,0xBats,Greenie,Red
+804,Rugburner #804,Black,Gold skull,Digitz,White,None,Orange,eethurmonkeyz,Maroon,Red
+805,Rugburner #805,CreatureRugz,White skull,Digitz,White,Red,Orange,Owie,Maroon,Red
+806,Rugburner #806,Halloween Bares,White skull,42069,Khaki,Red,Red,None,Shelby Red,White
+807,Rugburner #807,Black,Eternal Bings 1,Red,White,None,Red,Owie,Maroon,Red
+808,Rugburner #808,Black,White skull,6969,Rainbow,None,Red,None,Maroon,Red
+809,Rugburner #809,Black,White skull,Red,Black,None,Red,Smonk,Purple,Blue
+810,Rugburner #810,Halloween Bares,White skull,Red,Khaki,Green,Red,Smonk,Greenie,Red
+811,Rugburner #811,Bishtank,White skull,Digitz,White,Red,Orange,None,Maroon,Green
+812,Rugburner #812,Black,LBAC,None,None,None,None,None,Maroon,White
+813,Rugburner #813,Black,White skull,6969,Black,Red,Orange,None,Maroon,Red
+814,Rugburner #814,Bishtank,White skull,Red,Black,Red,Green,None,Greenie,Red
+815,Rugburner #815,CreatureRugz,Gold skull,42069,Rainbow,None,Red,None,Greenie,Blue
+816,Rugburner #816,Dwellers,LBAC,None,None,None,None,0xBats,Maroon,Red
+817,Rugburner #817,Rugtroopers,DNNR,6969,Black,Red,None,Smonk,Greenie,Red
+818,Rugburner #818,White,White skull,42069,Black,Red,Green,None,Purple,Red
+819,Rugburner #819,Black,Eternal Bings 1,Red,Black,None,Red laser,None,Maroon,Red
+820,Rugburner #820,Halloween Bares,Halloween Bare,None,None,None,None,None,Shelby Red,Red
+821,Rugburner #821,White,White skull,42069,Black,None,Red,None,Maroon,Red
+822,Rugburner #822,Halloween Bares,White skull,Red,Rainbow,Red,Blue,None,Shelby Red,Blue
+823,Rugburner #823,Dwellers,Black skull,Red,Khaki,None,Red laser,Cosmic Rugverns,Purple,Green
+824,Rugburner #824,Black,Eights,Red,White,Green,None,None,Maroon,Red
+825,Rugburner #825,Halloween Bares,Black skull,42069,Black,Red,Blue,0xBats,Greenie,Red
+826,Rugburner #826,Black,DNNR,6969,Black,None,None,None,Maroon,Red
+827,Rugburner #827,Halloween Bares,Eternal Bings 2,6969,Black,White,Red,None,Maroon,Green
+828,Rugburner #828,Black,Eternal Bings 1,42069,Rainbow,Red,Red,eethurmonkeyz,Purple Kush,Red
+829,Rugburner #829,CreatureRugz,White skull,6969,White,None,Orange,eethurmonkeyz,Purple Kush,Red
+830,Rugburner #830,Black,White skull,6969,Khaki,Green,Orange,None,Purple,Blue
+831,Rugburner #831,White,Gold skull,Red,White,Green,Orange,Owie,Purple,Red
+832,Rugburner #832,Bishtank,Eternal Bings 1,42069,Black,None,Green,Owie,Purple,Red
+833,Rugburner #833,Black,Halloween Bare,None,None,None,None,None,Maroon,White
+834,Rugburner #834,Rugtroopers,Eternal Bings 1,6969,Khaki,Red,Red,None,Purple,Red
+835,Rugburner #835,Dwellers,Black skull,Red,White,None,Red,Owie,Purple,Red
+836,Rugburner #836,Black,Black skull,6969,Black,None,Orange,eethurmonkeyz,Purple,Red
+837,Rugburner #837,White,DNNR,Red,Black,None,None,None,Maroon,Red
+838,Rugburner #838,Bishtank,Black skull,42069,Black,Red,Red,None,Greenie,Red
+839,Rugburner #839,White,Eights,Red,White,None,None,None,Maroon,Red
+840,Rugburner #840,Black,White skull,Red,White,None,Blue,Owie,Purple,Red
+841,Rugburner #841,Black,Black skull,6969,Rainbow,None,Purple laser,None,Purple,Red
+842,Rugburner #842,Black,Eternal Bings 1,6969,Fire,None,Blue,None,Purple,White
+843,Rugburner #843,White,White skull,42069,Black,Red,Red,Owie,Maroon,Red
+844,Rugburner #844,Black,Eternal Bings 1,Red,White,None,Red laser,Shoot from the hip,Maroon,Green
+845,Rugburner #845,Halloween Bares,White skull,6969,White,None,Orange,Shoot from the hip,Purple,Green
+846,Rugburner #846,White,Fan Dolger,None,None,None,None,None,Maroon,Red
+847,Rugburner #847,Black,Eights,6969,Black,Green,None,None,Purple,Red
+848,Rugburner #848,Bishtank,Black skull,Digitz,White,Red,Blue,None,Maroon,White
+849,Rugburner #849,Black,Black skull,Red,White,None,Green,Cosmic Rugverns,Purple,Green
+850,Rugburner #850,Halloween Bares,Eternal Bings 1,Red,White,None,Green,Shoot from the hip,Purple,White
+851,Rugburner #851,Bishtank,Diamond skull,Red,Khaki,Red,Red,None,Greenie,Red
+852,Rugburner #852,Halloween Bares,White skull,42069,White,None,Orange,eethurmonkeyz,Greenie,Red
+853,Rugburner #853,White,Black skull,6969,Khaki,Green,Red,None,Purple Kush,Red
+854,Rugburner #854,Black,Black skull,42069,White,Red,Blue,eethurmonkeyz,Maroon,White
+855,Rugburner #855,White,White skull,42069,White,Red,Red,Shoot from the hip,Maroon,Red
+856,Rugburner #856,Black,White skull,Flurp,White,Green,Red,None,Purple,Red
+857,Rugburner #857,Dwellers,Diamond skull,6969,White,Red,Blue,None,Purple Kush,Red
+858,Rugburner #858,Black,Black skull,Red,White,Red,Red laser,None,Purple,Blue
+859,Rugburner #859,Black,Eternal Bings 2,42069,Khaki,Red,Red,None,Purple,Green
+860,Rugburner #860,Bishtank,White skull,Red,Khaki,None,Red,Shoot from the hip,Maroon,Red
+861,Rugburner #861,Black,LBCC,None,None,None,None,None,Purple Kush,Red
+862,Rugburner #862,White,Gold skull,Red,White,None,Red,eethurmonkeyz,Purple,White
+863,Rugburner #863,Black,Fan Dolger,None,None,None,None,None,Maroon,White
+864,Rugburner #864,Black,Black skull,42069,Khaki,Red,Orange,None,Maroon,Red
+865,Rugburner #865,Bishtank,Black skull,Red,Black,None,Blue,Shoot from the hip,Maroon,Red
+866,Rugburner #866,Black,Black skull,6969,Black,None,Green,eethurmonkeyz,Maroon,Red
+867,Rugburner #867,Black,Black skull,Red,White,Red,Blue,Owie,Purple,White
+868,Rugburner #868,Dwellers,Eternal Bings 1,Digitz,White,None,Green laser,Owie,Maroon,Green
+869,Rugburner #869,Halloween Bares,Evolved Thiefs,None,None,None,None,None,Maroon,Red
+870,Rugburner #870,Dwellers,Eternal Bings 1,6969,White,None,Red laser,None,Purple,Blue
+871,Rugburner #871,Dwellers,White skull,42069,White,Red,Orange,None,Purple Kush,Red
+872,Rugburner #872,Black,White skull,Red,White,Green,Red,None,Purple,White
+873,Rugburner #873,Black,Eternal Bings 2,Digitz,White,None,Green,eethurmonkeyz,Maroon,Green
+874,Rugburner #874,Black,Black skull,Red,Black,None,Blue,None,Purple,Green
+875,Rugburner #875,White,Black skull,6969,White,Green,Red laser,Shoot from the hip,Purple,Red
+876,Rugburner #876,Rugtroopers,Black skull,Red,Khaki,None,Red,None,Purple,Red
+877,Rugburner #877,Black,Black skull,42069,White,None,Orange,eethurmonkeyz,Purple,Red
+878,Rugburner #878,Rugtroopers,Black skull,42069,Black,None,Orange,Shoot from the hip,Purple,Red
+879,Rugburner #879,Bishtank,Black skull,Digitz,Black,None,Green,None,Purple,Green
+880,Rugburner #880,Black,Black skull,Digitz,Khaki,None,Red,None,Maroon,Red
+881,Rugburner #881,White,Black skull,6969,Black,None,Red laser,None,Purple,Red
+882,Rugburner #882,Black,Eternal Bings 1,6969,White,None,Orange,None,Maroon,Red
+883,Rugburner #883,Black,Diamond skull,6969,White,Red,Blue,None,Purple,Green
+884,Rugburner #884,Black,Eternal Bings 1,Red,White,Red,Red laser,Shoot from the hip,Purple,Red
+885,Rugburner #885,Halloween Bares,Eternal Bings 1,6969,Black,None,Green laser,Smonk,Purple Kush,White
+886,Rugburner #886,Halloween Bares,Eights,6969,Black,None,None,None,Maroon,Red
+887,Rugburner #887,Ethereels,Black skull,6969,Khaki,None,Green,None,Maroon,Red
+888,Rugburner #888,White,Eternal Bings 1,Red,Black,Red,Orange,Shoot from the hip,Purple,Green
+889,Rugburner #889,Black,Black skull,42069,White,Green,Orange,Smonk,Maroon,Green
+890,Rugburner #890,White,White skull,6969,White,None,Green,Smonk,Purple,Red
+891,Rugburner #891,Black,Eternal Bings 1,Flurp,Black,None,Orange,None,Purple,Green
+892,Rugburner #892,White,Eternal Bings 2,Red,White,None,Red,Owie,Purple Kush,Red
+893,Rugburner #893,Halloween Bares,Eternal Bings 1,6969,White,None,Red,None,Greenie,White
+894,Rugburner #894,Black,Black skull,6969,Black,Red,Red,None,Purple,Red
+895,Rugburner #895,Halloween Bares,Black skull,Red,Black,Red,Red,None,Maroon,Green
+896,Rugburner #896,Halloween Bares,White skull,Red,White,None,Red,None,Greenie,White
+897,Rugburner #897,White,White skull,6969,Black,Red,Red,None,Purple,Green
+898,Rugburner #898,CreatureRugz,Fan Dolger,None,None,None,None,None,Purple,White
+899,Rugburner #899,Black,White skull,Red,White,Green,Orange,None,Purple,Red
+900,Rugburner #900,Black,Eternal Bings 2,Red,Black,None,Blue,None,Purple,White
+901,Rugburner #901,Bishtank,LBCC,None,None,None,None,None,Greenie,Red
+902,Rugburner #902,Black,Eternal Bings 1,Fartchick,White,None,Blue,Smonk,Purple,Red
+903,Rugburner #903,Bishtank,White skull,6969,Black,None,Red,Shoot from the hip,Maroon,White
+904,Rugburner #904,Black,Black skull,6969,White,None,Blue,Shoot from the hip,Maroon,White
+905,Rugburner #905,White,Eternal Bings 1,6969,Black,None,Red,Smonk,Shelby Red,White
+906,Rugburner #906,White,Eternal Bings 2,Fartchick,White,Red,Blue,Cosmic Rugverns,Greenie,Blue
+907,Rugburner #907,White,White skull,Red,Black,Red,Green,Smonk,Maroon,Blue
+908,Rugburner #908,White,White skull,Red,Black,None,Red,None,Maroon,Red
+909,Rugburner #909,White,Eternal Bings 1,Red,Black,Red,Green,Smonk,Maroon,Green
+910,Rugburner #910,Halloween Bares,Eights,6969,White,None,None,Smonk,Maroon,White
+911,Rugburner #911,White,White skull,Digitz,White,None,Green,Cosmic Rugverns,Maroon,Green
+912,Rugburner #912,Black,Black skull,6969,Black,White,Blue,None,Maroon,Green
+913,Rugburner #913,White,Eternal Bings 1,6969,Rainbow,White,Orange,None,Purple,Green
+914,Rugburner #914,Halloween Bares,White skull,Flurp,White,Red,Orange,Smonk,Purple,Green
+915,Rugburner #915,White,Eternal Bings 1,6969,Black,Red,Red laser,None,Purple,Red
+916,Rugburner #916,Halloween Bares,Black skull,Red,Black,White,Red,None,Purple,Red
+917,Rugburner #917,Black,White skull,42069,Black,White,Orange,None,Purple,Red
+918,Rugburner #918,Halloween Bares,White skull,6969,White,None,Orange,None,Purple,Red
+919,Rugburner #919,Black,LBAC,None,None,None,None,None,Maroon,Red
+920,Rugburner #920,White,White skull,6969,White,None,Orange,Smonk,Purple,Red
+921,Rugburner #921,Black,Eternal Bings 2,6969,Black,None,Orange,None,Purple,Red
+922,Rugburner #922,Black,White skull,42069,White,None,Red,None,Purple,Green
+923,Rugburner #923,Halloween Bares,Black skull,Red,Khaki,None,Orange,Smonk,Purple,Red
+924,Rugburner #924,White,Halloween Bare,None,None,None,None,0xBats,Maroon,Red
+925,Rugburner #925,CreatureRugz,White skull,Flurp,Khaki,None,Red,None,Greenie,Red
+926,Rugburner #926,White,Halloween Bare,None,None,None,None,None,Maroon,Red
+927,Rugburner #927,White,Black skull,Red,White,Red,Red,eethurmonkeyz,Greenie,White
+928,Rugburner #928,Halloween Bares,Black skull,Red,White,None,Green,Smonk,Greenie,Green
+929,Rugburner #929,Halloween Bares,Black skull,6969,White,Red,Red laser,None,Maroon,Green
+930,Rugburner #930,Halloween Bares,White skull,Red,Black,None,Blue,None,Purple Kush,White
+931,Rugburner #931,Black,Fan Dolger,None,None,None,None,0xBats,Purple Kush,White
+932,Rugburner #932,this was so obviously a rug,tiny rugdoms,panic sell,quick loss,project never stood a chance ,the flags arent even good,get a jolly rugger flag for a nice ROI ,classic flag rug ,never again
+933,Rugburner #933,CreatureRugz,Poonji,6969,White,Red,None,Smonk,Greenie,Green
+934,Rugburner #934,Halloween Bares,White skull,Digitz,White,Red,Green,Cosmic Rugverns,Purple,White
+935,Rugburner #935,Black,Halloween Bare,None,None,None,None,0xBats,Greenie,Green
+936,Rugburner #936,White,White skull,Red,Khaki,Red,Blue,None,Purple,Red
+937,Rugburner #937,Black,Eternal Bings 2,6969,Black,None,Red,Owie,Maroon,Green
+938,Rugburner #938,Black,White skull,6969,White,Green,Red,Cosmic Rugverns,Greenie,Red
+939,Rugburner #939,Halloween Bares,LBAC,None,None,None,None,None,Greenie,White
+940,Rugburner #940,Bishtank,White skull,Red,White,Red,Orange,Owie,Purple Kush,White
+941,Rugburner #941,Black,Black skull,6969,Black,None,Red,None,Purple,Blue
+942,Rugburner #942,Black,Black skull,6969,Khaki,Green,Red,None,Maroon,Red
+943,Rugburner #943,Black,White skull,42069,White,Red,Red,None,Purple Kush,Red
+944,Rugburner #944,Bishtank,Eternal Bings 2,Red,White,None,Red,None,Purple,Green
+945,Rugburner #945,Black,Eternal Bings 2,Red,White,None,Orange,eethurmonkeyz,Greenie,Green
+946,Rugburner #946,Rugtroopers,Fan Dolger,None,None,None,None,None,Purple,Red
+947,Rugburner #947,Halloween Bares,Eights,6969,White,None,None,None,Maroon,Red
+948,Rugburner #948,Bishtank,White skull,6969,White,None,Red laser,None,Maroon,Red
+949,Rugburner #949,Black,White skull,Red,Black,Green,Red,None,Purple,White
+950,Rugburner #950,White,White skull,42069,White,None,Orange,None,Maroon,Green
+951,Rugburner #951,Halloween Bares,White skull,42069,White,None,Red,None,Purple,Red
+952,Rugburner #952,Dwellers,White skull,6969,White,None,Green,Owie,Purple,Blue
+953,Rugburner #953,Black,Black skull,42069,Black,None,Blue,None,Purple,Blue
+954,Rugburner #954,Black,Black skull,42069,White,None,Red,eethurmonkeyz,Purple,Red
+955,Rugburner #955,Black,Black skull,Red,Black,None,Orange,None,Greenie,Red
+956,Rugburner #956,Rugtroopers,Eternal Bings 2,42069,Black,Red,Orange,eethurmonkeyz,Greenie,Red
+957,Rugburner #957,Halloween Bares,White skull,42069,Black,None,Blue,Smonk,Purple,Red
+958,Rugburner #958,Black,Black skull,42069,Black,Red,Red,None,Purple,Red
+959,Rugburner #959,Black,Poonji,6969,White,Red,None,Cosmic Rugverns,Purple,Red
+960,Rugburner #960,Dwellers,Eternal Bings 1,Red,Black,None,Red,Cosmic Rugverns,Purple Kush,Red
+961,Rugburner #961,White,White skull,6969,Black,Red,Red,Shoot from the hip,Maroon,White
+962,Rugburner #962,White,Fan Dolger,None,None,None,None,None,Maroon,Red
+963,Rugburner #963,White,White skull,Red,White,None,Red laser,eethurmonkeyz,Greenie,Green
+964,Rugburner #964,Bishtank,Black skull,6969,Black,Red,Orange,None,Greenie,White
+965,Rugburner #965,Halloween Bares,Black skull,Red,Black,None,Orange,Cosmic Rugverns,Maroon,White
+966,Rugburner #966,Bishtank,White skull,Digitz,White,None,Red laser,None,Purple,Red
+967,Rugburner #967,White,Poras,6969,White,Green,None,None,Purple,Red
+968,Rugburner #968,Black,Eternal Bings 2,6969,Black,Red,Orange,Cosmic Rugverns,Purple,Green
+969,Rugburner #969,Halloween Bares,White skull,Red,Black,Red,Orange,None,Purple,Red
+970,Rugburner #970,Black,Poras,Digitz,White,None,None,Cosmic Rugverns,Maroon,White
+971,Rugburner #971,White,Gold skull,6969,Khaki,Red,Orange,None,Purple,Red
+972,Rugburner #972,Bishtank,Black skull,Red,Black,Green,Red,0xBats,Maroon,Red
+973,Rugburner #973,Halloween Bares,Eternal Bings 1,6969,White,Red,Green,Smonk,Purple Kush,Red
+974,Rugburner #974,Rugtroopers,White skull,Fartchick,White,None,Red,Cosmic Rugverns,Maroon,Green
+975,Rugburner #975,Black,Black skull,42069,Khaki,None,Red,None,Purple,Red
+976,Rugburner #976,Dwellers,Gold skull,42069,White,Red,Red,Shoot from the hip,Greenie,Red
+977,Rugburner #977,White,Eternal Bings 1,6969,White,Red,Green,None,Purple,Red
+978,Rugburner #978,White,White skull,6969,White,Red,Red,0xBats,Purple,Red
+979,Rugburner #979,Dwellers,Eternal Bings 2,42069,Khaki,Green,Orange,None,Purple,Red
+980,Rugburner #980,Black,Black skull,6969,Khaki,None,Red,Shoot from the hip,Greenie,Red
+981,Rugburner #981,White,White skull,Red,Khaki,White,Blue,None,Greenie,Red
+982,Rugburner #982,Black,Eternal Bings 2,Red,White,None,Red,Cosmic Rugverns,Purple,Red
+983,Rugburner #983,CreatureRugz,DNNR,Red,Black,None,None,Smonk,Purple,Red
+984,Rugburner #984,White,Black skull,Red,White,Green,Orange,None,Maroon,Red
+985,Rugburner #985,Halloween Bares,White skull,Red,Black,Red,Red,Smonk,Maroon,Green
+986,Rugburner #986,Black,Gold skull,6969,White,Red,Green,Cosmic Rugverns,Maroon,Red
+987,Rugburner #987,Halloween Bares,LBAC,None,None,None,None,None,Greenie,Red
+988,Rugburner #988,White,White skull,Digitz,Black,None,Blue,None,Purple,Red
+989,Rugburner #989,Halloween Bares,Poonji,Red,Black,None,None,None,Maroon,White
+990,Rugburner #990,White,Evolved Thiefs,None,None,None,None,None,Greenie,Red
+991,Rugburner #991,White,Black skull,42069,White,White,Orange,Shoot from the hip,Purple,Red
+992,Rugburner #992,Bishtank,Eternal Bings 1,6969,Black,Red,Orange,eethurmonkeyz,Maroon,Blue
+993,Rugburner #993,Halloween Bares,Fan Dolger,None,None,None,None,None,Purple,Red
+994,Rugburner #994,Black,Black skull,Digitz,Black,Green,Red,None,Maroon,White
+995,Rugburner #995,Black,LBCC,None,None,None,None,None,Maroon,Red
+996,Rugburner #996,Black,Eternal Bings 1,6969,Khaki,None,Orange,None,Maroon,White
+997,Rugburner #997,Rugtroopers,LBAC,None,None,None,None,0xBats,Purple Kush,Green
