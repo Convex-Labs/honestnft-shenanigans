@@ -20,14 +20,17 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["extras", "metadata", "fair_drop"],
+    packages=["metadata", "fair_drop"],
     include_package_data=True,
     install_requires=[
         "numpy>=1.18.4",
         "pandas>=1.1.5",
         "web3>=5.13.1",
+        "web3-multicall>=0.0.3",
         "requests>=2.25.1",
         "matplotlib>=3.3.4",
-        "seaborn>=0.11.1"
+        "seaborn>=0.11.1",
+        "ipfshttpclient>=0.8.0a2",
+        "scikit-learn>=1.0.1"
     ],
 )

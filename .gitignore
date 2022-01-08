@@ -135,4 +135,7 @@ dmypy.json
 .vscode
 
 # OSX
-.DS_Store 
+.DS_Store
+
+# Javascript
+metadata/yarn.lock 

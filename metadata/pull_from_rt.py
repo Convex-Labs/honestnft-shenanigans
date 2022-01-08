@@ -35,6 +35,7 @@ def download(project_name = "vogu", starting_count_y = 1, normalize_trait = 1):
 
     print("Project : " + str(project_name))
 
+
     # Saves the rarity data into the Folder "rarity_data" provided
     metadata_scoring_csv_file_name = os.path.join(script_dir,  "rarity_data/" + project_name +"_raritytools.csv")
     
@@ -93,7 +94,7 @@ def download(project_name = "vogu", starting_count_y = 1, normalize_trait = 1):
             if y >= len(all_traits):
                 warning_flag = True
                 break
-            
+
             this_trait_rarity_score = 0
             temp_scoring = 0
             # Some traits data is stored as List, so we have to loop it through
@@ -162,7 +163,6 @@ def download(project_name = "vogu", starting_count_y = 1, normalize_trait = 1):
                 each_trait_score.update({all_traits[y][u'name'] : this_trait_rarity_score})
             
         
-        
         rarity_table.update({str(token_id) : float(token_rarity_score)})
         metadata_to_save[token_id].update({u'nft_traits' : this_token_trait})
         metadata_scoring[token_id].update(each_trait_score)
@@ -212,5 +212,4 @@ def download(project_name = "vogu", starting_count_y = 1, normalize_trait = 1):
         print("============\n    WARNING\n==============\nThe rarity data you are trying to extrat might contain Thematic Match / Matching Sets that this script ignored. \nSo while you compare with Rarity Tools data, make sure Thematic Sets is turned off.\n\n")
 
     print("--- %s seconds Taken to Download ---" % (time.time() - start_time))
-
 
