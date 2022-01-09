@@ -139,3 +139,8 @@ dmypy.json
 
 # Javascript
 metadata/yarn.lock 
+
+.secrets.yml
+metadata/raw_attributes/*/**
+
+**/node_modules
