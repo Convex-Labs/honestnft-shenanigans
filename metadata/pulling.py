@@ -690,7 +690,7 @@ if __name__ == "__main__":
     1) Contract ABI is posted publicly on etherscan.
     2) Contract address points to either an NFT contract or an associated proxy contract that
        has an NFT contract as an implementation contract. Note that get_contract is called
-       recursively if the provided contract address yields and ABI that contains a function 
+       recursively if the provided contract address yields and ABI that contains a function
        called 'implementation'
     """
 
