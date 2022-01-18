@@ -171,7 +171,7 @@ def get_contract_function(contract, func_name, abi):
         )
 
 
-def get_contract_uri(contract, token_id, uri_func, abi):
+def get_token_uri_from_contract(contract, token_id, uri_func, abi):
     # Fetch URI from contract
     uri_contract_func = get_contract_function(contract, uri_func, abi)
 
@@ -183,7 +183,7 @@ def get_contract_uri(contract, token_id, uri_func, abi):
         raise Exception(err)
 
 
-def get_contract_uri_batch(contract, token_ids, uri_func, abi):
+def get_token_uri_from_contract_batch(contract, token_ids, uri_func, abi):
     if len(token_ids) > 0:
         if config.ENDPOINT == "":
             print(
@@ -206,7 +206,7 @@ def get_contract_uri_batch(contract, token_ids, uri_func, abi):
         return {}
 
 
-def get_lower_id(contract, uri_func, abi):
+def get_lower_token_id(contract, uri_func, abi):
     # Initiate parameters
     lower_token_id = None
 
@@ -214,7 +214,7 @@ def get_lower_id(contract, uri_func, abi):
     for token_id in [0, 1]:
         try:
             # Fetch the metadata url from the contract
-            uri = get_contract_uri(contract, token_id, uri_func, abi)
+            uri = get_token_uri_from_contract(contract, token_id, uri_func, abi)
             print(f"Metadata for lower bound token id is at: {uri}")
             lower_token_id = token_id
             break
@@ -282,7 +282,7 @@ def fetch_all_metadata(
         for token_id in [0, 1]:
             try:
                 # Fetch the metadata url from the contract
-                uri = get_contract_uri(contract, token_id, uri_func, abi)
+                uri = get_token_uri_from_contract(contract, token_id, uri_func, abi)
                 break
             except Exception as err:
                 pass
@@ -366,7 +366,7 @@ def fetch_all_metadata(
                     token_ids_batch,
                 )
             )
-            for token_id, metadata_uri in get_contract_uri_batch(
+            for token_id, metadata_uri in get_token_uri_from_contract_batch(
                 contract, token_ids_batch, uri_func, abi
             ).items():
                 fetch(
@@ -407,7 +407,9 @@ def fetch_all_metadata(
                     metadata_uri += uri_suffix
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
-                metadata_uri = get_contract_uri(contract, token_id, uri_func, abi)
+                metadata_uri = get_token_uri_from_contract(
+                    contract, token_id, uri_func, abi
+                )
 
                 if isinstance(metadata_uri, ContractLogicError):
                     print(f"{metadata_uri} {token_id}")
@@ -499,7 +501,9 @@ def pull_metadata(args):
     # Get the lower bound token id of the contract
     if args.lower_id is None and contract is not None and abi is not None:
         # Lower id not provided so will infer it from the contract object
-        lower_id = get_lower_id(contract=contract, uri_func=args.uri_func, abi=abi)
+        lower_id = get_lower_token_id(
+            contract=contract, uri_func=args.uri_func, abi=abi
+        )
     elif args.lower_id is not None:
         # Setting lower id as provided
         lower_id = args.lower_id
