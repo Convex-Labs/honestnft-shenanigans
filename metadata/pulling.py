@@ -1,16 +1,19 @@
-import os, sys
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+import argparse
+import base64
+import json
+import os
+import sys
+import time
 
 import pandas as pd
 import requests
-import time
-import json
-import argparse
-import base64
 from web3.exceptions import ContractLogicError
 
-from utils import chain, config, ipfs
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+from utils import chain
+from utils import config
+from utils import ipfs
 
 
 """
