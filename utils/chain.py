@@ -20,7 +20,7 @@ def get_contract_abi(address):
         return abi
     except Exception as err:
         print(f"Failed to get contract ABI from Etherscan: {err}")
-        print(f"Falling back to direct ABI checking")
+        print("Falling back to direct ABI checking")
         if config.ENDPOINT != "":
             # We can check the ABI of non-verified Etherscan contracts
             # if they support ERC165 (which most of them do)

@@ -86,7 +86,7 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
         try:
             client = ipfshttpclient.connect(addr=gateways[gateway], timeout=timeout)
             client.get(f"/ipfs/{cid}", target=f"{os.getcwd()}/{parent_folder}/")
-            print(f"Successfully downloaded metadata folder from IPFS")
+            print("Successfully downloaded metadata folder from IPFS")
             os.rename(
                 f"./{parent_folder}/{cid}",
                 f"./{parent_folder}/{collection_name}",
