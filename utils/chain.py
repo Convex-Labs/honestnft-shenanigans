@@ -221,3 +221,13 @@ def get_lower_token_id(contract, uri_func, abi):
 
     # Return lower id
     return lower_token_id
+
+
+def get_base_uri(contract, abi):
+    uri_contract_func = get_contract_function(contract, "baseURI", abi)
+
+    try:
+        uri = uri_contract_func().call()
+        return uri
+    except ContractLogicError as err:
+        raise Exception(err)
