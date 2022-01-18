@@ -19,11 +19,16 @@ def get_file_suffix(filename, token_id="\\d+"):
     :return: file_suffix
     :rtype: str
     """
-    regex = rf"^{token_id}(\.(?P<extension>\w+))?$"
-    matches = re.search(regex, filename)
-    if matches and matches.group("extension"):
-        return matches.group(1)
-    return ""
+    token_id_pattern = rf"^{token_id}"
+    matches = re.search(token_id_pattern, filename)
+    if matches:
+        regex = rf"^{token_id}(\.(?P<extension>\w+))?$"
+        matches = re.search(regex, filename)
+        if matches and matches.group("extension"):
+            return matches.group(1)
+        return ""
+    else:
+        raise ValueError("Provided token_id not found in filename")
 
 
 def infer_cid_from_uri(uri):
