@@ -79,7 +79,7 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
     warnings.filterwarnings(
         "ignore", category=ipfshttpclient.exceptions.VersionMismatch
     )
-    gateways = [ipfs_gateway_io, infura, dweb_link, ipfs_io, pinata]
+    gateways = [pinata, ipfs_gateway_io, infura, dweb_link, ipfs_io]
     print("Attempting to download metadata folder from IPFS...\nPlease wait...")
 
     for gateway in range(len(gateways)):
@@ -99,9 +99,12 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
                     "Failed to download metadata folder from IPFS. Trying next gateway..."
                 )
             else:
-                print(
-                    "Failed to download metadata folder from IPFS.\nFalling back to individual file downloads..."
-                )
+                print("Failed to download metadata folder from IPFS.")
+                if os.path.exists(f"./{parent_folder}/{cid}"):
+                    os.rename(
+                        f"./{parent_folder}/{cid}",
+                        f"./{parent_folder}/{collection_name}",
+                    )
             pass
 
 

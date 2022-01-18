@@ -99,6 +99,7 @@ def fetch_all_metadata(
                 file_suffix = ipfs.get_file_suffix(first_file)
                 bulk_ipfs_success = True
             except Exception:
+                print("Falling back to individual file downloads...")
                 file_suffix = ".json"
                 pass
     else:
