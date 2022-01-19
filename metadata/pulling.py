@@ -1,267 +1,19 @@
+import argparse
+import base64
+import json
 import os
+import sys
+import time
+
 import pandas as pd
 import requests
-import time
-import json
-import argparse
-import sys
-import base64
-from web3 import Web3
 from web3.exceptions import ContractLogicError
-from web3_multicall import Multicall
-import ipfshttpclient
-import re
-import warnings
-import yaml
 
-credentials = yaml.load(open("../.secrets.yml"), Loader=yaml.FullLoader)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-ABI_ENDPOINT = "https://api.etherscan.io/api?module=contract&action=getabi&address="
-ENDPOINT = credentials["personal"]["web3_provider"]
-ATTRIBUTES_FOLDER = "raw_attributes"
-IMPLEMENTATION_SLOT = (
-    "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-)
-IPFS_GATEWAY = credentials["personal"]["ipfs_gateway"]
-
-
-"""
-Smart contract helper methods
-"""
-
-
-def get_contract_abi(address):
-    # Get contract ABI
-    abi_url = f"{ABI_ENDPOINT}{address}"
-    response = requests.get(abi_url)
-    try:
-        abi = json.loads(response.json()["result"])
-        return abi
-    except Exception as err:
-        print(f"Failed to get contract ABI from Etherscan: {err}")
-        print(f"Falling back to direct ABI checking")
-        if ENDPOINT != "":
-            # We can check the ABI of non-verified Etherscan contracts
-            # if they support ERC165 (which most of them do)
-            erc165_abi = [
-                {
-                    "inputs": [
-                        {
-                            "internalType": "bytes4",
-                            "name": "interfaceId",
-                            "type": "bytes4",
-                        }
-                    ],
-                    "name": "supportsInterface",
-                    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
-                    "stateMutability": "view",
-                    "type": "function",
-                }
-            ]
-
-            w3 = Web3(Web3.HTTPProvider(ENDPOINT))
-            contract = w3.eth.contract(Web3.toChecksumAddress(address), abi=erc165_abi)
-
-            # Array of contract methods that were verified via ERC165
-            contract_abi = []
-
-            # List of common ERC721 methods to check
-            common_abis = {}
-            # ERC721 metadata interface id
-            common_abis["0x5b5e139f"] = [
-                {
-                    "inputs": [],
-                    "name": "name",
-                    "outputs": [
-                        {"internalType": "string", "name": "", "type": "string"}
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "tokenId",
-                            "type": "uint256",
-                        }
-                    ],
-                    "name": "tokenURI",
-                    "outputs": [
-                        {"internalType": "string", "name": "", "type": "string"}
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                },
-            ]
-            # ERC721 enumerable interface id
-            common_abis["0x780e9d63"] = [
-                {
-                    "inputs": [],
-                    "name": "totalSupply",
-                    "outputs": [
-                        {"internalType": "uint256", "name": "", "type": "uint256"}
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                }
-            ]
-
-            for selector, abi in common_abis.items():
-                try:
-                    supports_abi = contract.functions.supportsInterface(selector).call()
-                    if supports_abi:
-                        contract_abi += abi
-                except Exception as err:
-                    print(f"Could not check selector {selector}")
-
-            if len(contract_abi) > 0:
-                return contract_abi
-
-        raise Exception(
-            f"Failed to get contract ABI.\nURL: {abi_url}\nResponse: {response.json()}"
-        )
-
-
-def get_contract(address, abi):
-    # Connect to web3
-    if ENDPOINT == "":
-        print(
-            "\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n"
-        )
-        print("Optional: Use -web3_provider as a command line argument")
-        sys.exit()
-
-    w3 = Web3(Web3.HTTPProvider(ENDPOINT))
-
-    # Check if abi contains the tokenURI function
-    contract_functions = [func["name"] for func in abi if "name" in func]
-
-    if "implementation" in contract_functions:
-        # Handle case where the contract is a proxy contract
-        # Fetch address for the implementation contract
-        impl_contract = w3.toHex(w3.eth.get_storage_at(address, IMPLEMENTATION_SLOT))
-
-        # Strip the padded zeros from the implementation contract address
-        impl_address = "0x" + impl_contract[-40:]
-        print(
-            f"Contract is a proxy contract. Using implementation address: {impl_address}"
-        )
-
-        # Sleep to respect etherscan API limit
-        time.sleep(5)
-
-        # Get the implementation contract ABI
-        impl_abi = get_contract_abi(address=impl_address)
-
-        # Return the implementation contract object instead
-        return get_contract(impl_contract, abi=impl_abi)
-
-    # Get contract checksum address
-    contract_checksum = Web3.toChecksumAddress(address)
-
-    # Build the Ethereum contract object
-    collection_contract = w3.eth.contract(contract_checksum, abi=abi)
-
-    # Return the contract ABI and Ethereum contract object
-    return abi, collection_contract
-
-
-def get_contract_function(contract, func_name, abi):
-    if func_name in dir(contract.functions):
-        # The function name given is a valid function in the ABI, so return that function
-        return getattr(contract.functions, func_name)
-    else:
-        # The function name provided is not in the contract ABI, so throw an error
-        func_names = [f["name"] for f in abi if "name" in f]
-        raise ValueError(
-            f"{func_name} is not in the contract ABI. Inspect the following function names "
-            f"for candidates and pass to the command line arguments: {func_names}"
-        )
-
-
-def format_ipfs_uri(uri):
-    # Reformat IPFS gateway
-    ipfs_1 = "ipfs://"
-    ipfs_2 = "https://ipfs.io/ipfs/"
-    ipfs_3 = "https://gateway.pinata.cloud/ipfs/"
-    ipfs_hash_identifier = "Qm"
-
-    if IPFS_GATEWAY == "":
-        if uri.startswith(ipfs_1):
-            uri = ipfs_2 + uri[len(ipfs_1) :]
-    else:
-        if uri.startswith(ipfs_1):
-            uri = IPFS_GATEWAY + uri[len(ipfs_1) :]
-        elif uri.startswith(ipfs_2):
-            uri = IPFS_GATEWAY + uri[len(ipfs_2) :]
-        elif uri.startswith(ipfs_3):
-            uri = IPFS_GATEWAY + uri[len(ipfs_3) :]
-        elif "pinata" in uri:
-            starting_index_of_hash = uri.find(ipfs_hash_identifier)
-            uri = IPFS_GATEWAY + uri[starting_index_of_hash:]
-
-    return uri
-
-
-def get_contract_uri(contract, token_id, uri_func, abi):
-    # Fetch URI from contract
-    uri_contract_func = get_contract_function(contract, uri_func, abi)
-
-    try:
-        uri = uri_contract_func(token_id).call()
-        uri = format_ipfs_uri(uri)
-        return uri
-    except ContractLogicError as err:
-        raise Exception(err)
-
-
-def get_contract_uri_batch(contract, token_ids, uri_func, abi):
-    if len(token_ids) > 0:
-        if ENDPOINT == "":
-            print(
-                "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
-            )
-            sys.exit()
-
-        def get_func(token_id):
-            uri_contract_func = get_contract_function(contract, uri_func, abi)
-            return uri_contract_func(token_id)
-
-        w3 = Web3(Web3.HTTPProvider(ENDPOINT))
-        multicall = Multicall(w3.eth)
-        multicall_result = multicall.aggregate(list(map(get_func, token_ids)))
-        return {
-            x["inputs"][0]["value"]: format_ipfs_uri(x["results"][0])
-            for x in multicall_result.json["results"]
-        }
-    else:
-        return {}
-
-
-def get_lower_id(contract, uri_func, abi):
-    # Initiate parameters
-    lower_token_id = None
-
-    # Search over possible lower bound ids
-    for token_id in [0, 1]:
-        try:
-            # Fetch the metadata url from the contract
-            uri = get_contract_uri(contract, token_id, uri_func, abi)
-            print(f"Metadata for lower bound token id is at: {uri}")
-            lower_token_id = token_id
-            break
-        except Exception as err:
-            # Catch exception where token URI function fails because the token id is invalid
-            print(err)
-            pass
-
-    # Raise exception if method fails to find the metadata url
-    if lower_token_id is None:
-        raise Exception("Unable to get the metadata url.")
-
-    # Return lower id
-    return lower_token_id
+from utils import chain
+from utils import config
+from utils import ipfs
 
 
 """
@@ -302,7 +54,7 @@ def fetch_all_metadata(
 ):
 
     # Create raw attribute folder for collection if it doesnt already exist
-    folder = f"{ATTRIBUTES_FOLDER}/{collection}/"
+    folder = f"{config.ATTRIBUTES_FOLDER}/{collection}/"
     if not os.path.exists(folder):
         os.mkdir(folder)
 
@@ -315,31 +67,39 @@ def fetch_all_metadata(
         for token_id in [0, 1]:
             try:
                 # Fetch the metadata url from the contract
-                uri = get_contract_uri(contract, token_id, uri_func, abi)
+                uri = chain.get_token_uri_from_contract(
+                    contract, token_id, uri_func, abi
+                )
                 break
             except Exception as err:
                 pass
-        cid = infer_cid_from_uri(uri)
+        cid = ipfs.infer_cid_from_uri(uri)
         if cid is not None:
-            uri_base = IPFS_GATEWAY + cid + "/"
+            uri_base = config.IPFS_GATEWAY + cid + "/"
 
     # First try to get all metadata files from ipfs in bulk
-    if uri_base is not None and uri_base.find("ipfs") != -1:
+    if uri_base is not None and ipfs.is_valid_ipfs_uri(uri_base):
         folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
         _files = next(folder_walk)[2]
 
         if len(_files) == 0:
-            cid = infer_cid_from_uri(uri_base)
+            cid = ipfs.infer_cid_from_uri(uri_base)
             try:
-                fetch_ipfs_folder(collection_name=collection, cid=cid)
+                ipfs.fetch_ipfs_folder(
+                    collection_name=collection,
+                    cid=cid,
+                    parent_folder=config.ATTRIBUTES_FOLDER,
+                    timeout=60,
+                )
                 folder_walk = os.walk(
                     folder, topdown=True, onerror=None, followlinks=False
                 )
                 _files = next(folder_walk)[2]
                 first_file = _files[0]
-                file_suffix = get_file_suffix(first_file)
+                file_suffix = ipfs.get_file_suffix(first_file)
                 bulk_ipfs_success = True
             except Exception:
+                print("Falling back to individual file downloads...")
                 file_suffix = ".json"
                 pass
     else:
@@ -394,7 +154,7 @@ def fetch_all_metadata(
                     token_ids_batch,
                 )
             )
-            for token_id, metadata_uri in get_contract_uri_batch(
+            for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
                 contract, token_ids_batch, uri_func, abi
             ).items():
                 fetch(
@@ -424,7 +184,7 @@ def fetch_all_metadata(
             # Get the metadata URI
             if uri_base is not None:
                 # Build URI from base URI and URI suffix provided
-                uri_base = format_ipfs_uri(uri_base)
+                uri_base = ipfs.format_ipfs_uri(uri_base)
                 if uri_base.endswith("/"):
                     uri_base = uri_base[:-1]
                 if uri_base.endswith("="):
@@ -435,7 +195,9 @@ def fetch_all_metadata(
                     metadata_uri += uri_suffix
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
-                metadata_uri = get_contract_uri(contract, token_id, uri_func, abi)
+                metadata_uri = chain.get_token_uri_from_contract(
+                    contract, token_id, uri_func, abi
+                )
 
                 if isinstance(metadata_uri, ContractLogicError):
                     print(f"{metadata_uri} {token_id}")
@@ -494,87 +256,6 @@ def fetch_all_metadata(
     return dictionary_list
 
 
-def fetch_ipfs_folder(collection_name, cid, timeout=120):
-    """
-    Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
-
-    :param collection_name The collection name to be used as the folder name
-    :type collection_name: str
-    :param cid: The IPFS CID of folder to download
-    :type cid: str
-    :param timeout: Connection timeout (in seconds) when connecting to the API daemon
-    :type timeout: int | None
-    """
-    infura = "/dns/infura-ipfs.io/tcp/5001/https"
-    ipfs_io = "/dns/ipfs.io/tcp/443/https"
-    ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
-    dweb_link = "/dns/dweb.link/tcp/443/https"
-    pinata = "/dns/gateway.pinata.cloud/tcp/443/https"
-    warnings.filterwarnings(
-        "ignore", category=ipfshttpclient.exceptions.VersionMismatch
-    )
-    gateways = [ipfs_gateway_io, infura, dweb_link, ipfs_io, pinata]
-    print("Attempting to download metadata folder from IPFS...\nPlease wait...")
-
-    for gateway in range(len(gateways)):
-        try:
-            client = ipfshttpclient.connect(addr=gateways[gateway], timeout=timeout)
-            client.get(f"/ipfs/{cid}", target=f"./{ATTRIBUTES_FOLDER}/")
-            print(f"Successfully downloaded metadata folder from IPFS")
-            os.rename(
-                f"./{ATTRIBUTES_FOLDER}/{cid}",
-                f"./{ATTRIBUTES_FOLDER}/{collection_name}",
-            )
-            client.close()
-            break
-        except Exception:
-            if gateway < len(gateways) - 1:
-                print(
-                    "Failed to download metadata folder from IPFS. Trying next gateway..."
-                )
-            else:
-                print(
-                    "Failed to download metadata folder from IPFS.\nFalling back to individual file downloads..."
-                )
-            pass
-
-
-def get_file_suffix(filename, token_id="\\d+"):
-    """
-    Given a filename and an optional token_id, this function returns the file suffix.
-    If the file has no extension, an empty string is returned.
-
-    :param filename
-    :type filename: str
-    :param token_id
-    :type token_id: str | int | None
-    :return: file_suffix
-    :rtype: str
-    """
-    regex = rf"^{token_id}(\.(?P<extension>\w+))?$"
-    matches = re.search(regex, filename)
-    if matches and matches.group("extension"):
-        return matches.group(1)
-    return ""
-
-
-def infer_cid_from_uri(uri):
-    """
-    Given a URI, this function returns the CID.
-    Returns None if the CID is not found.
-
-    :param uri
-    :type uri: str
-    :return: cid
-    :rtype: str | None
-    """
-    cid_pattern = r"Qm[a-zA-Z0-9-_]+"
-    matches = re.search(cid_pattern, uri)
-    if matches:
-        return matches.group(0)
-    return None
-
-
 """
 Main method
 """
@@ -584,8 +265,8 @@ def pull_metadata(args):
 
     if args.contract is not None:
         # Get Ethereum contract object
-        abi = get_contract_abi(address=args.contract)
-        abi, contract = get_contract(address=args.contract, abi=abi)
+        abi = chain.get_contract_abi(address=args.contract)
+        abi, contract = chain.get_contract(address=args.contract, abi=abi)
     else:
         contract = None
         abi = None
@@ -593,7 +274,7 @@ def pull_metadata(args):
     # Get the max supply of the contract
     if args.max_supply is None and contract is not None and abi is not None:
         # Supply function not provided so will infer max supply from the contract object
-        supply_func = get_contract_function(
+        supply_func = chain.get_contract_function(
             contract=contract, func_name=args.supply_func, abi=abi
         )
         max_supply = supply_func().call()
@@ -608,7 +289,9 @@ def pull_metadata(args):
     # Get the lower bound token id of the contract
     if args.lower_id is None and contract is not None and abi is not None:
         # Lower id not provided so will infer it from the contract object
-        lower_id = get_lower_id(contract=contract, uri_func=args.uri_func, abi=abi)
+        lower_id = chain.get_lower_token_id(
+            contract=contract, uri_func=args.uri_func, abi=abi
+        )
     elif args.lower_id is not None:
         # Setting lower id as provided
         lower_id = args.lower_id
@@ -629,7 +312,7 @@ def pull_metadata(args):
 
     # Get collection name
     if args.collection is None and contract is not None and abi is not None:
-        name_func = get_contract_function(
+        name_func = chain.get_contract_function(
             contract=contract, func_name=args.name_func, abi=abi
         )
         collection = name_func().call()
@@ -665,7 +348,7 @@ def pull_metadata(args):
     trait_db = pd.DataFrame.from_records(records)
     trait_db = trait_db.set_index("TOKEN_ID")
     print(trait_db.head())
-    trait_db.to_csv(f"{ATTRIBUTES_FOLDER}/{collection}.csv")
+    trait_db.to_csv(f"{config.ATTRIBUTES_FOLDER}/{collection}.csv")
 
 
 if __name__ == "__main__":
@@ -760,7 +443,7 @@ if __name__ == "__main__":
         "-ipfs_gateway",
         type=str,
         default=None,
-        help=f"IPFS gateway. (default: {IPFS_GATEWAY}).",
+        help=f"IPFS gateway. (default: {config.IPFS_GATEWAY}).",
     )
     ARG_PARSER.add_argument(
         "-sleep",
@@ -777,8 +460,8 @@ if __name__ == "__main__":
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
-        IPFS_GATEWAY = ARGS.ipfs_gateway
+        config.IPFS_GATEWAY = ARGS.ipfs_gateway
     if ARGS.web3_provider is not None:
-        ENDPOINT = ARGS.web3_provider
+        config.ENDPOINT = ARGS.web3_provider
 
     pull_metadata(ARGS)
