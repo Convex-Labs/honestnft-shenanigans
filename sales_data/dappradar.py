@@ -16,6 +16,7 @@ class DappRadar:
     Order -> asc, desc
     Collections -> contract address
     """
+
     _ENDPOINT = "https://nft-sales-service.dappradar.com/v2/"
 
     def __init__(self):
@@ -28,7 +29,7 @@ class DappRadar:
         return self._process_response(response)
 
     def _get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
-        return self._request('GET', path, params=params)
+        return self._request("GET", path, params=params)
 
     @staticmethod
     def _process_response(response: Response) -> Any:
@@ -39,21 +40,44 @@ class DappRadar:
             response.raise_for_status()
             raise
 
-    def _get_historical_sales_data(self, resolution: str, limit: int, page: int, currency: str, sort: str, order: str, collections: str):
+    def _get_historical_sales_data(
+            self,
+            resolution: str,
+            limit: int,
+            page: int,
+            currency: str,
+            sort: str,
+            order: str,
+            collections: str
+    ):
         response = self._get(
-            f'/sale/{resolution}?limit={limit}&page={page}&currency={currency}&sort={sort}&order={order}&collections={collections}')
+            f"/sale/{resolution}?limit={limit}&page={page}&currency={currency}&sort={sort}&order={order}&collections={collections}"
+        )
         return response
 
-    def collate_historical_data(self, resolution: str, limit: int, page: int, currency: str, sort: str, order: str, collections: str):
+    def collate_historical_data(
+            self,
+            resolution: str,
+            limit: int,
+            page: int,
+            currency: str,
+            sort: str,
+            order: str,
+            collections: str
+    ):
         sales_data = list()
 
-        response = self._get_historical_sales_data(resolution, limit, page, currency, sort, order, collections)
+        response = self._get_historical_sales_data(
+            resolution, limit, page, currency, sort, order, collections
+        )
 
         page = response["page"]
         page_count = response["pageCount"]
 
         while page < page_count:
-            response = self._get_historical_sales_data(resolution, limit, page, currency, sort, order, collections)
+            response = self._get_historical_sales_data(
+                resolution, limit, page, currency, sort, order, collections
+            )
             sales_data.extend(response["results"])
 
             page += 1
@@ -75,6 +99,6 @@ if __name__ == "__main__":
         currency="USD",
         sort="soldAt",
         order="desc",
-        collections="0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
+        collections="0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
     )
     print(sales_data.head(10))
