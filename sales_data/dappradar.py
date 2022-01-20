@@ -41,14 +41,14 @@ class DappRadar:
             raise
 
     def _get_historical_sales_data(
-            self,
-            resolution: str,
-            limit: int,
-            page: int,
-            currency: str,
-            sort: str,
-            order: str,
-            collections: str
+        self,
+        resolution: str,
+        limit: int,
+        page: int,
+        currency: str,
+        sort: str,
+        order: str,
+        collections: str
     ):
         response = self._get(
             f"/sale/{resolution}?limit={limit}&page={page}&currency={currency}&sort={sort}&order={order}&collections={collections}"
@@ -56,14 +56,14 @@ class DappRadar:
         return response
 
     def collate_historical_data(
-            self,
-            resolution: str,
-            limit: int,
-            page: int,
-            currency: str,
-            sort: str,
-            order: str,
-            collections: str
+        self,
+        resolution: str,
+        limit: int,
+        page: int,
+        currency: str,
+        sort: str,
+        order: str,
+        collections: str
     ):
         sales_data = list()
 
