@@ -48,7 +48,7 @@ class DappRadar:
         currency: str,
         sort: str,
         order: str,
-        collections: str
+        collections: str,
     ):
         response = self._get(
             f"/sale/{resolution}?limit={limit}&page={page}&currency={currency}&sort={sort}&order={order}&collections={collections}"
@@ -63,7 +63,7 @@ class DappRadar:
         currency: str,
         sort: str,
         order: str,
-        collections: str
+        collections: str,
     ):
         sales_data = list()
 
