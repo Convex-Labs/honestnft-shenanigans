@@ -78,4 +78,3 @@ if __name__ == "__main__":
         collections="0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
     )
     print(sales_data.head(10))
-
