@@ -32,5 +32,6 @@ setup(
         "seaborn>=0.11.1",
         "ipfshttpclient>=0.8.0a2",
         "scikit-learn>=1.0.1",
+        "papermill==2.3.3",
     ],
 )
