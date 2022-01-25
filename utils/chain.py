@@ -117,12 +117,14 @@ def get_contract(address, abi):
 
     # Check if abi contains the tokenURI function
     contract_functions = [func["name"] for func in abi if "name" in func]
+    # Get contract checksum address
+    contract_checksum_address = Web3.toChecksumAddress(address)
 
     if "implementation" in contract_functions:
         # Handle case where the contract is a proxy contract
         # Fetch address for the implementation contract
         impl_contract = w3.toHex(
-            w3.eth.get_storage_at(address, config.IMPLEMENTATION_SLOT)
+            w3.eth.get_storage_at(contract_checksum_address, config.IMPLEMENTATION_SLOT)
         )
 
         # Strip the padded zeros from the implementation contract address
@@ -137,14 +139,11 @@ def get_contract(address, abi):
         # Get the implementation contract ABI
         impl_abi = get_contract_abi(address=impl_address)
 
-        # Return the implementation contract object instead
-        return get_contract(impl_contract, abi=impl_abi)
-
-    # Get contract checksum address
-    contract_checksum = Web3.toChecksumAddress(address)
+        # Return the implementation address instead
+        return get_contract(impl_address, abi=impl_abi)
 
     # Build the Ethereum contract object
-    collection_contract = w3.eth.contract(contract_checksum, abi=abi)
+    collection_contract = w3.eth.contract(contract_checksum_address, abi=abi)
 
     # Return the contract ABI and Ethereum contract object
     return abi, collection_contract
