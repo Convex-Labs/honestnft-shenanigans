@@ -138,9 +138,12 @@ dmypy.json
 .DS_Store
 
 # Javascript
-metadata/yarn.lock 
+metadata/yarn.lock
 
 .secrets.yml
 metadata/raw_attributes/*/**
 
 **/node_modules
+**temp-compare
+**vtpy
+**OUT**
