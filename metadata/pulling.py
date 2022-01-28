@@ -469,13 +469,17 @@ if __name__ == "__main__":
         type=str,
         choices=["ethereum", "polygon"],
         default="ethereum",
-        help="Chain where the contract is located. (default: Ethereum)",
+        help="Chain where the contract is located. (default: ethereum)",
     )
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
         config.IPFS_GATEWAY = ARGS.ipfs_gateway
-    if ARGS.web3_provider is not None:
-        config.ENDPOINT = ARGS.web3_provider
+    if ARGS.chain == 'polygon':
+        if ARGS.web3_provider is not None:
+            config.POLYGON_ENDPOINT = ARGS.web3_provider
+    else:
+         if ARGS.web3_provider is not None:
+            config.ENDPOINT = ARGS.web3_provider
 
     pull_metadata(ARGS)
