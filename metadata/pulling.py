@@ -142,28 +142,33 @@ def fetch_all_metadata(
         and contract is not None
         and abi is not None
     ):
-        # Fetch token URI from on-chain
-        BATCH_SIZE = 50
-        for i in range(0, len(token_ids), BATCH_SIZE):
-            print(f"Fetching [{i}, {i + BATCH_SIZE}]")
-            token_ids_batch = token_ids[i : i + BATCH_SIZE]
-            # Skip on-chain fetch if we already have the metadata
-            token_ids_batch = list(
-                filter(
-                    lambda token_id: not os.path.exists(f"{folder}/{token_id}.json"),
-                    token_ids_batch,
+        try:
+            # Fetch token URI from on-chain
+            BATCH_SIZE = 50
+            for i in range(0, len(token_ids), BATCH_SIZE):
+                print(f"Fetching [{i}, {i + BATCH_SIZE}]")
+                token_ids_batch = token_ids[i : i + BATCH_SIZE]
+                # Skip on-chain fetch if we already have the metadata
+                token_ids_batch = list(
+                    filter(
+                        lambda token_id: not os.path.exists(
+                            f"{folder}/{token_id}.json"
+                        ),
+                        token_ids_batch,
+                    )
                 )
-            )
-            for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
-                contract, token_ids_batch, uri_func, abi
-            ).items():
-                fetch(
-                    token_id,
-                    metadata_uri,
-                    filename="{folder}{token_id}{file_extension}".format(
-                        folder=folder, token_id=token_id, file_extension=file_suffix
-                    ),
-                )
+                for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
+                    contract, token_ids_batch, uri_func, abi
+                ).items():
+                    fetch(
+                        token_id,
+                        metadata_uri,
+                        filename="{folder}{token_id}{file_extension}".format(
+                            folder=folder, token_id=token_id, file_extension=file_suffix
+                        ),
+                    )
+        except Exception as err:
+            print(err)
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
@@ -265,8 +270,10 @@ def pull_metadata(args):
 
     if args.contract is not None:
         # Get Ethereum contract object
-        abi = chain.get_contract_abi(address=args.contract)
-        abi, contract = chain.get_contract(address=args.contract, abi=abi)
+        abi = chain.get_contract_abi(address=args.contract, chain=args.chain)
+        abi, contract = chain.get_contract(
+            address=args.contract, abi=abi, chain=args.chain
+        )
     else:
         contract = None
         abi = None
@@ -456,6 +463,13 @@ if __name__ == "__main__":
         type=str,
         default=None,
         help="Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)",
+    )
+    ARG_PARSER.add_argument(
+        "-chain",
+        type=str,
+        choices=["ethereum", "polygon"],
+        default="ethereum",
+        help="Chain where the contract is located. (default: Ethereum)",
     )
     ARGS = ARG_PARSER.parse_args()
 
