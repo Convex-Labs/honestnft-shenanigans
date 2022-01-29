@@ -32,5 +32,6 @@ setup(
         "ipfshttpclient>=0.8.0a2",
         "scikit-learn>=1.0.1",
         "multicall>=0.1.3",
+        "pyyaml>=6.0",
     ],
 )
