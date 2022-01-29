@@ -26,12 +26,12 @@ setup(
         "numpy>=1.18.4",
         "pandas>=1.1.5",
         "web3>=5.13.1",
-        "web3-multicall>=0.0.3",
         "requests>=2.25.1",
         "matplotlib>=3.3.4",
         "seaborn>=0.11.1",
         "ipfshttpclient>=0.8.0a2",
         "scikit-learn>=1.0.1",
+        "multicall>=0.1.3",
         "pyyaml>=6.0",
     ],
 )
