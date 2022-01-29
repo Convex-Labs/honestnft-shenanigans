@@ -26,7 +26,6 @@ setup(
         "numpy>=1.18.4",
         "pandas>=1.1.5",
         "web3>=5.13.1",
-        "web3-multicall>=0.0.3",
         "requests>=2.25.1",
         "matplotlib>=3.3.4",
         "seaborn>=0.11.1",
@@ -34,5 +33,7 @@ setup(
         "scikit-learn>=1.0.1",
         "papermill==2.3.3",
         "python-dotenv==0.19.2",
+        "multicall>=0.1.3",
+        "pyyaml>=6.0",
     ],
 )

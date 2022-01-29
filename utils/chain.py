@@ -3,9 +3,9 @@ import sys
 import time
 
 import requests
+from multicall import Call, Multicall
 from web3 import Web3
 from web3.exceptions import ContractLogicError
-from web3_multicall import Multicall
 
 import utils.config as config
 import utils.ipfs as ipfs
@@ -133,12 +133,14 @@ def get_contract(address, abi, chain="ethereum"):
 
     # Check if abi contains the tokenURI function
     contract_functions = [func["name"] for func in abi if "name" in func]
+    # Get contract checksum address
+    contract_checksum_address = Web3.toChecksumAddress(address)
 
     if "implementation" in contract_functions:
         # Handle case where the contract is a proxy contract
         # Fetch address for the implementation contract
         impl_contract = w3.toHex(
-            w3.eth.get_storage_at(address, config.IMPLEMENTATION_SLOT)
+            w3.eth.get_storage_at(contract_checksum_address, config.IMPLEMENTATION_SLOT)
         )
 
         # Strip the padded zeros from the implementation contract address
@@ -153,14 +155,11 @@ def get_contract(address, abi, chain="ethereum"):
         # Get the implementation contract ABI
         impl_abi = get_contract_abi(address=impl_address)
 
-        # Return the implementation contract object instead
-        return get_contract(impl_contract, abi=impl_abi)
-
-    # Get contract checksum address
-    contract_checksum = Web3.toChecksumAddress(address)
+        # Return the implementation address instead
+        return get_contract(impl_address, abi=impl_abi)
 
     # Build the Ethereum contract object
-    collection_contract = w3.eth.contract(contract_checksum, abi=abi)
+    collection_contract = w3.eth.contract(contract_checksum_address, abi=abi)
 
     # Return the contract ABI and Ethereum contract object
     return abi, collection_contract
@@ -192,7 +191,7 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 
 
 def get_token_uri_from_contract_batch(
-    contract, token_ids, uri_func, abi, chain="ethereum"
+    contract, token_ids, function_signature, abi, chain="ethereum"
 ):
     if chain == "ethereum":
         endpoint = config.ENDPOINT
@@ -209,17 +208,21 @@ def get_token_uri_from_contract_batch(
             )
             sys.exit()
 
-        def get_func(token_id):
-            uri_contract_func = get_contract_function(contract, uri_func, abi)
-            return uri_contract_func(token_id)
+        # signature = get_function_signature(uri_func, abi)
 
         w3 = Web3(Web3.HTTPProvider(endpoint))
-        multicall = Multicall(w3.eth)
-        multicall_result = multicall.aggregate(list(map(get_func, token_ids)))
-        return {
-            x["inputs"][0]["value"]: ipfs.format_ipfs_uri(x["results"][0])
-            for x in multicall_result.json["results"]
-        }
+
+        calls = []
+        for token_id in token_ids:
+            call = Call(
+                target=contract.address,
+                function=[function_signature, token_id],
+                returns=[[token_id, ipfs.format_ipfs_uri]],
+            )
+            calls.append(call)
+        multi = Multicall(calls, _w3=w3)
+        return multi()
+
     else:
         return {}
 
@@ -257,3 +260,25 @@ def get_base_uri(contract, abi):
         return uri
     except ContractLogicError as err:
         raise Exception(err)
+
+
+def get_function_signature(func_name, abi):
+    """
+    Given a function name and an ABI, return the function signature
+    e.g. get_function_signature("tokenURI", abi) => "tokenURI(uint256)(string)"
+
+    :param func_name:
+    :type func_name: str
+    :param abi:
+    :type abi: list
+    :return: function signature
+    :rtype: str
+    """
+    filtered = list(
+        filter(
+            lambda d: d["name"] == func_name if d["type"] == "function" else None, abi
+        )
+    )[0]
+    input_types = [obj["type"] for obj in filtered["inputs"]]
+    output_types = [obj["type"] for obj in filtered["outputs"]]
+    return f"{func_name}({','.join(input_types)})({','.join(output_types)})"

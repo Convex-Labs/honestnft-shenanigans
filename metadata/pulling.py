@@ -143,6 +143,7 @@ def fetch_all_metadata(
         and abi is not None
     ):
         try:
+            function_signature = chain.get_function_signature(uri_func, abi)
             # Fetch token URI from on-chain
             BATCH_SIZE = 50
             for i in range(0, len(token_ids), BATCH_SIZE):
@@ -158,7 +159,7 @@ def fetch_all_metadata(
                     )
                 )
                 for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
-                    contract, token_ids_batch, uri_func, abi
+                    contract, token_ids_batch, function_signature, abi
                 ).items():
                     fetch(
                         token_id,
@@ -469,13 +470,17 @@ if __name__ == "__main__":
         type=str,
         choices=["ethereum", "polygon"],
         default="ethereum",
-        help="Chain where the contract is located. (default: Ethereum)",
+        help="Chain where the contract is located. (default: ethereum)",
     )
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
         config.IPFS_GATEWAY = ARGS.ipfs_gateway
-    if ARGS.web3_provider is not None:
-        config.ENDPOINT = ARGS.web3_provider
+    if ARGS.chain == "polygon":
+        if ARGS.web3_provider is not None:
+            config.POLYGON_ENDPOINT = ARGS.web3_provider
+    else:
+        if ARGS.web3_provider is not None:
+            config.ENDPOINT = ARGS.web3_provider
 
     pull_metadata(ARGS)
