@@ -11,9 +11,18 @@ import utils.config as config
 import utils.ipfs as ipfs
 
 
-def get_contract_abi(address):
+def get_contract_abi(address, chain="ethereum"):
+    if chain == "ethereum":
+        abi_endpoint = config.ABI_ENDPOINT
+        endpoint = config.ENDPOINT
+    elif chain == "polygon":
+        abi_endpoint = config.POLYGON_ABI_ENDPOINT
+        endpoint = config.POLYGON_ENDPOINT
+    else:
+        raise ValueError(f"Chain {chain} not supported")
+
     # Get contract ABI
-    abi_url = f"{config.ABI_ENDPOINT}{address}"
+    abi_url = f"{abi_endpoint}{address}"
     response = requests.get(abi_url)
     try:
         abi = json.loads(response.json()["result"])
@@ -21,7 +30,7 @@ def get_contract_abi(address):
     except Exception as err:
         print(f"Failed to get contract ABI from Etherscan: {err}")
         print("Falling back to direct ABI checking")
-        if config.ENDPOINT != "":
+        if endpoint != "":
             # We can check the ABI of non-verified Etherscan contracts
             # if they support ERC165 (which most of them do)
             erc165_abi = [
@@ -40,7 +49,7 @@ def get_contract_abi(address):
                 }
             ]
 
-            w3 = Web3(Web3.HTTPProvider(config.ENDPOINT))
+            w3 = Web3(Web3.HTTPProvider(endpoint))
             contract = w3.eth.contract(Web3.toChecksumAddress(address), abi=erc165_abi)
 
             # Array of contract methods that were verified via ERC165
@@ -104,16 +113,23 @@ def get_contract_abi(address):
         )
 
 
-def get_contract(address, abi):
+def get_contract(address, abi, chain="ethereum"):
+    if chain == "ethereum":
+        endpoint = config.ENDPOINT
+    elif chain == "polygon":
+        endpoint = config.POLYGON_ENDPOINT
+    else:
+        raise ValueError(f"Chain {chain} not supported")
+
     # Connect to web3
-    if config.ENDPOINT == "":
+    if endpoint == "":
         print(
             "\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n"
         )
         print("Optional: Use -web3_provider as a command line argument")
         sys.exit()
 
-    w3 = Web3(Web3.HTTPProvider(config.ENDPOINT))
+    w3 = Web3(Web3.HTTPProvider(endpoint))
 
     # Check if abi contains the tokenURI function
     contract_functions = [func["name"] for func in abi if "name" in func]
@@ -175,9 +191,19 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
         raise Exception(err)
 
 
-def get_token_uri_from_contract_batch(contract, token_ids, uri_func, abi):
+def get_token_uri_from_contract_batch(
+    contract, token_ids, uri_func, abi, chain="ethereum"
+):
+    if chain == "ethereum":
+        endpoint = config.ENDPOINT
+    elif chain == "polygon":
+        endpoint = config.POLYGON_ENDPOINT
+        raise NotImplementedError("Polygon chain not supported yet")
+    else:
+        raise ValueError(f"Chain {chain} not supported")
+
     if len(token_ids) > 0:
-        if config.ENDPOINT == "":
+        if endpoint == "":
             print(
                 "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
             )
@@ -187,7 +213,7 @@ def get_token_uri_from_contract_batch(contract, token_ids, uri_func, abi):
             uri_contract_func = get_contract_function(contract, uri_func, abi)
             return uri_contract_func(token_id)
 
-        w3 = Web3(Web3.HTTPProvider(config.ENDPOINT))
+        w3 = Web3(Web3.HTTPProvider(endpoint))
         multicall = Multicall(w3.eth)
         multicall_result = multicall.aggregate(list(map(get_func, token_ids)))
         return {
