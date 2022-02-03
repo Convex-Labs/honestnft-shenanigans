@@ -11,15 +11,15 @@ import utils.config as config
 import utils.ipfs as ipfs
 
 
-def get_contract_abi(address, chain="ethereum"):
-    if chain == "ethereum":
+def get_contract_abi(address, blockchain="ethereum"):
+    if blockchain == "ethereum":
         abi_endpoint = config.ABI_ENDPOINT
         endpoint = config.ENDPOINT
-    elif chain == "polygon":
+    elif blockchain == "polygon":
         abi_endpoint = config.POLYGON_ABI_ENDPOINT
         endpoint = config.POLYGON_ENDPOINT
     else:
-        raise ValueError(f"Chain {chain} not supported")
+        raise ValueError(f"Blockchain {blockchain} not supported")
 
     # Get contract ABI
     abi_url = f"{abi_endpoint}{address}"
@@ -113,13 +113,13 @@ def get_contract_abi(address, chain="ethereum"):
         )
 
 
-def get_contract(address, abi, chain="ethereum"):
-    if chain == "ethereum":
+def get_contract(address, abi, blockchain="ethereum"):
+    if blockchain == "ethereum":
         endpoint = config.ENDPOINT
-    elif chain == "polygon":
+    elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
     else:
-        raise ValueError(f"Chain {chain} not supported")
+        raise ValueError(f"Blockchain {blockchain} not supported")
 
     # Connect to web3
     if endpoint == "":
@@ -192,15 +192,15 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 
 
 def get_token_uri_from_contract_batch(
-    contract, token_ids, uri_func, abi, chain="ethereum"
+    contract, token_ids, uri_func, abi, blockchain="ethereum"
 ):
-    if chain == "ethereum":
+    if blockchain == "ethereum":
         endpoint = config.ENDPOINT
-    elif chain == "polygon":
+    elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
-        raise NotImplementedError("Polygon chain not supported yet")
+        raise NotImplementedError("Polygon blockchain not supported yet")
     else:
-        raise ValueError(f"Chain {chain} not supported")
+        raise ValueError(f"Blockchain {blockchain} not supported")
 
     if len(token_ids) > 0:
         if endpoint == "":
