@@ -31,6 +31,6 @@ setup(
         "seaborn>=0.11.1",
         "ipfshttpclient>=0.8.0a2",
         "scikit-learn>=1.0.1",
-        "multicall>=0.1.3",
+        "multicall>=0.2.0",
     ],
 )
