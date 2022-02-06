@@ -151,6 +151,7 @@ def fetch_all_metadata(
         and abi is not None
     ):
         try:
+            function_signature = chain.get_function_signature(uri_func, abi)
             # Fetch token URI from on-chain
             BATCH_SIZE = 50
             for i in range(0, len(token_ids), BATCH_SIZE):
