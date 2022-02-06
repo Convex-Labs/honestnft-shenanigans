@@ -3,23 +3,23 @@ import sys
 import time
 
 import requests
+from multicall import Call, Multicall
 from web3 import Web3
 from web3.exceptions import ContractLogicError
-from web3_multicall import Multicall
 
 import utils.config as config
 import utils.ipfs as ipfs
 
 
-def get_contract_abi(address, chain="ethereum"):
-    if chain == "ethereum":
+def get_contract_abi(address, blockchain="ethereum"):
+    if blockchain == "ethereum":
         abi_endpoint = config.ABI_ENDPOINT
         endpoint = config.ENDPOINT
-    elif chain == "polygon":
+    elif blockchain == "polygon":
         abi_endpoint = config.POLYGON_ABI_ENDPOINT
         endpoint = config.POLYGON_ENDPOINT
     else:
-        raise ValueError(f"Chain {chain} not supported")
+        raise ValueError(f"Blockchain {blockchain} not supported")
 
     # Get contract ABI
     abi_url = f"{abi_endpoint}{address}"
@@ -113,13 +113,13 @@ def get_contract_abi(address, chain="ethereum"):
         )
 
 
-def get_contract(address, abi, chain="ethereum"):
-    if chain == "ethereum":
+def get_contract(address, abi, blockchain="ethereum"):
+    if blockchain == "ethereum":
         endpoint = config.ENDPOINT
-    elif chain == "polygon":
+    elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
     else:
-        raise ValueError(f"Chain {chain} not supported")
+        raise ValueError(f"Blockchain {blockchain} not supported")
 
     # Connect to web3
     if endpoint == "":
@@ -191,15 +191,15 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 
 
 def get_token_uri_from_contract_batch(
-    contract, token_ids, uri_func, abi, chain="ethereum"
+    contract, token_ids, uri_func, abi, blockchain="ethereum"
 ):
-    if chain == "ethereum":
+    if blockchain == "ethereum":
         endpoint = config.ENDPOINT
-    elif chain == "polygon":
+    elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
-        raise NotImplementedError("Polygon chain not supported yet")
+        raise NotImplementedError("Polygon blockchain not supported yet")
     else:
-        raise ValueError(f"Chain {chain} not supported")
+        raise ValueError(f"Blockchain {blockchain} not supported")
 
     if len(token_ids) > 0:
         if endpoint == "":
@@ -208,17 +208,21 @@ def get_token_uri_from_contract_batch(
             )
             sys.exit()
 
-        def get_func(token_id):
-            uri_contract_func = get_contract_function(contract, uri_func, abi)
-            return uri_contract_func(token_id)
+        # signature = get_function_signature(uri_func, abi)
 
         w3 = Web3(Web3.HTTPProvider(endpoint))
-        multicall = Multicall(w3.eth)
-        multicall_result = multicall.aggregate(list(map(get_func, token_ids)))
-        return {
-            x["inputs"][0]["value"]: ipfs.format_ipfs_uri(x["results"][0])
-            for x in multicall_result.json["results"]
-        }
+
+        calls = []
+        for token_id in token_ids:
+            call = Call(
+                target=contract.address,
+                function=[function_signature, token_id],
+                returns=[[token_id, ipfs.format_ipfs_uri]],
+            )
+            calls.append(call)
+        multi = Multicall(calls, _w3=w3)
+        return multi()
+
     else:
         return {}
 
@@ -256,3 +260,25 @@ def get_base_uri(contract, abi):
         return uri
     except ContractLogicError as err:
         raise Exception(err)
+
+
+def get_function_signature(func_name, abi):
+    """
+    Given a function name and an ABI, return the function signature
+    e.g. get_function_signature("tokenURI", abi) => "tokenURI(uint256)(string)"
+
+    :param func_name:
+    :type func_name: str
+    :param abi:
+    :type abi: list
+    :return: function signature
+    :rtype: str
+    """
+    filtered = list(
+        filter(
+            lambda d: d["name"] == func_name if d["type"] == "function" else None, abi
+        )
+    )[0]
+    input_types = [obj["type"] for obj in filtered["inputs"]]
+    output_types = [obj["type"] for obj in filtered["outputs"]]
+    return f"{func_name}({','.join(input_types)})({','.join(output_types)})"
