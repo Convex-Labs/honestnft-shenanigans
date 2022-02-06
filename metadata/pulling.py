@@ -50,7 +50,15 @@ def get_metadata(uri, destination):
 
 
 def fetch_all_metadata(
-    token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix
+    token_ids,
+    collection,
+    sleep,
+    uri_func,
+    contract,
+    abi,
+    uri_base,
+    uri_suffix,
+    blockchain,
 ):
 
     # Create raw attribute folder for collection if it doesnt already exist
@@ -159,7 +167,7 @@ def fetch_all_metadata(
                     )
                 )
                 for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
-                    contract, token_ids_batch, function_signature, abi
+                    contract, token_ids_batch, uri_func, abi, blockchain=blockchain
                 ).items():
                     fetch(
                         token_id,
@@ -271,9 +279,9 @@ def pull_metadata(args):
 
     if args.contract is not None:
         # Get Ethereum contract object
-        abi = chain.get_contract_abi(address=args.contract, chain=args.chain)
+        abi = chain.get_contract_abi(address=args.contract, blockchain=args.blockchain)
         abi, contract = chain.get_contract(
-            address=args.contract, abi=abi, chain=args.chain
+            address=args.contract, abi=abi, blockchain=args.blockchain
         )
     else:
         contract = None
@@ -350,6 +358,7 @@ def pull_metadata(args):
         sleep=args.sleep,
         uri_base=args.uri_base,
         uri_suffix=args.uri_suffix,
+        blockchain=args.blockchain,
     )
 
     # Generate traits DataFrame and save to disk as csv
@@ -466,17 +475,17 @@ if __name__ == "__main__":
         help="Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)",
     )
     ARG_PARSER.add_argument(
-        "-chain",
+        "-blockchain",
         type=str,
         choices=["ethereum", "polygon"],
         default="ethereum",
-        help="Chain where the contract is located. (default: ethereum)",
+        help="Blockchain where the contract is located. (default: ethereum)",
     )
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
         config.IPFS_GATEWAY = ARGS.ipfs_gateway
-    if ARGS.chain == "polygon":
+    if ARGS.blockchain == "polygon":
         if ARGS.web3_provider is not None:
             config.POLYGON_ENDPOINT = ARGS.web3_provider
     else:
