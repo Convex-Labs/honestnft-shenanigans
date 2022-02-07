@@ -167,7 +167,11 @@ def fetch_all_metadata(
                     )
                 )
                 for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
-                    contract, token_ids_batch, uri_func, abi, blockchain=blockchain
+                    contract,
+                    token_ids_batch,
+                    function_signature,
+                    abi,
+                    blockchain=blockchain,
                 ).items():
                     fetch(
                         token_id,
