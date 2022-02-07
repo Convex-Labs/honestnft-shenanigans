@@ -14,6 +14,7 @@
 [Future Work](#future) <br />
 [Contacts / Social Media](#contacts) <br />
 [Contributing](#contributing) <br />
+[Acknowledgements](#Acknowledgements) <br />
 
 <a name="motivation">
 
@@ -232,6 +233,15 @@ For help contact max@convexlabs.xyz or @bax1337 on Twitter.
 We'd love your help making these tools more robust in an effort to make the NFT 
 market fair and equitable. If you find a bug or have a suggestion on how to 
 improve our code, check out our [contributing guide].
+
+## Acknowledgements
+The Etherscan team for providing the free API for:
+* [ArbiScan](https://arbiscan.io/)
+* [Etherscan](https://etherscan.io)
+* [FtmScan](https://ftmscan.com/)
+* [PolygonScan](https://polygonscan.com/)
+* [SnowTrace](https://snowtrace.io/)
+
 
 [Paradigm's Guide to Designing Effective NFT Launches]: https://www.paradigm.xyz/2021/10/a-guide-to-designing-effective-nft-launches/
 [traitsniper.com]: https://www.traitsniper.com/
