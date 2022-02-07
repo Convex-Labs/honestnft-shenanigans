@@ -12,9 +12,21 @@ import utils.ipfs as ipfs
 
 
 def get_contract_abi(address, blockchain="ethereum"):
-    if blockchain == "ethereum":
+    if blockchain == "arbitrum":
+        abi_endpoint = config.ARBITRUM_ABI_ENDPOINT
+        endpoint = config.ARBITRUM_ENDPOINT
+    elif blockchain == "avalanche":
+        abi_endpoint = config.AVALANCHE_ABI_ENDPOINT
+        endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "ethereum":
         abi_endpoint = config.ABI_ENDPOINT
         endpoint = config.ENDPOINT
+    elif blockchain == "fantom":
+        abi_endpoint = config.FANTOM_ABI_ENDPOINT
+        endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        abi_endpoint = config.OPTIMISM_ABI_ENDPOINT
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         abi_endpoint = config.POLYGON_ABI_ENDPOINT
         endpoint = config.POLYGON_ENDPOINT
@@ -114,8 +126,16 @@ def get_contract_abi(address, blockchain="ethereum"):
 
 
 def get_contract(address, abi, blockchain="ethereum"):
-    if blockchain == "ethereum":
+    if blockchain == "arbitrum":
+        endpoint = config.ARBITRUM_ENDPOINT
+    elif blockchain == "avalanche":
+        endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
+    elif blockchain == "fantom":
+        endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
     else:
@@ -193,11 +213,18 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 def get_token_uri_from_contract_batch(
     contract, token_ids, function_signature, abi, blockchain="ethereum"
 ):
-    if blockchain == "ethereum":
+    if blockchain == "arbitrum":
+        endpoint = config.ARBITRUM_ENDPOINT
+    elif blockchain == "avalanche":
+        endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
+    elif blockchain == "fantom":
+        endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
-        raise NotImplementedError("Polygon blockchain not supported yet")
     else:
         raise ValueError(f"Blockchain {blockchain} not supported")
 

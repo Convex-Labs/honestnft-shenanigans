@@ -481,7 +481,7 @@ if __name__ == "__main__":
     ARG_PARSER.add_argument(
         "-blockchain",
         type=str,
-        choices=["ethereum", "polygon"],
+        choices=["arbitrum", "avalanche", "ethereum", "fantom", "optimism", "polygon"],
         default="ethereum",
         help="Blockchain where the contract is located. (default: ethereum)",
     )
@@ -489,7 +489,19 @@ if __name__ == "__main__":
 
     if ARGS.ipfs_gateway is not None:
         config.IPFS_GATEWAY = ARGS.ipfs_gateway
-    if ARGS.blockchain == "polygon":
+    if ARGS.blockchain == "arbitrum":
+        if ARGS.web3_provider is not None:
+            config.ARBITRUM_ENDPOINT = ARGS.web3_provider
+    elif ARGS.blockchain == "avalanche":
+        if ARGS.web3_provider is not None:
+            config.AVALANCHE_ENDPOINT = ARGS.web3_provider
+    elif ARGS.blockchain == "fantom":
+        if ARGS.web3_provider is not None:
+            config.FANTOM_ENDPOINT = ARGS.web3_provider
+    elif ARGS.blockchain == "optimism":
+        if ARGS.web3_provider is not None:
+            config.OPTIMISM_ENDPOINT = ARGS.web3_provider
+    elif ARGS.blockchain == "polygon":
         if ARGS.web3_provider is not None:
             config.POLYGON_ENDPOINT = ARGS.web3_provider
     else:
