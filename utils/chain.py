@@ -272,11 +272,15 @@ def get_function_signature(func_name, abi):
     :return: function signature
     :rtype: str
     """
-    filtered = list(
-        filter(
-            lambda d: d["name"] == func_name if d["type"] == "function" else None, abi
-        )
-    )[0]
+    try:
+        filtered = list(
+            filter(
+                lambda d: d["name"] == func_name if d["type"] == "function" else None,
+                abi,
+            )
+        )[0]
+    except IndexError:
+        raise ValueError(f"{func_name} is not a valid function name")
     input_types = [obj["type"] for obj in filtered["inputs"]]
     output_types = [obj["type"] for obj in filtered["outputs"]]
     return f"{func_name}({','.join(input_types)})({','.join(output_types)})"
