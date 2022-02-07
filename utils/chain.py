@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import time
 
@@ -156,8 +157,13 @@ def get_contract(address, abi, blockchain="ethereum"):
     # Get contract checksum address
     contract_checksum_address = Web3.toChecksumAddress(address)
 
-    if "implementation" in contract_functions:
-        # Handle case where the contract is a proxy contract
+    # Check if the contract is a proxy contract
+    # Current heuristic: contract functions contains "implementation"
+    if [
+        func
+        for func in contract_functions
+        if re.search("implementation", func, re.IGNORECASE)
+    ]:
         # Fetch address for the implementation contract
         impl_contract = w3.toHex(
             w3.eth.get_storage_at(contract_checksum_address, config.IMPLEMENTATION_SLOT)
@@ -175,8 +181,8 @@ def get_contract(address, abi, blockchain="ethereum"):
         # Get the implementation contract ABI
         impl_abi = get_contract_abi(address=impl_address)
 
-        # Return the implementation address instead
-        return get_contract(impl_address, abi=impl_abi)
+        # Return the original address and the proxy ABI
+        return get_contract(address, abi=impl_abi)
 
     # Build the Ethereum contract object
     collection_contract = w3.eth.contract(contract_checksum_address, abi=abi)
