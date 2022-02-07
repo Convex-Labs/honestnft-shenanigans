@@ -191,7 +191,7 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 
 
 def get_token_uri_from_contract_batch(
-    contract, token_ids, uri_func, abi, blockchain="ethereum"
+    contract, token_ids, function_signature, abi, blockchain="ethereum"
 ):
     if blockchain == "ethereum":
         endpoint = config.ENDPOINT
@@ -207,8 +207,6 @@ def get_token_uri_from_contract_batch(
                 "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
             )
             sys.exit()
-
-        # signature = get_function_signature(uri_func, abi)
 
         w3 = Web3(Web3.HTTPProvider(endpoint))
 
@@ -274,11 +272,15 @@ def get_function_signature(func_name, abi):
     :return: function signature
     :rtype: str
     """
-    filtered = list(
-        filter(
-            lambda d: d["name"] == func_name if d["type"] == "function" else None, abi
-        )
-    )[0]
+    try:
+        filtered = list(
+            filter(
+                lambda d: d["name"] == func_name if d["type"] == "function" else None,
+                abi,
+            )
+        )[0]
+    except IndexError:
+        raise ValueError(f"{func_name} is not a valid function name")
     input_types = [obj["type"] for obj in filtered["inputs"]]
     output_types = [obj["type"] for obj in filtered["outputs"]]
     return f"{func_name}({','.join(input_types)})({','.join(output_types)})"
