@@ -179,10 +179,10 @@ def get_contract(address, abi, blockchain="ethereum"):
         time.sleep(5)
 
         # Get the implementation contract ABI
-        impl_abi = get_contract_abi(address=impl_address)
+        impl_abi = get_contract_abi(address=impl_address, blockchain=blockchain)
 
         # Return the original address and the proxy ABI
-        return get_contract(address, abi=impl_abi)
+        return get_contract(address, abi=impl_abi, blockchain=blockchain)
 
     # Build the Ethereum contract object
     collection_contract = w3.eth.contract(contract_checksum_address, abi=abi)
