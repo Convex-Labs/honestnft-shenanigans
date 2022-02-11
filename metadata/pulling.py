@@ -1,5 +1,6 @@
 import argparse
 import base64
+import concurrent.futures
 import json
 import os
 import sys
@@ -59,6 +60,7 @@ def fetch_all_metadata(
     uri_base,
     uri_suffix,
     blockchain,
+    threads,
 ):
 
     # Create raw attribute folder for collection if it doesnt already exist
@@ -154,32 +156,38 @@ def fetch_all_metadata(
             function_signature = chain.get_function_signature(uri_func, abi)
             # Fetch token URI from on-chain
             BATCH_SIZE = 50
-            for i in range(0, len(token_ids), BATCH_SIZE):
-                print(f"Fetching [{i}, {i + BATCH_SIZE}]")
-                token_ids_batch = token_ids[i : i + BATCH_SIZE]
-                # Skip on-chain fetch if we already have the metadata
-                token_ids_batch = list(
-                    filter(
-                        lambda token_id: not os.path.exists(
-                            f"{folder}/{token_id}.json"
-                        ),
-                        token_ids_batch,
+            with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+                for i in range(0, len(token_ids), BATCH_SIZE):
+                    token_ids_batch = token_ids[i : i + BATCH_SIZE]
+                    # Skip on-chain fetch if we already have the metadata
+                    token_ids_batch = list(
+                        filter(
+                            lambda token_id: not os.path.exists(
+                                f"{folder}/{token_id}.json"
+                            ),
+                            token_ids_batch,
+                        )
                     )
-                )
-                for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
-                    contract,
-                    token_ids_batch,
-                    function_signature,
-                    abi,
-                    blockchain=blockchain,
-                ).items():
-                    fetch(
+                    for (
                         token_id,
                         metadata_uri,
-                        filename="{folder}{token_id}{file_extension}".format(
-                            folder=folder, token_id=token_id, file_extension=file_suffix
-                        ),
-                    )
+                    ) in chain.get_token_uri_from_contract_batch(
+                        contract,
+                        token_ids_batch,
+                        function_signature,
+                        abi,
+                        blockchain=blockchain,
+                    ).items():
+                        executor.submit(
+                            fetch,
+                            token_id,
+                            metadata_uri,
+                            filename="{folder}{token_id}{file_extension}".format(
+                                folder=folder,
+                                token_id=token_id,
+                                file_extension=file_suffix,
+                            ),
+                        )
         except Exception as err:
             print(err)
 
@@ -363,6 +371,7 @@ def pull_metadata(args):
         uri_base=args.uri_base,
         uri_suffix=args.uri_suffix,
         blockchain=args.blockchain,
+        threads=args.threads,
     )
 
     # Generate traits DataFrame and save to disk as csv
@@ -484,6 +493,12 @@ if __name__ == "__main__":
         choices=["arbitrum", "avalanche", "ethereum", "fantom", "optimism", "polygon"],
         default="ethereum",
         help="Blockchain where the contract is located. (default: ethereum)",
+    )
+    ARG_PARSER.add_argument(
+        "-threads",
+        type=int,
+        default=None,
+        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",
     )
     ARGS = ARG_PARSER.parse_args()
 
