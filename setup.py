@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -20,7 +20,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["metadata", "fair_drop"],
+    packages=find_packages(exclude=["tests", "tests.*"]),
     include_package_data=True,
     install_requires=[
         "numpy>=1.18.4",
@@ -33,5 +33,6 @@ setup(
         "scikit-learn>=1.0.1",
         "papermill==2.3.3",
         "multicall>=0.2.0",
+        "python-dotenv==0.19.2",
     ],
 )
