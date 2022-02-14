@@ -10,8 +10,6 @@ import pandas as pd
 import requests
 from web3.exceptions import ContractLogicError
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-
 from utils import chain
 from utils import config
 from utils import ipfs

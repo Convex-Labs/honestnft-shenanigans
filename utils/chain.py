@@ -8,8 +8,8 @@ from multicall import Call, Multicall
 from web3 import Web3
 from web3.exceptions import ContractLogicError
 
-import utils.config as config
-import utils.ipfs as ipfs
+from utils import config
+from utils import ipfs
 
 
 def get_contract_abi(address, blockchain="ethereum"):

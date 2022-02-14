@@ -2,6 +2,8 @@ import argparse
 import numpy as np
 import pandas as pd
 
+from utils import config
+
 
 def max_variety_count(trait_db, trait_types):
     # Get the number of trait values in the largest trait class
@@ -133,7 +135,7 @@ def build_rarity_db(
     )
 
     # Write rarity data to disk
-    rarity_db.to_csv(f"rarity_data/{collection}_{method}.csv")
+    rarity_db.to_csv(f"{config.RARITY_FOLDER}/{collection}_{method}.csv")
 
     # Print top 5 items
     print(rarity_db.head(5).T)
@@ -176,7 +178,7 @@ if __name__ == "__main__":
     ARGS = ARG_PARSER.parse_args()
 
     # Build attribute file
-    ATTRIBUTE_FILE = f"raw_attributes/{ARGS.collection}.csv"
+    ATTRIBUTE_FILE = f"{config.ATTRIBUTES_FOLDER}/{ARGS.collection}.csv"
 
     # Build rarity database and save to disk
     build_rarity_db(
