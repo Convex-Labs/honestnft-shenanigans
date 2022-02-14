@@ -18,7 +18,9 @@ class DappRadar:
     """
 
     _SALES_ENDPOINT = "https://nft-sales-service.dappradar.com/v2/"
-    _TOKEN_SALES_ENDPOINT = "https://nft-balance-api.dappradar.com/transactions/ethereum/"
+    _TOKEN_SALES_ENDPOINT = (
+        "https://nft-balance-api.dappradar.com/transactions/ethereum/"
+    )
 
     def __init__(self):
         self._session = Session()
@@ -29,7 +31,9 @@ class DappRadar:
         response = self._session.send(request.prepare())
         return self._process_response(response)
 
-    def _get(self, endpoint: str, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
+    def _get(
+            self, endpoint: str, path: str, params: Optional[Dict[str, Any]] = None
+    ) -> Any:
         return self._request(endpoint, "GET", path, params=params)
 
     @staticmethod
@@ -59,7 +63,9 @@ class DappRadar:
             "order": order,
             "collections": collections,
         }
-        response = self._get(self._SALES_ENDPOINT, f"/sale/{resolution}", params=payload)
+        response = self._get(
+            self._SALES_ENDPOINT, f"/sale/{resolution}", params=payload
+        )
         return response
 
     def _get_historical_token_sales_data(
@@ -75,7 +81,10 @@ class DappRadar:
             "resultsPerPage": results_per_page,
             "fiat": fiat,
         }
-        response = self._get(self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}", params=payload)
+        response = self._get(
+            self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}",
+            params=payload
+        )
         print(response)
         return response
 

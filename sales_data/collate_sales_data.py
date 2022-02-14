@@ -38,7 +38,9 @@ class SalesData:
                 url = self.opensea_url % slug
                 print(url)
                 response = requests.get(url).json()
-                contract_addresses.append(response["collection"]["primary_asset_contracts"][0]["address"])
+                contract_addresses.append(
+                    response["collection"]["primary_asset_contracts"][0]["address"]
+                )
             except:
                 continue
         return contract_addresses
@@ -57,11 +59,7 @@ class SalesData:
 
     def _get_token_sales_data(self, contract_address, token_id):
         token_sales_data = self.dapp.collate_historical_token_sales_data(
-            contract_address,
-            token_id,
-            page=1,
-            results_per_page=25,
-            fiat="USD"
+            contract_address, token_id, page=1, results_per_page=25, fiat="USD"
         )
         return token_sales_data
 
