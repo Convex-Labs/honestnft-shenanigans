@@ -32,7 +32,7 @@ class DappRadar:
         return self._process_response(response)
 
     def _get(
-            self, endpoint: str, path: str, params: Optional[Dict[str, Any]] = None
+        self, endpoint: str, path: str, params: Optional[Dict[str, Any]] = None
     ) -> Any:
         return self._request(endpoint, "GET", path, params=params)
 
@@ -83,7 +83,7 @@ class DappRadar:
         }
         response = self._get(
             self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}",
-            params=payload
+params=payload
         )
         print(response)
         return response
