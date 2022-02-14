@@ -83,7 +83,7 @@ class DappRadar:
         }
         response = self._get(
             self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}",
-params=payload
+        params=payload
         )
         print(response)
         return response
