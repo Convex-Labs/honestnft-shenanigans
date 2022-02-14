@@ -50,7 +50,15 @@ def get_metadata(uri, destination):
 
 
 def fetch_all_metadata(
-    token_ids, collection, sleep, uri_func, contract, abi, uri_base, uri_suffix
+    token_ids,
+    collection,
+    sleep,
+    uri_func,
+    contract,
+    abi,
+    uri_base,
+    uri_suffix,
+    blockchain,
 ):
 
     # Create raw attribute folder for collection if it doesnt already exist
@@ -142,28 +150,34 @@ def fetch_all_metadata(
         and contract is not None
         and abi is not None
     ):
-        # Fetch token URI from on-chain
-        BATCH_SIZE = 50
-        for i in range(0, len(token_ids), BATCH_SIZE):
-            print(f"Fetching [{i}, {i + BATCH_SIZE}]")
-            token_ids_batch = token_ids[i : i + BATCH_SIZE]
-            # Skip on-chain fetch if we already have the metadata
-            token_ids_batch = list(
-                filter(
-                    lambda token_id: not os.path.exists(f"{folder}/{token_id}.json"),
-                    token_ids_batch,
+        try:
+            function_signature = chain.get_function_signature(uri_func, abi)
+            # Fetch token URI from on-chain
+            BATCH_SIZE = 50
+            for i in range(0, len(token_ids), BATCH_SIZE):
+                print(f"Fetching [{i}, {i + BATCH_SIZE}]")
+                token_ids_batch = token_ids[i : i + BATCH_SIZE]
+                # Skip on-chain fetch if we already have the metadata
+                token_ids_batch = list(
+                    filter(
+                        lambda token_id: not os.path.exists(
+                            f"{folder}/{token_id}.json"
+                        ),
+                        token_ids_batch,
+                    )
                 )
-            )
-            for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
-                contract, token_ids_batch, uri_func, abi
-            ).items():
-                fetch(
-                    token_id,
-                    metadata_uri,
-                    filename="{folder}{token_id}{file_extension}".format(
-                        folder=folder, token_id=token_id, file_extension=file_suffix
-                    ),
-                )
+                for token_id, metadata_uri in chain.get_token_uri_from_contract_batch(
+                    contract, token_ids_batch, uri_func, abi, blockchain=blockchain
+                ).items():
+                    fetch(
+                        token_id,
+                        metadata_uri,
+                        filename="{folder}{token_id}{file_extension}".format(
+                            folder=folder, token_id=token_id, file_extension=file_suffix
+                        ),
+                    )
+        except Exception as err:
+            print(err)
 
     # Fetch metadata for all token ids
     for token_id in token_ids:
@@ -265,8 +279,10 @@ def pull_metadata(args):
 
     if args.contract is not None:
         # Get Ethereum contract object
-        abi = chain.get_contract_abi(address=args.contract)
-        abi, contract = chain.get_contract(address=args.contract, abi=abi)
+        abi = chain.get_contract_abi(address=args.contract, blockchain=args.blockchain)
+        abi, contract = chain.get_contract(
+            address=args.contract, abi=abi, blockchain=args.blockchain
+        )
     else:
         contract = None
         abi = None
@@ -342,6 +358,7 @@ def pull_metadata(args):
         sleep=args.sleep,
         uri_base=args.uri_base,
         uri_suffix=args.uri_suffix,
+        blockchain=args.blockchain,
     )
 
     # Generate traits DataFrame and save to disk as csv
@@ -457,11 +474,22 @@ if __name__ == "__main__":
         default=None,
         help="Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)",
     )
+    ARG_PARSER.add_argument(
+        "-blockchain",
+        type=str,
+        choices=["ethereum", "polygon"],
+        default="ethereum",
+        help="Blockchain where the contract is located. (default: ethereum)",
+    )
     ARGS = ARG_PARSER.parse_args()
 
     if ARGS.ipfs_gateway is not None:
         config.IPFS_GATEWAY = ARGS.ipfs_gateway
-    if ARGS.web3_provider is not None:
-        config.ENDPOINT = ARGS.web3_provider
+    if ARGS.blockchain == "polygon":
+        if ARGS.web3_provider is not None:
+            config.POLYGON_ENDPOINT = ARGS.web3_provider
+    else:
+        if ARGS.web3_provider is not None:
+            config.ENDPOINT = ARGS.web3_provider
 
     pull_metadata(ARGS)
