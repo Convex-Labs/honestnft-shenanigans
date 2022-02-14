@@ -82,8 +82,7 @@ class DappRadar:
             "fiat": fiat,
         }
         response = self._get(
-            self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}",
-        params=payload
+            self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}", params=payload
         )
         print(response)
         return response
