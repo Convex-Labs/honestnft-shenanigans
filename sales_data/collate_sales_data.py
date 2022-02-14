@@ -7,7 +7,6 @@ from dappradar import DappRadar
 
 
 class SalesData:
-
     def __init__(self):
         self.opensea_url = "https://api.opensea.io/api/v1/collection/%s"
         self.collections_file_path = "collections/eth_contracts.json"
