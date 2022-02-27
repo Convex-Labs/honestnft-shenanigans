@@ -36,6 +36,9 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     print("Project : " + str(project_name))
 
     # Saves the rarity data into the Folder "rarity_data" provided
+    metadata_attributes_csv_file_name = f"{config.ATTRIBUTES_FOLDER}/{project_name}.csv"
+
+    # Saves the rarity data into the Folder "rarity_data" provided
     metadata_scoring_csv_file_name = (
         f"{config.RARITY_FOLDER}/{project_name}_raritytools.csv"
     )
@@ -276,9 +279,37 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
         write.writerow(header_row)
         write.writerows(sorted_scoring_csv)
 
+    save_raw_attributes_csv(
+        collection=project_name,
+        raw_attributtes=metadata_to_save,
+        file_path=metadata_attributes_csv_file_name,
+    )
+
     if warning_flag:
         print(
             "============\n    WARNING\n==============\nThe rarity data you are trying to extrat might contain Thematic Match / Matching Sets that this script ignored. \nSo while you compare with Rarity Tools data, make sure Thematic Sets is turned off.\n\n"
         )
 
     print("--- %s seconds Taken to Download ---" % (time.time() - start_time))
+
+
+def save_raw_attributes_csv(collection, raw_attributtes, file_path):
+    import pandas as pd
+
+    # List to store all tokens traits
+    trait_data = []
+    for token in raw_attributtes:
+        # empty dict to store this token traits
+        token_raw = dict()
+        token_raw["TOKEN_ID"] = token
+        token_raw["TOKEN_NAME"] = f"{collection} #{str(token)}"
+
+        for trait in raw_attributtes[token]["nft_traits"]:
+            if trait["node"]["traitType"] != "Trait Count":
+                token_raw[trait["node"]["traitType"]] = trait["node"]["value"]
+
+        trait_data.append(token_raw)
+
+    # convert list to pandas dataframe and save to disk
+    raw_attributes_csv = pd.DataFrame.from_records(trait_data)
+    raw_attributes_csv.to_csv(file_path)
