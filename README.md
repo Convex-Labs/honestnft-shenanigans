@@ -53,7 +53,7 @@ Navigate to a directory of your choice.
 
 1. `git clone https://github.com/Convex-Labs/honestnft-shenanigans.git`
 2. `cd honestnft-shenanigans`
-3. `python3 setup.py develop`
+3. `pip install --editable .`
 4. Rename `.env-example` to `.env`
 5. Add your personal API keys and web3 providers to .env
 
