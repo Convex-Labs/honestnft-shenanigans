@@ -19,6 +19,9 @@ def get_contract_abi(address, blockchain="ethereum"):
     elif blockchain == "avalanche":
         abi_endpoint = config.AVALANCHE_ABI_ENDPOINT
         endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "binance":
+        abi_endpoint = config.BINANCE_SCAN_ABI_ENDPOINT
+        endpoint = config.BINANCE_ENDPOINT
     elif blockchain == "ethereum":
         abi_endpoint = config.ABI_ENDPOINT
         endpoint = config.ENDPOINT
@@ -131,6 +134,8 @@ def get_contract(address, abi, blockchain="ethereum"):
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
         endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "binance":
+        endpoint = config.BINANCE_ENDPOINT
     elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
     elif blockchain == "fantom":
@@ -223,6 +228,8 @@ def get_token_uri_from_contract_batch(
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
         endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "binance":
+        endpoint = config.BINANCE_ENDPOINT
     elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
     elif blockchain == "fantom":
