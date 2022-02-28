@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import time
 
@@ -12,9 +13,21 @@ import utils.ipfs as ipfs
 
 
 def get_contract_abi(address, blockchain="ethereum"):
-    if blockchain == "ethereum":
+    if blockchain == "arbitrum":
+        abi_endpoint = config.ARBITRUM_ABI_ENDPOINT
+        endpoint = config.ARBITRUM_ENDPOINT
+    elif blockchain == "avalanche":
+        abi_endpoint = config.AVALANCHE_ABI_ENDPOINT
+        endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "ethereum":
         abi_endpoint = config.ABI_ENDPOINT
         endpoint = config.ENDPOINT
+    elif blockchain == "fantom":
+        abi_endpoint = config.FANTOM_ABI_ENDPOINT
+        endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        abi_endpoint = config.OPTIMISM_ABI_ENDPOINT
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         abi_endpoint = config.POLYGON_ABI_ENDPOINT
         endpoint = config.POLYGON_ENDPOINT
@@ -114,8 +127,16 @@ def get_contract_abi(address, blockchain="ethereum"):
 
 
 def get_contract(address, abi, blockchain="ethereum"):
-    if blockchain == "ethereum":
+    if blockchain == "arbitrum":
+        endpoint = config.ARBITRUM_ENDPOINT
+    elif blockchain == "avalanche":
+        endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
+    elif blockchain == "fantom":
+        endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
     else:
@@ -136,8 +157,13 @@ def get_contract(address, abi, blockchain="ethereum"):
     # Get contract checksum address
     contract_checksum_address = Web3.toChecksumAddress(address)
 
-    if "implementation" in contract_functions:
-        # Handle case where the contract is a proxy contract
+    # Check if the contract is a proxy contract
+    # Current heuristic: contract functions contains "implementation"
+    if [
+        func
+        for func in contract_functions
+        if re.search("implementation", func, re.IGNORECASE)
+    ]:
         # Fetch address for the implementation contract
         impl_contract = w3.toHex(
             w3.eth.get_storage_at(contract_checksum_address, config.IMPLEMENTATION_SLOT)
@@ -153,10 +179,10 @@ def get_contract(address, abi, blockchain="ethereum"):
         time.sleep(5)
 
         # Get the implementation contract ABI
-        impl_abi = get_contract_abi(address=impl_address)
+        impl_abi = get_contract_abi(address=impl_address, blockchain=blockchain)
 
-        # Return the implementation address instead
-        return get_contract(impl_address, abi=impl_abi)
+        # Return the original address and the proxy ABI
+        return get_contract(address, abi=impl_abi, blockchain=blockchain)
 
     # Build the Ethereum contract object
     collection_contract = w3.eth.contract(contract_checksum_address, abi=abi)
@@ -191,13 +217,20 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 
 
 def get_token_uri_from_contract_batch(
-    contract, token_ids, uri_func, abi, blockchain="ethereum"
+    contract, token_ids, function_signature, abi, blockchain="ethereum"
 ):
-    if blockchain == "ethereum":
+    if blockchain == "arbitrum":
+        endpoint = config.ARBITRUM_ENDPOINT
+    elif blockchain == "avalanche":
+        endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
+    elif blockchain == "fantom":
+        endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
-        raise NotImplementedError("Polygon blockchain not supported yet")
     else:
         raise ValueError(f"Blockchain {blockchain} not supported")
 
@@ -207,8 +240,6 @@ def get_token_uri_from_contract_batch(
                 "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
             )
             sys.exit()
-
-        # signature = get_function_signature(uri_func, abi)
 
         w3 = Web3(Web3.HTTPProvider(endpoint))
 
@@ -274,11 +305,15 @@ def get_function_signature(func_name, abi):
     :return: function signature
     :rtype: str
     """
-    filtered = list(
-        filter(
-            lambda d: d["name"] == func_name if d["type"] == "function" else None, abi
-        )
-    )[0]
+    try:
+        filtered = list(
+            filter(
+                lambda d: d["name"] == func_name if d["type"] == "function" else None,
+                abi,
+            )
+        )[0]
+    except IndexError:
+        raise ValueError(f"{func_name} is not a valid function name")
     input_types = [obj["type"] for obj in filtered["inputs"]]
     output_types = [obj["type"] for obj in filtered["outputs"]]
     return f"{func_name}({','.join(input_types)})({','.join(output_types)})"
