@@ -1,8 +1,6 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-
 from utils import chain, ipfs
 
 contract_address = "0x60d9b4f9d85695274a5777537f204675082bd745"
