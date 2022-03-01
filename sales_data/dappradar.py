@@ -17,19 +17,24 @@ class DappRadar:
     Collections -> contract address
     """
 
-    _ENDPOINT = "https://nft-sales-service.dappradar.com/v2/"
+    _SALES_ENDPOINT = "https://nft-sales-service.dappradar.com/v2/"
+    _TOKEN_SALES_ENDPOINT = (
+        "https://nft-balance-api.dappradar.com/transactions/ethereum/"
+    )
 
     def __init__(self):
         self._session = Session()
 
-    def _request(self, method: str, path: str, **kwargs) -> Any:
-        print(f"Processing: {self._ENDPOINT + path}")
-        request = Request(method, self._ENDPOINT + path, **kwargs)
+    def _request(self, endpoint: str, method: str, path: str, **kwargs) -> Any:
+        print(f"Processing: {endpoint + path}")
+        request = Request(method, endpoint + path, **kwargs)
         response = self._session.send(request.prepare())
         return self._process_response(response)
 
-    def _get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
-        return self._request("GET", path, params=params)
+    def _get(
+        self, endpoint: str, path: str, params: Optional[Dict[str, Any]] = None
+    ) -> Any:
+        return self._request(endpoint, "GET", path, params=params)
 
     @staticmethod
     def _process_response(response: Response) -> Any:
@@ -50,9 +55,36 @@ class DappRadar:
         order: str,
         collections: str,
     ):
+        payload = {
+            "limit": limit,
+            "page": page,
+            "currency": currency,
+            "sort": sort,
+            "order": order,
+            "collections": collections,
+        }
         response = self._get(
-            f"/sale/{resolution}?limit={limit}&page={page}&currency={currency}&sort={sort}&order={order}&collections={collections}"
+            self._SALES_ENDPOINT, f"/sale/{resolution}", params=payload
         )
+        return response
+
+    def _get_historical_token_sales_data(
+        self,
+        contract_address: str,
+        token_id: str,
+        page: int,
+        results_per_page: int,
+        fiat: str,
+    ):
+        payload = {
+            "page": page,
+            "resultsPerPage": results_per_page,
+            "fiat": fiat,
+        }
+        response = self._get(
+            self._TOKEN_SALES_ENDPOINT, f"{contract_address}/{token_id}", params=payload
+        )
+        print(response)
         return response
 
     def collate_historical_data(
@@ -86,19 +118,50 @@ class DappRadar:
 
         return sales_data
 
+    def collate_historical_token_sales_data(
+        self,
+        contract_address: str,
+        token_id: str,
+        page: int,
+        results_per_page: int,
+        fiat: str,
+    ):
+        token_sales_data = list()
+
+        response = self._get_historical_token_sales_data(
+            contract_address, token_id, page, results_per_page, fiat
+        )
+
+        page = response["page"]
+        page_count = response["pageCount"]
+
+        token_sales_data.extend(response["data"])
+
+        page += 1
+
+        while page < page_count:
+            response = self._get_historical_token_sales_data(
+                contract_address, token_id, page, results_per_page, fiat
+            )
+            token_sales_data.extend(response["data"])
+
+            page += 1
+
+        token_sales_data = pd.DataFrame(token_sales_data)
+
+        return token_sales_data
+
 
 if __name__ == "__main__":
     """
     Example for Bored Ape Yacht Club
     """
     dapp = DappRadar()
-    sales_data = dapp.collate_historical_data(
-        resolution="week",
-        limit=15,
+    sales_data = dapp.collate_historical_token_sales_data(
+        contract_address="0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+        token_id="69",
         page=1,
-        currency="USD",
-        sort="soldAt",
-        order="desc",
-        collections="0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+        results_per_page=25,
+        fiat="USD",
     )
     print(sales_data.head(10))

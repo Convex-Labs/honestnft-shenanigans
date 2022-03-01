@@ -16,6 +16,9 @@ ARBITRUM_ABI_ENDPOINT = (
 AVALANCHE_ABI_ENDPOINT = (
     "https://api.snowtrace.io/api?module=contract&action=getabi&address="
 )
+BINANCE_SCAN_ABI_ENDPOINT = (
+    "https://api.bscscan.com/api?module=contract&action=getabi&address="
+)
 FANTOM_ABI_ENDPOINT = (
     "https://api.ftmscan.com/api?module=contract&action=getabi&address="
 )

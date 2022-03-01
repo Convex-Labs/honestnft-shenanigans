@@ -214,6 +214,7 @@ improve our code, check out our [contributing guide].
 ## Acknowledgements
 The Etherscan team for providing the free API for:
 * [ArbiScan](https://arbiscan.io/)
+* [BscScan](https://www.bscscan.com/)
 * [Etherscan](https://etherscan.io)
 * [FtmScan](https://ftmscan.com/)
 * [PolygonScan](https://polygonscan.com/)
