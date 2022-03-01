@@ -51,6 +51,7 @@ FIRST_FLIP_PROFITS_FOLDER = f"{ROOT_DATA_FOLDER}/first_flip_profits"
 FIRST_FLIP_REVENUE_FOLDER = f"{ROOT_DATA_FOLDER}/first_flip_revenue"
 PRE_REVEAL_BIDS_FOLDER = f"{ROOT_DATA_FOLDER}/pre-reveal_bids"
 PRE_REVEAL_SALES_FOLDER = f"{ROOT_DATA_FOLDER}/pre-reveal_sales"
+SALES_DATA_FOLDER = f"{ROOT_DATA_FOLDER}/sales_data"
 
 """
 Misc
