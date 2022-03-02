@@ -35,6 +35,7 @@ web3 providers
 ENDPOINT = config.get("web3_provider")
 ARBITRUM_ENDPOINT = config.get("arbitrum_web3_provider")
 AVALANCHE_ENDPOINT = config.get("avalanche_web3_provider")
+BINANCE_ENDPOINT = config.get("binance_web3_provider")
 FANTOM_ENDPOINT = config.get("fantom_web3_provider")
 OPTIMISM_ENDPOINT = config.get("optimism_web3_provider")
 POLYGON_ENDPOINT = config.get("polygon_web3_provider")
