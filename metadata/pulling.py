@@ -10,8 +10,6 @@ import pandas as pd
 import requests
 from web3.exceptions import ContractLogicError
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-
 from utils import chain
 from utils import config
 from utils import ipfs
@@ -490,7 +488,15 @@ if __name__ == "__main__":
     ARG_PARSER.add_argument(
         "-blockchain",
         type=str,
-        choices=["arbitrum", "avalanche", "ethereum", "fantom", "optimism", "polygon"],
+        choices=[
+            "arbitrum",
+            "avalanche",
+            "binance",
+            "ethereum",
+            "fantom",
+            "optimism",
+            "polygon",
+        ],
         default="ethereum",
         help="Blockchain where the contract is located. (default: ethereum)",
     )
@@ -510,6 +516,9 @@ if __name__ == "__main__":
     elif ARGS.blockchain == "avalanche":
         if ARGS.web3_provider is not None:
             config.AVALANCHE_ENDPOINT = ARGS.web3_provider
+    elif ARGS.blockchain == "binance":
+        if ARGS.web3_provider is not None:
+            config.BSC_ENDPOINT = ARGS.web3_provider
     elif ARGS.blockchain == "fantom":
         if ARGS.web3_provider is not None:
             config.FANTOM_ENDPOINT = ARGS.web3_provider

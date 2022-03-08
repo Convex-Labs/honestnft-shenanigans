@@ -26,18 +26,21 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     import time
     import json
     from pprint import pprint
-    import os
     import datetime
+
+    from utils import config
 
     dt_now = datetime.datetime.utcnow()
     start_time = time.time()
-    script_dir = os.path.dirname(__file__)
 
     print("Project : " + str(project_name))
 
     # Saves the rarity data into the Folder "rarity_data" provided
-    metadata_scoring_csv_file_name = os.path.join(
-        script_dir, "rarity_data/" + project_name + "_raritytools.csv"
+    metadata_attributes_csv_file_name = f"{config.ATTRIBUTES_FOLDER}/{project_name}.csv"
+
+    # Saves the rarity data into the Folder "rarity_data" provided
+    metadata_scoring_csv_file_name = (
+        f"{config.RARITY_FOLDER}/{project_name}_raritytools.csv"
     )
 
     warning_flag = False
@@ -51,9 +54,9 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
 
     response = requests.request("GET", url, headers=headers)
     response_data = response.json()
-    all_traits = response_data[u"basePropDefs"]
+    all_traits = response_data["basePropDefs"]
     number_of_traits_types = len(all_traits) - 1
-    nft_metadata = response_data[u"items"]
+    nft_metadata = response_data["items"]
     metadata_scoring = {}
     metadata_to_save = {}
     total_tokens_len = len(nft_metadata)
@@ -78,13 +81,13 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     for x in range(0, total_tokens_len):
 
         token_id = str(nft_metadata[x][0])
-        metadata_to_save.update({token_id: {u"nft_traits": []}})
+        metadata_to_save.update({token_id: {"nft_traits": []}})
 
         metadata_scoring.update(
             {
                 token_id: {
-                    u"TOKEN_ID": token_id,
-                    u"TOKEN_NAME": project_name + " #" + str(token_id),
+                    "TOKEN_ID": token_id,
+                    "TOKEN_NAME": project_name + " #" + str(token_id),
                 }
             }
         )
@@ -110,7 +113,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
                 if len(nft_metadata[x][y]) == 0:
                     if normalize_trait:
                         try:
-                            number_of_category = len(all_traits[y][u"pvs"])
+                            number_of_category = len(all_traits[y]["pvs"])
                         except:
                             print(y)
                             pprint(all_traits[y])
@@ -121,15 +124,15 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
                         token_rarity_score = token_rarity_score + (
                             constant_number
                             / (number_of_traits_types * number_of_category)
-                        ) / (all_traits[y][u"pvs"][0][1] / total_tokens_len)
+                        ) / (all_traits[y]["pvs"][0][1] / total_tokens_len)
                         this_trait_rarity_score = (
                             constant_number
                             / (number_of_traits_types * number_of_category)
-                        ) / (all_traits[y][u"pvs"][0][1] / total_tokens_len)
+                        ) / (all_traits[y]["pvs"][0][1] / total_tokens_len)
                         temp_scoring += this_trait_rarity_score
                     else:
                         token_rarity_score = token_rarity_score + 1 / (
-                            all_traits[y][u"pvs"][0][1] / total_tokens_len
+                            all_traits[y]["pvs"][0][1] / total_tokens_len
                         )
                         temp_scoring += this_trait_rarity_score
                 else:
@@ -137,7 +140,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
                         if normalize_trait:
 
                             try:
-                                number_of_category = len(all_traits[y][u"pvs"])
+                                number_of_category = len(all_traits[y]["pvs"])
                             except:
                                 print(y)
                                 pprint(all_traits[y])
@@ -148,22 +151,18 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
                             token_rarity_score = token_rarity_score + (
                                 constant_number
                                 / (number_of_traits_types * number_of_category)
-                            ) / (
-                                all_traits[y][u"pvs"][each_theme][1] / total_tokens_len
-                            )
+                            ) / (all_traits[y]["pvs"][each_theme][1] / total_tokens_len)
                             this_trait_rarity_score = (
                                 constant_number
                                 / (number_of_traits_types * number_of_category)
-                            ) / (
-                                all_traits[y][u"pvs"][each_theme][1] / total_tokens_len
-                            )
+                            ) / (all_traits[y]["pvs"][each_theme][1] / total_tokens_len)
                             temp_scoring += this_trait_rarity_score
                         else:
                             token_rarity_score = token_rarity_score + 1 / (
-                                all_traits[y][u"pvs"][each_theme][1] / total_tokens_len
+                                all_traits[y]["pvs"][each_theme][1] / total_tokens_len
                             )
                             this_trait_rarity_score = 1 / (
-                                all_traits[y][u"pvs"][each_theme][1] / total_tokens_len
+                                all_traits[y]["pvs"][each_theme][1] / total_tokens_len
                             )
                             temp_scoring += this_trait_rarity_score
             else:
@@ -173,29 +172,29 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
                     if all_traits[y].get("pvs", "empty") == "empty":
                         break
                     else:
-                        number_of_category = len(all_traits[y][u"pvs"])
+                        number_of_category = len(all_traits[y]["pvs"])
 
                         token_rarity_score = token_rarity_score + (
                             constant_number
                             / (number_of_traits_types * number_of_category)
                         ) / (
-                            all_traits[y][u"pvs"][nft_metadata[x][y]][1]
+                            all_traits[y]["pvs"][nft_metadata[x][y]][1]
                             / total_tokens_len
                         )
                         this_trait_rarity_score = (
                             constant_number
                             / (number_of_traits_types * number_of_category)
                         ) / (
-                            all_traits[y][u"pvs"][nft_metadata[x][y]][1]
+                            all_traits[y]["pvs"][nft_metadata[x][y]][1]
                             / total_tokens_len
                         )
 
                 else:
                     token_rarity_score = token_rarity_score + 1 / (
-                        all_traits[y][u"pvs"][nft_metadata[x][y]][1] / total_tokens_len
+                        all_traits[y]["pvs"][nft_metadata[x][y]][1] / total_tokens_len
                     )
                     this_trait_rarity_score = 1 / (
-                        all_traits[y][u"pvs"][nft_metadata[x][y]][1] / total_tokens_len
+                        all_traits[y]["pvs"][nft_metadata[x][y]][1] / total_tokens_len
                     )
 
             if isinstance(nft_metadata[x][y], list):
@@ -203,29 +202,29 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
                 for each_theme in nft_metadata[x][y]:
                     this_token_trait.append(
                         {
-                            u"node": {
-                                u"traitType": all_traits[y][u"name"],
-                                u"value": all_traits[y][u"pvs"][each_theme][0],
+                            "node": {
+                                "traitType": all_traits[y]["name"],
+                                "value": all_traits[y]["pvs"][each_theme][0],
                             }
                         }
                     )
 
-                each_trait_score.update({all_traits[y][u"name"]: temp_scoring})
+                each_trait_score.update({all_traits[y]["name"]: temp_scoring})
             else:
                 this_token_trait.append(
                     {
-                        u"node": {
-                            u"traitType": all_traits[y][u"name"],
-                            u"value": all_traits[y][u"pvs"][nft_metadata[x][y]][0],
+                        "node": {
+                            "traitType": all_traits[y]["name"],
+                            "value": all_traits[y]["pvs"][nft_metadata[x][y]][0],
                         }
                     }
                 )
                 each_trait_score.update(
-                    {all_traits[y][u"name"]: this_trait_rarity_score}
+                    {all_traits[y]["name"]: this_trait_rarity_score}
                 )
 
         rarity_table.update({str(token_id): float(token_rarity_score)})
-        metadata_to_save[token_id].update({u"nft_traits": this_token_trait})
+        metadata_to_save[token_id].update({"nft_traits": this_token_trait})
         metadata_scoring[token_id].update(each_trait_score)
 
     # Sort all the rarity data base on the rarity scores (Descending Order)
@@ -280,9 +279,37 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
         write.writerow(header_row)
         write.writerows(sorted_scoring_csv)
 
+    save_raw_attributes_csv(
+        collection=project_name,
+        raw_attributtes=metadata_to_save,
+        file_path=metadata_attributes_csv_file_name,
+    )
+
     if warning_flag:
         print(
             "============\n    WARNING\n==============\nThe rarity data you are trying to extrat might contain Thematic Match / Matching Sets that this script ignored. \nSo while you compare with Rarity Tools data, make sure Thematic Sets is turned off.\n\n"
         )
 
     print("--- %s seconds Taken to Download ---" % (time.time() - start_time))
+
+
+def save_raw_attributes_csv(collection, raw_attributtes, file_path):
+    import pandas as pd
+
+    # List to store all tokens traits
+    trait_data = []
+    for token in raw_attributtes:
+        # empty dict to store this token traits
+        token_raw = dict()
+        token_raw["TOKEN_ID"] = token
+        token_raw["TOKEN_NAME"] = f"{collection} #{str(token)}"
+
+        for trait in raw_attributtes[token]["nft_traits"]:
+            if trait["node"]["traitType"] != "Trait Count":
+                token_raw[trait["node"]["traitType"]] = trait["node"]["value"]
+
+        trait_data.append(token_raw)
+
+    # convert list to pandas dataframe and save to disk
+    raw_attributes_csv = pd.DataFrame.from_records(trait_data)
+    raw_attributes_csv.to_csv(file_path)

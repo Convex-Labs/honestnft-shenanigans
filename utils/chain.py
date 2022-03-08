@@ -8,8 +8,8 @@ from multicall import Call, Multicall
 from web3 import Web3
 from web3.exceptions import ContractLogicError
 
-import utils.config as config
-import utils.ipfs as ipfs
+from utils import config
+from utils import ipfs
 
 
 def get_contract_abi(address, blockchain="ethereum"):
@@ -19,6 +19,9 @@ def get_contract_abi(address, blockchain="ethereum"):
     elif blockchain == "avalanche":
         abi_endpoint = config.AVALANCHE_ABI_ENDPOINT
         endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "binance":
+        abi_endpoint = config.BINANCE_SCAN_ABI_ENDPOINT
+        endpoint = config.BINANCE_ENDPOINT
     elif blockchain == "ethereum":
         abi_endpoint = config.ABI_ENDPOINT
         endpoint = config.ENDPOINT
@@ -70,7 +73,9 @@ def get_contract_abi(address, blockchain="ethereum"):
 
             # List of common ERC721 methods to check
             common_abis = {}
-            # ERC721 metadata interface id
+            # ERC165 interface ID
+            common_abis["0x01ffc9a7"] = erc165_abi
+            # ERC721 metadata interface ID
             common_abis["0x5b5e139f"] = [
                 {
                     "inputs": [],
@@ -97,7 +102,7 @@ def get_contract_abi(address, blockchain="ethereum"):
                     "type": "function",
                 },
             ]
-            # ERC721 enumerable interface id
+            # ERC721 enumerable interface ID
             common_abis["0x780e9d63"] = [
                 {
                     "inputs": [],
@@ -131,6 +136,8 @@ def get_contract(address, abi, blockchain="ethereum"):
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
         endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "binance":
+        endpoint = config.BINANCE_ENDPOINT
     elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
     elif blockchain == "fantom":
@@ -223,6 +230,8 @@ def get_token_uri_from_contract_batch(
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
         endpoint = config.AVALANCHE_ENDPOINT
+    elif blockchain == "binance":
+        endpoint = config.BINANCE_ENDPOINT
     elif blockchain == "ethereum":
         endpoint = config.ENDPOINT
     elif blockchain == "fantom":
@@ -317,3 +326,24 @@ def get_function_signature(func_name, abi):
     input_types = [obj["type"] for obj in filtered["inputs"]]
     output_types = [obj["type"] for obj in filtered["outputs"]]
     return f"{func_name}({','.join(input_types)})({','.join(output_types)})"
+
+
+def get_token_standard(contract):
+    """
+    Given a contract object, return the token standard
+    eg. get_token_standard(contract) => "ERC-721"
+
+    :param contract:
+    :type contract: web3.contract.Contract
+    :return: ERC standard
+    :rtype: str
+    """
+    erc_dict = {
+        "ERC-721": ["0x80AC58CD", "0x150B7A02", "0x5B5E139F"],
+        "ERC-1155": ["0xD9B67A26", "0x4E2312E0"],
+    }
+    for standard, identifiers in erc_dict.items():
+        for identifier in identifiers:
+            if contract.functions.supportsInterface(identifier).call():
+                return standard
+    return "Unknown standard"

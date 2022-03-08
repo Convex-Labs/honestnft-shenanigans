@@ -1,10 +1,10 @@
-import os
 import re
 import warnings
+from pathlib import Path
 
 import ipfshttpclient
 
-import utils.config as config
+from utils import config
 
 
 def get_file_suffix(filename, token_id="\\d+"):
@@ -62,8 +62,6 @@ def is_valid_ipfs_uri(uri):
 
 
 def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
-    # print(os.getcwd())
-    # print(f"{os.getcwd()}/{parent_folder}/")
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
@@ -76,6 +74,10 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
     :type timeout: int | None
     """
+    parent_path = Path(parent_folder)
+    cid_path = parent_path.joinpath(cid)
+    collection_path = parent_path.joinpath(collection_name)
+
     infura = "/dns/infura-ipfs.io/tcp/5001/https"
     ipfs_io = "/dns/ipfs.io/tcp/443/https"
     ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
@@ -90,12 +92,9 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
     for gateway in range(len(gateways)):
         try:
             client = ipfshttpclient.connect(addr=gateways[gateway], timeout=timeout)
-            client.get(f"/ipfs/{cid}", target=f"{os.getcwd()}/{parent_folder}/")
+            client.get(f"/ipfs/{cid}", target=parent_path)
             print("Successfully downloaded metadata folder from IPFS")
-            os.rename(
-                f"./{parent_folder}/{cid}",
-                f"./{parent_folder}/{collection_name}",
-            )
+            cid_path.rename(collection_path)
             client.close()
             break
         except Exception:
@@ -105,11 +104,8 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
                 )
             else:
                 print("Failed to download metadata folder from IPFS.")
-                if os.path.exists(f"./{parent_folder}/{cid}"):
-                    os.rename(
-                        f"./{parent_folder}/{cid}",
-                        f"./{parent_folder}/{collection_name}",
-                    )
+                if Path.exists(cid_path):
+                    cid_path.rename(collection_path)
             pass
 
 
