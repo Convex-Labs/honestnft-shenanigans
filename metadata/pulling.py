@@ -245,6 +245,8 @@ def fetch_all_metadata(
                 attribute_key = "attributes"
             elif "traits" in result_json:
                 attribute_key = "traits"
+            elif "properties" in result_json:
+                attribute_key = "properties"
             else:
                 raise ValueError(
                     f"Failed to find the attribute key in the token {token_id} "
