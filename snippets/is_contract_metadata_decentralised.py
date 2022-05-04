@@ -1,7 +1,7 @@
 import os
 import sys
 
-from utils import chain, ipfs
+from honestnft_utils import chain, ipfs
 
 contract_address = "0x60d9b4f9d85695274a5777537f204675082bd745"
 

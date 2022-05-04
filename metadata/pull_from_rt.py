@@ -28,7 +28,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     from pprint import pprint
     import datetime
 
-    from utils import config
+    from honestnft_utils import config
 
     dt_now = datetime.datetime.utcnow()
     start_time = time.time()
