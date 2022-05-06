@@ -1,6 +1,12 @@
+[![Twitter follow](https://img.shields.io/badge/Follow_@honest_NFT-black?logo=twitter)](https://twitter.com/honest_NFT) [![Discord Join](https://img.shields.io/badge/Join_us_on_Discord-black?logo=discord)](https://discord.com/invite/CumTKpqSpj) [![medium_com](https://img.shields.io/badge/medium.com-black?logo=medium)](https://medium.com/@convexlabs) [![medium_com](https://img.shields.io/badge/discourse-black?logo=discourse)](http://community.honestnft.xyz/) [![medium_com](https://img.shields.io/badge/honestnft.xyz-black?logo=data:image/png;base64,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)](https://www.honestnft.xyz/)
+
+
 # HonestNFT
 
 ## Table of Contents
+<details>
+<summary>Click to expand!</summary>
+
   - [Motivation](#motivation)
   - [Bug Bounty](#bug-bounty)
   - [Installation](#installation)
@@ -8,12 +14,12 @@
   - [Video Tutorial](#video-tutorial)
   - [API Endpoints](#api-references)
   - [How metadata leaks](#how-metadata-leaks)
-  - [Grifted](#grifted)
-  - [Grifters? Smart Money? Luck?](#grifters-or-smart-money-or-really-really-lucky-buyers)
   - [Future Work](#future-work-ideas)
   - [Contact / Social Media](#contact--social-media)
   - [Contributing](#contributing)
   - [Acknowledgements](#acknowledgements)
+</details>
+
 ## Motivation
 
 At [Convex Labs](https://www.convexlabs.xyz), we’re NFT fanatics. We believe 
@@ -31,31 +37,35 @@ have appeared. We’ve open sourced our tools, describing how we use them, and h
 to detect when someone else has used similar methods to gain an advantage in an 
 NFT launch.
   
-Continue reading about our motivation / background [here](https://medium.com/@convexlabs/a76143ef8ad8)
+Continue reading about our motivation / background [here](https://medium.com/@convexlabs/a76143ef8ad8).
 
   
 ## Bug Bounty 
 
-Our bug bounty program is an experimental and discretionary rewards program modeled 
-after the Ethereum bug bounty program. We will give NFTs, Ether, or other prizes to 
-participants who improve our codebase or find dishonest drops.
+Our bug bounty program is an experimental and discretionary rewards program modeled after the Ethereum bug bounty program. We will give NFTs, Ether, or other prizes to participants who improve our codebase or find dishonest drops.
   
-We are seeding our initial bug bounty pool with 100% of the profits we made trading 
-NFTs with our code. We encourage others to donate to our bounty pool multisig.
+We are seeding our initial bug bounty pool with 100% of the profits we made trading NFTs with our code. We encourage others to donate to our bounty pool multisig.
   
-Our Gnosis Safe Multisig: 0xa94a1B82B441DAA23890FF5eEb84a66D323Fd6c1 
+Our Gnosis Safe Multisig: [0xa94a1B82B441DAA23890FF5eEb84a66D323Fd6c1](https://etherscan.io/address/0xa94a1b82b441daa23890ff5eeb84a66d323fd6c1)
 
-Read more about our rewards program here: Coming Soon!
+Read more about our rewards program [here](https://medium.com/@convexlabs/list/bounties-c0efbd75cf8c).
   
 ## Installation
 
-Navigate to a directory of your choice.
+**1. Prerequisites**
+* python
+* git
 
-1. `git clone https://github.com/Convex-Labs/honestnft-shenanigans.git`
-2. `cd honestnft-shenanigans`
-3. `pip install --editable .`
+**2. Instructions**
+
+1. Download the github repo:
+   `git clone https://github.com/Convex-Labs/honestnft-shenanigans.git` 
+2. Change directory to the downloaded repo: 
+`cd honestnft-shenanigans`
+3. Install the tools and requirements with: 
+`pip install --editable .`
 4. Rename `.env-example` to `.env`
-5. Add your personal API keys and web3 providers to .env
+5. Add your personal API keys and web3 providers to `.env`
 
 **Note**: The repo takes a few minutes to install. We've provided a decent amount 
 of test data so the repository is rather large.
@@ -74,8 +84,6 @@ algorithm - we reverse engineered it)
 
 ## Video Tutorial
 Tutorial: https://vimeo.com/638878051
-
-<img width="600" alt="Screen Shot 2021-10-19 at 4 35 44 PM" src="https://user-images.githubusercontent.com/35337224/138004714-d16bf4af-ee31-4419-bb8f-e629dcb67f0e.png">
 
 
 ## API References
@@ -100,92 +108,8 @@ set to a public endpoint; can pull faster w Pinata)
 
 ## How metadata leaks 
 
-### Most of the time, this works...
 
-1) Go to contract
-2) Call tokenURI
-3) Paste link into browser to view metadata 
-
-<img src="markdown_pics/tips/Screen%20Shot%202021-10-13%20at%202.05.47%20PM.png" width="600">
-<img src="markdown_pics/tips/uri_from_etherscan.png" width="600">
-<img src="markdown_pics/tips/metadata_from_browser.png" width="600">
-
-### What if metadata is hidden, but images are not?
-
-If the explicit traits are hidden, but images are not, you can print all images 
-to a directory and manually search for rare traits
-
-<img src="markdown_pics/tips/bats_leaking.png" width="400">
-<img src="markdown_pics/tips/pigs_leaking.png" width="400">
-
-### What if the contract is not verified?
-
-If the contract is not verified you can sometimes find the metadata url on OpenSea API
-<img src="markdown_pics/tips/unverified_contract.png" width="600">
-<img src="markdown_pics/tips/opensea_trick_1.png" width="600">
-<img src="markdown_pics/tips/opensea_trick_2.png" width="600">
-
-### More leaking
-
-Sometimes data even leaks on the cloud... 
-  
-<img src="markdown_pics/tips/heroku_leak.png" width="600">
-
-
-
-##  Weird Distributions *and* a False Positive (low rank tokens are more rare)
-
-In the plots that follow we map the rarity of a token to its tokenID. We use the 
-convention of [rarity.tools] and label more rare tokens with lower rank scores. 
-For example, the rarest token in a collection has rarity rank 1. If rare tokens 
-are distributed randomly throughout the collection, then rarity maps should be 
-scatter plots without any discerning patterns.
-
-
-<img src="markdown_pics/weird_distributions/great_ape_bananas.png" width="400">
-<img src="markdown_pics/weird_distributions/great_ape_society.png" width="400">
-<img src="markdown_pics/weird_distributions/quaks.png" width="400">
-  
-<img src="markdown_pics/weird_distributions/8_bit_universe.png" width="400">
-
-**Note**: The founders (8 Bit Universe) minted the majority of these rare tokens 
-and claimed that they airdropped them to random users on Discord. Convex Labs is 
-not suggesting that this statement is false, but rather that this is not 
-provably verifiable. 
-
-  
-<img src="markdown_pics/weird_distributions/dejens.png" width="400">
-
-**Note**: In this case "Dejen" tokens were minted out of order in a pseudorandom 
-way. Thus, taking advantage of skewed distributions is not possible in practice.
-
-## Grifted
-
-In the plots that follow we overlay all the mints from a single address with the 
-rarity map. All mints from the address labeled in the title are shown in black. 
-So, someone must be getting screwed over right? Yeah... 
-
-We observe a clear pattern of unsuspecting minters failing to mint a single 
-rare token, simply because they mint at an unfavorable time.
-  
-### Great Ape Society
-<img src="markdown_pics/grifted/great_apes_1.png" width="400">
-<img src="markdown_pics/grifted/great_apes_2.png" width="400">
-<img src="markdown_pics/grifted/great_apes_3.png" width="400">
-
-### Quaks
-<img src="markdown_pics/grifted/quaks_1.png" width="400">
-<img src="markdown_pics/grifted/quak_2.png" width="400">
-
-## Grifters *or* Smart Money *or* really really Lucky Buyers
-
-With leaking metadata, insider information, or skewed distributions, some 
-people must be cheating. So who are the grifters? Are these people just 
-lucky? Decide for yourself...
-
-<img src="markdown_pics/grifters_or_snipes/drop_bears.png" width="400">
-<img src="markdown_pics/grifters_or_snipes/doge_x.png" width="400">
-<img src="markdown_pics/grifters_or_snipes/unicorns_1.png" width="400">
+[A Guide to Effectively Cheating NFT Launches (and detecting cheaters)](https://medium.com/@convexlabs/a-guide-to-effectively-cheating-nft-launches-and-detecting-cheaters-a76143ef8ad8)
 
 ## Future Work Ideas
 
@@ -207,12 +131,12 @@ For help contact max@convexlabs.xyz or [@bax1337](https://twitter.com/bax1337/) 
  
 ## Contributing 
 
-We'd love your help making these tools more robust in an effort to make the NFT 
-market fair and equitable. If you find a bug or have a suggestion on how to 
-improve our code, check out our [contributing guide].
+Contributions, issues, feature requests or even suggestions are welcome! You can open an issue/PR or join us on [Discord] to discuss your contribution. You can even earn a nice [bounty](#bug-bounty).
+
+Don't forget to check out our [contributing guide]. 
 
 ## Acknowledgements
-The Etherscan team for providing the free API for:
+The Etherscan team for providing the free API keys for:
 * [ArbiScan](https://arbiscan.io/)
 * [BscScan](https://www.bscscan.com/)
 * [Etherscan](https://etherscan.io)
