@@ -123,7 +123,7 @@ all belong to one person?
  
 ## Contact / Social Media 
 
-For help contact max@convexlabs.xyz or [@bax1337](https://twitter.com/bax1337/) on Twitter.
+For help, visit the #support channel in our Discord.
 
 [Discord]  
 [Website]  
