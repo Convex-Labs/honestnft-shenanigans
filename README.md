@@ -15,7 +15,7 @@
   - [API Endpoints](#api-references)
   - [How metadata leaks](#how-metadata-leaks)
   - [Future Work](#future-work-ideas)
-  - [Contact / Social Media](#contact--social-media)
+  - [Support](#support)
   - [Contributing](#contributing)
   - [Acknowledgements](#acknowledgements)
 </details>
@@ -121,13 +121,9 @@ one token and getting one rare; ks-test isn’t super sensitive to this)
 multiple addresses list super rare items at the same time. Maybe these addresses 
 all belong to one person?
  
-## Contact / Social Media 
+## Support
 
-For help, visit the #support channel in our Discord.
-
-[Discord]  
-[Website]  
-[Twitter]  
+For help, visit the [🔨#support channel](https://discord.gg/4aHvBBEq3p) in our Discord.
  
 ## Contributing 
 
