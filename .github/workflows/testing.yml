@@ -12,6 +12,7 @@ jobs:
       github.repository
 
     runs-on: ubuntu-latest
+    environment: testing
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
