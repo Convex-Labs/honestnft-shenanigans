@@ -1,6 +1,9 @@
 import json
+import time
 import unittest
+from pathlib import Path
 
+from tests import helpers
 from utils import chain
 
 
@@ -40,6 +43,41 @@ class TestCase(unittest.TestCase):
             "loremIpsum",
             CONTRACT_ABI,
         )
+
+    def test_get_token_standard(self):
+        # Load test data
+        with open(
+            Path(helpers.TESTS_ROOT_DIR).joinpath("fixtures/test_data.json"),
+            "r",
+        ) as f:
+            self.constants = json.load(f)
+
+        for key, value in self.constants.items():
+
+            print(f"Testing {key}")
+            # Iterate over contract types (regular and proxy)
+            for _key, _value in value["test_contracts"].items():
+                # Iterate over test contracts
+                for contract_key, contract_value in _value.items():
+                    time.sleep(5)
+                    ctr_name = contract_value["name"]
+                    ctr_address = contract_value["address"]
+                    ctr_abi = contract_value["abi"]
+                    ctr_standard = contract_value["standard"]
+                    ctr_blockchain = value["chain_name"]
+
+                    _abi = chain.get_contract_abi(
+                        address=ctr_address, blockchain=ctr_blockchain
+                    )
+                    _abi, _contract = chain.get_contract(
+                        address=ctr_address, abi=_abi, blockchain=ctr_blockchain
+                    )
+
+                    # Now do the actual test for get_token_standard
+                    self.assertEqual(
+                        chain.get_token_standard(_contract),
+                        ctr_standard,
+                    )
 
 
 if __name__ == "__main__":  # pragma: no cover
