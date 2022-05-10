@@ -4,6 +4,19 @@ from utils import config
 from utils import ipfs
 
 
+VALID_URIS = {
+    "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR": "QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+    "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+    "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/test.txt": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+    "https://ipfs.io/ipfs/QmP5zQxwHXUYKNCfyXXeJ8K5YUUW5bGWiFRTguczmj491N/0.txt": "QmP5zQxwHXUYKNCfyXXeJ8K5YUUW5bGWiFRTguczmj491N",
+}
+
+INVALID_URIS = {
+    "ipfs://1264/test.txt": None,
+    "https://ipfs.io/ipfsqmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6u/test.txt": None,
+}
+
+
 class TestCase(unittest.TestCase):
     def test_get_file_suffix(self):
         self.assertIs(type(ipfs.get_file_suffix("1456.txt")), str)
@@ -42,6 +55,20 @@ class TestCase(unittest.TestCase):
             ),
             f"{config.IPFS_GATEWAY}QmU9miGYP6wGPodb3AE7LbAyKSF9bxq9CbeKmF5U7DfCt1/4000",
         )
+
+    def test_infer_cid_from_uri(self):
+        for uri, cid in VALID_URIS.items():
+            self.assertEqual(ipfs.infer_cid_from_uri(uri), cid)
+            self.assertIs(type(ipfs.infer_cid_from_uri(uri)), str)
+
+        for uri, cid in INVALID_URIS.items():
+            self.assertEqual(ipfs.infer_cid_from_uri(uri), cid)
+
+    def test_is_valid_ipfs_uri(self):
+        for uri, cid in VALID_URIS.items():
+            self.assertTrue(ipfs.is_valid_ipfs_uri(uri))
+        for uri, cid in INVALID_URIS.items():
+            self.assertFalse(ipfs.is_valid_ipfs_uri(uri))
 
 
 if __name__ == "__main__":  # pragma: no cover
