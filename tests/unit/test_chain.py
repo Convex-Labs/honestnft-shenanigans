@@ -94,6 +94,14 @@ class TestCase(unittest.TestCase):
             tuple,
         )
 
+        self.assertRaises(
+            ValueError,
+            chain.get_contract,
+            address=self.doodles_contract_address,
+            abi=self.doodles_abi,
+            blockchain="lorem_ipsum",
+        )
+
     def test_get_contract_function(self):
 
         isinstance(
