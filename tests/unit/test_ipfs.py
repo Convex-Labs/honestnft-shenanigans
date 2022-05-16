@@ -1,8 +1,7 @@
 import unittest
-
+import unittest.mock as mock
 from utils import config
 from utils import ipfs
-
 
 VALID_URIS = {
     "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR": "QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
@@ -56,6 +55,13 @@ class TestCase(unittest.TestCase):
             f"{config.IPFS_GATEWAY}QmU9miGYP6wGPodb3AE7LbAyKSF9bxq9CbeKmF5U7DfCt1/4000",
         )
 
+        self.assertEqual(
+            ipfs.format_ipfs_uri(
+                "https://ipfs.io/ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG"
+            ),
+            f"{config.IPFS_GATEWAY}QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+        )
+
     def test_infer_cid_from_uri(self):
         for uri, cid in VALID_URIS.items():
             self.assertEqual(ipfs.infer_cid_from_uri(uri), cid)
@@ -69,6 +75,15 @@ class TestCase(unittest.TestCase):
             self.assertTrue(ipfs.is_valid_ipfs_uri(uri))
         for uri, cid in INVALID_URIS.items():
             self.assertFalse(ipfs.is_valid_ipfs_uri(uri))
+
+    @mock.patch("utils.config.IPFS_GATEWAY", "")
+    def test_mock_with_empty_gateway(self):
+        self.assertEqual(
+            ipfs.format_ipfs_uri(
+                "ipfs://QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR"
+            ),
+            "https://ipfs.io/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+        )
 
 
 if __name__ == "__main__":  # pragma: no cover
