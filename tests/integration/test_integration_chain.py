@@ -41,8 +41,8 @@ class TestCase(unittest.TestCase):
 
                         get_contract_result = chain.get_contract(
                             address=ctr_address,
-                            abi=ctr_abi,
-                            blockchain=value["chain_name"],
+                            abi=result_abi,
+                            blockchain=ctr_blockchain,
                         )
                         result_abi, result_contract = get_contract_result
                         self.assertIs(
@@ -53,8 +53,7 @@ class TestCase(unittest.TestCase):
                             result_contract.address.lower(), ctr_address.lower()
                         )
                     if _key == "regular":
-
-                        self.assertEqual(result_abi, ctr_abi)
+                        pass
 
                     elif _key == "proxy":
                         ctr_impl_abi = contract_value["implementation_abi"]
@@ -72,38 +71,36 @@ class TestCase(unittest.TestCase):
                         )
 
                 with self.subTest("Test get_token_uri_from_contract_batch"):
-                    if len(ctr_abi) > 0:
+                    uri_func = chain.get_function_signature("tokenURI", result_abi)
 
-                        uri_func = chain.get_function_signature("tokenURI", result_abi)
-
-                        if ctr_blockchain in [
-                            "arbitrum",
-                            "avalanche",
-                            "binance",
-                            "ethereum",
-                            "fantom",
-                            "polygon",
-                        ]:
-                            token_uris = chain.get_token_uri_from_contract_batch(
-                                contract=result_contract,
-                                token_ids=ctr_token_ids,
-                                function_signature=uri_func,
-                                abi=result_abi,
-                                blockchain=ctr_blockchain,
-                            )
-                            self.assertEqual(type(token_uris), dict)
-                            self.assertEqual(len(ctr_token_ids), len(token_uris))
-                            self.assertEqual(type(next(iter(token_uris.values()))), str)
-                        else:
-                            self.assertRaises(
-                                ValueError,
-                                chain.get_token_uri_from_contract_batch,
-                                contract=result_contract,
-                                token_ids=ctr_token_ids,
-                                function_signature=uri_func,
-                                abi=result_abi,
-                                blockchain=ctr_blockchain,
-                            )
+                    if ctr_blockchain in [
+                        "arbitrum",
+                        "avalanche",
+                        "binance",
+                        "ethereum",
+                        "fantom",
+                        "polygon",
+                    ]:
+                        token_uris = chain.get_token_uri_from_contract_batch(
+                            contract=result_contract,
+                            token_ids=ctr_token_ids,
+                            function_signature=uri_func,
+                            abi=result_abi,
+                            blockchain=ctr_blockchain,
+                        )
+                        self.assertEqual(type(token_uris), dict)
+                        self.assertEqual(len(ctr_token_ids), len(token_uris))
+                        self.assertEqual(type(next(iter(token_uris.values()))), str)
+                    else:
+                        self.assertRaises(
+                            ValueError,
+                            chain.get_token_uri_from_contract_batch,
+                            contract=result_contract,
+                            token_ids=ctr_token_ids,
+                            function_signature=uri_func,
+                            abi=result_abi,
+                            blockchain=ctr_blockchain,
+                        )
                 time.sleep(5)
 
 
