@@ -103,6 +103,16 @@ class TestCase(unittest.TestCase):
             blockchain="lorem_ipsum",
         )
 
+        with mock.patch("utils.config.ENDPOINT", ""):
+            with self.subTest("Test with missing web3 provider"):
+                self.assertRaises(
+                    SystemExit,
+                    chain.get_contract,
+                    address=self.doodles_contract_address,
+                    abi=self.doodles_abi,
+                    blockchain="ethereum",
+                )
+
     def test_get_contract_function(self):
 
         isinstance(
