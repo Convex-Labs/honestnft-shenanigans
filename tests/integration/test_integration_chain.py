@@ -53,7 +53,8 @@ class TestCase(unittest.TestCase):
                             result_contract.address.lower(), ctr_address.lower()
                         )
                     if _key == "regular":
-                        pass
+                        if len(ctr_abi) > 0:
+                            self.assertEqual(result_abi, ctr_abi)
 
                     elif _key == "proxy":
                         ctr_impl_abi = contract_value["implementation_abi"]
