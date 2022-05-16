@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 
 import web3
 
@@ -161,6 +162,32 @@ class TestCase(unittest.TestCase):
                 abi=self.doodles_abi,
                 blockchain="ethereum",
             )
+
+        with self.subTest("Test with empty token list"):
+            token_ids = []
+            self.assertEqual(
+                chain.get_token_uri_from_contract_batch(
+                    contract=self.doodles_contract,
+                    token_ids=token_ids,
+                    function_signature=uri_func,
+                    abi=self.doodles_abi,
+                    blockchain="ethereum",
+                ),
+                {},
+            )
+
+        with mock.patch("utils.config.ENDPOINT", ""):
+            with self.subTest("Test with missing web3 provider"):
+                token_ids = [0, 1, 2, 3, 4]
+                self.assertRaises(
+                    SystemExit,
+                    chain.get_token_uri_from_contract_batch,
+                    contract=self.doodles_contract,
+                    token_ids=token_ids,
+                    function_signature=uri_func,
+                    abi=self.doodles_abi,
+                    blockchain="ethereum",
+                )
 
     @helpers.blockPrinting
     def test_get_lower_token_id(self):
