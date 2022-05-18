@@ -28,10 +28,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox
           # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Create temporary .env
-        run: echo -e "etherscan_API_KEY=${{secrets.ETHERSCAN_API_KEY}}\nweb3_provider=${{ secrets.WEB3_PROVIDER }}\narbitrum_web3_provider=${{ secrets.ARBITRUM_ENDPOINT }}\navalanche_web3_provider=${{ secrets.AVALANCHE_ENDPOINT }}\nfantom_web3_provider=${{ secrets.FANTOM_ENDPOINT }}\noptimism_web3_provider=${{ secrets.OPTIMISM_ENDPOINT }}\npolygon_web3_provider=${{ secrets.POLYGON_ENDPOINT }}\nbinance_web3_provider=${{secrets.BINANCE_ENDPOINT}}\nipfs_gateway=https://dweb.link/ipfs/" > .env
+      - name: Patch utils.config to use github env secrets
+        run: cd utils && patch < ../tests/gh-actions.patch
       - name: Test with coverage
+        env:
+          ARBITRUM_ENDPOINT: ${{ secrets.ARBITRUM_ENDPOINT }}
+          AVALANCHE_ENDPOINT: ${{ secrets.AVALANCHE_ENDPOINT }}
+          BINANCE_ENDPOINT: ${{ secrets.BINANCE_ENDPOINT }}
+          FANTOM_ENDPOINT: ${{ secrets.FANTOM_ENDPOINT }}
+          IPFS_GATEWAY: ${{ secrets.IPFS_GATEWAY }}
+          MORALIS_API_KEY: ${{ secrets.MORALIS_API_KEY }}
+          OPENSEA_API_KEY: ${{ secrets.OPENSEA_API_KEY }}
+          OPTIMISM_ENDPOINT: ${{ secrets.OPTIMISM_ENDPOINT }}
+          POLYGON_ENDPOINT: ${{ secrets.POLYGON_ENDPOINT }}
+          WEB3_PROVIDER: ${{ secrets.WEB3_PROVIDER }}
         run: |
           tox
-      - name: Delete temporary .env
-        run: rm .env

@@ -1,0 +1,23 @@
+--- config.py
++++ config.py
+@@ -3,7 +3,18 @@
+ from dotenv import dotenv_values
+ 
+ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+-config = dotenv_values(f"{ROOT_DIR}/.env")
++config = {
++    "arbitrum_web3_provider": os.environ["ARBITRUM_ENDPOINT"],
++    "avalanche_web3_provider": os.environ["AVALANCHE_ENDPOINT"],
++    "binance_web3_provider": os.environ["BINANCE_ENDPOINT"],
++    "fantom_web3_provider": os.environ["FANTOM_ENDPOINT"],
++    "optimism_web3_provider": os.environ["OPTIMISM_ENDPOINT"],
++    "polygon_web3_provider": os.environ["POLYGON_ENDPOINT"],
++    "web3_provider": os.environ["WEB3_PROVIDER"],
++    "ipfs_gateway": os.environ["IPFS_GATEWAY"],
++    "opensea_api_key": os.environ["OPENSEA_API_KEY"],
++    "moralis_api_key": os.environ["MORALIS_API_KEY"],
++}
+ 
+ 
+ """
+
