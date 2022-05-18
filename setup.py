@@ -32,7 +32,7 @@ setup(
         "ipfshttpclient>=0.8.0a2",
         "scikit-learn>=1.0.1",
         "papermill==2.3.3",
-        "multicall>=0.2.0",
+        "multicall==0.2.0",
         "python-dotenv==0.19.2",
         "plotly==5.6.0",
     ],
