@@ -3,55 +3,79 @@ import base64
 import concurrent.futures
 import json
 import os
-import sys
-import time
 
 import pandas as pd
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from web3.exceptions import ContractLogicError
 
 from utils import chain
 from utils import config
 from utils import ipfs
 
-
 """
 Metadata helper methods
 """
 
 
-def get_metadata(uri, destination):
-    if uri.startswith("data:application/json;base64"):
-        try:
-            encoded_metadata = uri.split(",")[1]
-            decoded_metadata = base64.b64decode(encoded_metadata).decode("utf-8")
-            response_json = json.loads(decoded_metadata)
-        except Exception as err:
-            print(err)
-            raise Exception(f"Failed to decode on-chain metadata: {uri}")
-    else:
-        # Fetch metadata from server
-        uri_response = requests.request("GET", uri, timeout=10)
-        try:
-            response_json = uri_response.json()
-        except Exception as err:
-            print(err)
-            raise Exception(
-                f"Failed to get metadata from server using {uri}. Got {uri_response}."
-            )
+def mount_session():
+    """
+    Create a requests.session() with optimised strategy for retrying and respecting errors
+    """
+    retry_strategy = Retry(
+        total=5,
+        respect_retry_after_header=True,
+        backoff_factor=0.5,
+        status_forcelist=[429, 500, 502, 503, 504, 520],
+        allowed_methods=["GET"],
+    )
+    retry_strategy.DEFAULT_BACKOFF_MAX = 5
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session = requests.Session()
+    session.mount(prefix="https://", adapter=adapter)
+    session.mount(prefix="http://", adapter=adapter)
 
-    # Write raw metadata json file to disk
-    with open(destination, "w") as destination_file:
-        json.dump(response_json, destination_file)
+    return session
 
-    # Return raw metadata json file
-    return response_json
+
+def fetch(token_id, metadata_uri, filename):
+    try:
+        # Try to get metadata file from server
+        if metadata_uri.startswith("data:application/json;base64"):
+            try:
+                encoded_metadata = metadata_uri.split(",")[1]
+                decoded_metadata = base64.b64decode(encoded_metadata).decode("utf-8")
+                response_json = json.loads(decoded_metadata)
+            except Exception as err:
+                print(err)
+                raise Exception(f"Failed to decode on-chain metadata: {metadata_uri}")
+        else:
+            _session = mount_session()
+            # Fetch metadata from server
+            uri_response = _session.get(metadata_uri, timeout=3.05)
+            try:
+                response_json = uri_response.json()
+            except Exception as err:
+                print(err)
+                raise Exception(
+                    f"Failed to get metadata from server using {metadata_uri}. Got {uri_response}."
+                )
+
+        # Write raw metadata json file to disk
+        with open(filename, "w") as destination_file:
+            json.dump(response_json, destination_file)
+
+    except Exception as err:
+        print(
+            f"Got below error when trying to get metadata for token id {token_id}.\n{err}"
+        )
+    return True
 
 
 def fetch_all_metadata(
     token_ids,
     collection,
-    sleep,
     uri_func,
     contract,
     abi,
@@ -112,37 +136,6 @@ def fetch_all_metadata(
                 pass
     else:
         file_suffix = ".json"
-
-    def fetch(token_id, metadata_uri, filename):
-        # Set parameters for retrying to pull from server
-        max_retries = 5
-        retries = 0
-
-        # Load non- file from server
-        while retries < max_retries:
-            try:
-                # Try to get metadata file from server
-                get_metadata(uri=metadata_uri, destination=filename)
-                time.sleep(sleep)
-                break
-            except Exception as err:
-                # Handle throttling, pause and then try again up to max_retries number of times
-                print(
-                    f"Got below error when trying to get metadata for token id {token_id}. "
-                    f"Will sleep and retry..."
-                )
-                print(err)
-                retries += 1
-
-                # Sleep for successively longer periods of time before restarting
-                time.sleep(sleep * retries)
-
-                # Throw an error when max retries is exceeded
-                if retries >= max_retries:
-                    # raise Exception('Max retries exceeded. Shutting down.')
-                    print("Max retries exceeded. Moving to next...")
-                    break
-        return True
 
     if (
         bulk_ipfs_success is not True
@@ -365,7 +358,6 @@ def pull_metadata(args):
         uri_func=args.uri_func,
         contract=contract,
         abi=abi,
-        sleep=args.sleep,
         uri_base=args.uri_base,
         uri_suffix=args.uri_suffix,
         blockchain=args.blockchain,
@@ -472,12 +464,6 @@ if __name__ == "__main__":
         type=str,
         default=None,
         help=f"IPFS gateway. (default: {config.IPFS_GATEWAY}).",
-    )
-    ARG_PARSER.add_argument(
-        "-sleep",
-        type=float,
-        default=0.05,
-        help="Sleep time between metadata pulls. (default: 0.05).",
     )
     ARG_PARSER.add_argument(
         "-web3_provider",
