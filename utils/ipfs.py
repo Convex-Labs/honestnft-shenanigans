@@ -1,23 +1,21 @@
 import re
 import warnings
 from pathlib import Path
+from typing import Optional, Union
 
 import ipfshttpclient
 
 from utils import config
 
 
-def get_file_suffix(filename, token_id="\\d+"):
+def get_file_suffix(filename: str, token_id: Union[int, str, None] = "\\d+") -> str:
     """
     Given a filename and an optional token_id, this function returns the file suffix.
     If the file has no extension, an empty string is returned.
 
     :param filename
-    :type filename: str
     :param token_id
-    :type token_id: str | int | None
     :return: file_suffix
-    :rtype: str
     """
     token_id_pattern = rf"^{token_id}"
     matches = re.search(token_id_pattern, filename)
@@ -31,15 +29,13 @@ def get_file_suffix(filename, token_id="\\d+"):
         raise ValueError("Provided token_id not found in filename")
 
 
-def infer_cid_from_uri(uri):
+def infer_cid_from_uri(uri: str) -> Optional[str]:
     """
     Given a URI, this function returns the CID.
     Returns None if the CID is not found.
 
     :param uri
-    :type uri: str
     :return: cid
-    :rtype: str | None
     """
     cid_pattern = r"Qm[a-zA-Z0-9-_]+"
     matches = re.search(cid_pattern, uri)
@@ -48,31 +44,27 @@ def infer_cid_from_uri(uri):
     return None
 
 
-def is_valid_ipfs_uri(uri):
+def is_valid_ipfs_uri(uri: str) -> bool:
     """
     Given a URI, this functions checks if it's a valid IPFS URI.
 
     :param uri
-    :type uri: str
-    :rtype: bool
     """
     if uri.find("ipfs") != -1 and infer_cid_from_uri(uri):
         return True
     return False
 
 
-def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
+def fetch_ipfs_folder(
+    collection_name: str, cid: str, parent_folder: str, timeout: Optional[int] = 60
+) -> None:
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
     :param parent_folder: The parent folder where the collection should be saved.
-    :type parent_folder:  str
     :param collection_name The collection name to be used as the folder name
-    :type collection_name: str
     :param cid: The IPFS CID of folder to download
-    :type cid: str
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
-    :type timeout: int | None
     """
     parent_path = Path(parent_folder)
     cid_path = parent_path.joinpath(cid)
@@ -109,7 +101,7 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
             pass
 
 
-def format_ipfs_uri(uri):
+def format_ipfs_uri(uri: str) -> str:
     # Reformat IPFS gateway
     ipfs_1 = "ipfs://"
     ipfs_2 = "https://ipfs.io/ipfs/"
