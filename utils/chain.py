@@ -2,17 +2,19 @@ import json
 import re
 import sys
 import time
+from typing import List, Dict, Tuple
 
 import requests
 from multicall import Call, Multicall
 from web3 import Web3
+from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
 from utils import config
 from utils import ipfs
 
 
-def get_contract_abi(address, blockchain="ethereum"):
+def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:
     if blockchain == "arbitrum":
         abi_endpoint = config.ARBITRUM_ABI_ENDPOINT
         endpoint = config.ARBITRUM_ENDPOINT
@@ -131,7 +133,9 @@ def get_contract_abi(address, blockchain="ethereum"):
         )
 
 
-def get_contract(address, abi, blockchain="ethereum"):
+def get_contract(
+    address: str, abi: list, blockchain: str = "ethereum"
+) -> Tuple[list, Contract]:
     if blockchain == "arbitrum":
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
@@ -198,7 +202,7 @@ def get_contract(address, abi, blockchain="ethereum"):
     return abi, collection_contract
 
 
-def get_contract_function(contract, func_name, abi):
+def get_contract_function(contract: Contract, func_name: str, abi: list):
     if func_name in dir(contract.functions):
         # The function name given is a valid function in the ABI, so return that function
         return getattr(contract.functions, func_name)
@@ -211,7 +215,9 @@ def get_contract_function(contract, func_name, abi):
         )
 
 
-def get_token_uri_from_contract(contract, token_id, uri_func, abi):
+def get_token_uri_from_contract(
+    contract: Contract, token_id: int, uri_func: str, abi: list
+) -> str:
     # Fetch URI from contract
     uri_contract_func = get_contract_function(contract, uri_func, abi)
 
@@ -224,8 +230,12 @@ def get_token_uri_from_contract(contract, token_id, uri_func, abi):
 
 
 def get_token_uri_from_contract_batch(
-    contract, token_ids, function_signature, abi, blockchain="ethereum"
-):
+    contract: Contract,
+    token_ids: List[int],
+    function_signature: str,
+    abi: list,
+    blockchain: str = "ethereum",
+) -> Dict[int, str]:
     if blockchain == "arbitrum":
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
@@ -265,7 +275,7 @@ def get_token_uri_from_contract_batch(
         return {}
 
 
-def get_lower_token_id(contract, uri_func, abi):
+def get_lower_token_id(contract: Contract, uri_func: str, abi: list) -> int:
     # Initiate parameters
     lower_token_id = None
 
@@ -290,7 +300,7 @@ def get_lower_token_id(contract, uri_func, abi):
     return lower_token_id
 
 
-def get_base_uri(contract, abi):
+def get_base_uri(contract: Contract, abi: list) -> str:
     uri_contract_func = get_contract_function(contract, "baseURI", abi)
 
     try:
@@ -300,17 +310,14 @@ def get_base_uri(contract, abi):
         raise Exception(err)
 
 
-def get_function_signature(func_name, abi):
+def get_function_signature(func_name: str, abi: list) -> str:
     """
     Given a function name and an ABI, return the function signature
     e.g. get_function_signature("tokenURI", abi) => "tokenURI(uint256)(string)"
 
     :param func_name:
-    :type func_name: str
     :param abi:
-    :type abi: list
     :return: function signature
-    :rtype: str
     """
     try:
         filtered = list(
@@ -326,15 +333,13 @@ def get_function_signature(func_name, abi):
     return f"{func_name}({','.join(input_types)})({','.join(output_types)})"
 
 
-def get_token_standard(contract):
+def get_token_standard(contract: Contract) -> str:
     """
     Given a contract object, return the token standard
     eg. get_token_standard(contract) => "ERC-721"
 
     :param contract:
-    :type contract: web3.contract.Contract
     :return: ERC standard
-    :rtype: str
     """
     erc_dict = {
         "ERC-721": ["0x80AC58CD", "0x150B7A02", "0x5B5E139F"],
