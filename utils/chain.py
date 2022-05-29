@@ -1,6 +1,5 @@
 import json
 import re
-import sys
 import time
 
 import requests
@@ -151,11 +150,7 @@ def get_contract(address, abi, blockchain="ethereum"):
 
     # Connect to web3
     if endpoint == "":
-        print(
-            "\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n"
-        )
-        print("Optional: Use -web3_provider as a command line argument")
-        sys.exit()
+        raise ValueError("No web3 provider specified in .env file")
 
     w3 = Web3(Web3.HTTPProvider(endpoint))
 
@@ -243,10 +238,7 @@ def get_token_uri_from_contract_batch(
 
     if len(token_ids) > 0:
         if endpoint == "":
-            print(
-                "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
-            )
-            sys.exit()
+            raise ValueError("No web3 provider specified in .env file")
 
         w3 = Web3(Web3.HTTPProvider(endpoint))
 
