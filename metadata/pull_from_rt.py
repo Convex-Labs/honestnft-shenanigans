@@ -24,13 +24,10 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     import csv
     import requests
     import time
-    import json
     from pprint import pprint
-    import datetime
 
     from utils import config
 
-    dt_now = datetime.datetime.utcnow()
     start_time = time.time()
 
     print("Project : " + str(project_name))
@@ -92,7 +89,6 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
             }
         )
         token_rarity_score = 0
-        token_ranking = 0
         this_token_trait = []
         each_trait_score = {}
 
