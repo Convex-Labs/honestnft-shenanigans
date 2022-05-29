@@ -144,12 +144,14 @@ def build_rarity_db(
 if __name__ == "__main__":
 
     # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(description="CLI for pulling NFT metadata.")
+    ARG_PARSER = argparse.ArgumentParser(
+        description="CLI for generating rarity score of NFT collections."
+    )
     ARG_PARSER.add_argument(
         "-collection",
         type=str,
         default=None,
-        help="Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).",
+        help="Collection name.",
     )
     ARG_PARSER.add_argument(
         "-method",
