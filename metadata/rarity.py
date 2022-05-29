@@ -102,7 +102,7 @@ def gen_rarity_score(
             non_sum_traits.append("SUM_TRAIT")
 
     else:
-        raise ValueError(f"Method {method} is not supported. Try raritytools.")
+        raise NotImplementedError(f"Method {method} is not supported. Try raritytools.")
 
     # Compute aggregate rarity
     rarity_db["RARITY_SCORE"] = rarity_db[non_sum_traits].sum(axis=1)
