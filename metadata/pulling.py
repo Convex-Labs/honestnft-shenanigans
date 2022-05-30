@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
 from utils import chain
@@ -19,7 +20,7 @@ Metadata helper methods
 """
 
 
-def mount_session():
+def mount_session() -> requests.Session:
     """
     Create a requests.session() with optimised strategy for retrying and respecting errors
     """
@@ -39,7 +40,7 @@ def mount_session():
     return session
 
 
-def fetch(token_id, metadata_uri, filename):
+def fetch(token_id: int, metadata_uri: str, filename: str) -> None:
     try:
         # Try to get metadata file from server
         if metadata_uri.startswith("data:application/json;base64"):
@@ -74,16 +75,16 @@ def fetch(token_id, metadata_uri, filename):
 
 
 def fetch_all_metadata(
-    token_ids,
-    collection,
-    uri_func,
-    contract,
-    abi,
-    uri_base,
-    uri_suffix,
-    blockchain,
-    threads,
-):
+    token_ids: list,
+    collection: str,
+    uri_func: str,
+    contract: Contract,
+    abi: list,
+    uri_base: str,
+    uri_suffix: str,
+    blockchain: str,
+    threads: int,
+) -> list:
 
     # Create raw attribute folder for collection if it doesnt already exist
     folder = f"{config.ATTRIBUTES_FOLDER}/{collection}/"
@@ -278,7 +279,7 @@ Main method
 """
 
 
-def pull_metadata(args):
+def pull_metadata(args: argparse.Namespace) -> None:
 
     if args.contract is not None:
         # Get Ethereum contract object
