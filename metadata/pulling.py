@@ -504,7 +504,7 @@ if __name__ == "__main__":
             config.AVALANCHE_ENDPOINT = ARGS.web3_provider
     elif ARGS.blockchain == "binance":
         if ARGS.web3_provider is not None:
-            config.BSC_ENDPOINT = ARGS.web3_provider
+            config.BINANCE_ENDPOINT = ARGS.web3_provider
     elif ARGS.blockchain == "fantom":
         if ARGS.web3_provider is not None:
             config.FANTOM_ENDPOINT = ARGS.web3_provider
