@@ -8,7 +8,7 @@ import ipfshttpclient
 from utils import config
 
 
-def get_file_suffix(filename: str, token_id: Union[int, str, None] = "\\d+") -> str:
+def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
     """
     Given a filename and an optional token_id, this function returns the file suffix.
     If the file has no extension, an empty string is returned.
