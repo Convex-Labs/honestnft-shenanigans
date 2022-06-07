@@ -106,7 +106,7 @@ class TestCase(unittest.TestCase):
         with mock.patch("utils.config.ENDPOINT", ""):
             with self.subTest("Test with missing web3 provider"):
                 self.assertRaises(
-                    SystemExit,
+                    ValueError,
                     chain.get_contract,
                     address=self.doodles_contract_address,
                     abi=self.doodles_abi,
@@ -190,7 +190,7 @@ class TestCase(unittest.TestCase):
             with self.subTest("Test with missing web3 provider"):
                 token_ids = [0, 1, 2, 3, 4]
                 self.assertRaises(
-                    SystemExit,
+                    ValueError,
                     chain.get_token_uri_from_contract_batch,
                     contract=self.doodles_contract,
                     token_ids=token_ids,
