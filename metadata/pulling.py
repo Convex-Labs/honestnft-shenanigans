@@ -245,6 +245,8 @@ def fetch_all_metadata(
                 attribute_key = "attributes"
             elif "traits" in result_json:
                 attribute_key = "traits"
+            elif "properties" in result_json:
+                attribute_key = "properties"
             else:
                 raise ValueError(
                     f"Failed to find the attribute key in the token {token_id} "
@@ -504,7 +506,7 @@ if __name__ == "__main__":
             config.AVALANCHE_ENDPOINT = ARGS.web3_provider
     elif ARGS.blockchain == "binance":
         if ARGS.web3_provider is not None:
-            config.BSC_ENDPOINT = ARGS.web3_provider
+            config.BINANCE_ENDPOINT = ARGS.web3_provider
     elif ARGS.blockchain == "fantom":
         if ARGS.web3_provider is not None:
             config.FANTOM_ENDPOINT = ARGS.web3_provider
