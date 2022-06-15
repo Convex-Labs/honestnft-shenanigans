@@ -6,7 +6,7 @@
 
 # With Traits Normalization, Rarity tools use a formula of Rarity Score = (Constant Number / ( Number Of Traits Type  X  Number Of Category In That Trait Types ) ) / (Counts Of Traits X Total Number Of Tokens)
 # The Constant Number is 100,000 Divide by Total Number Of Tokens.
-# The number 100,000 is an arbitary number chosen by Rarity tools I guess. I found these number by reverse engieering a few different Samples
+# The number 100,000 is an arbitrary number chosen by Rarity tools I guess. I found these number by reverse engineering a few different Samples
 
 # The calculation will give the exact Rarity Score shown in Rarity tools with a few exceptions
 # There are some NFT projects that Rarity tools added Thematic Match / Matching Sets
@@ -24,13 +24,10 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     import csv
     import requests
     import time
-    import json
     from pprint import pprint
-    import datetime
 
     from honestnft_utils import config
 
-    dt_now = datetime.datetime.utcnow()
     start_time = time.time()
 
     print("Project : " + str(project_name))
@@ -62,7 +59,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     total_tokens_len = len(nft_metadata)
     constant_number = (
         1000000 / total_tokens_len
-    )  # This constant number is used to normalize the scoring, I foudn it by reverse engieering a few samples
+    )  # This constant number is used to normalize the scoring, I found it by reverse engineering a few samples
     rarity_table = {}
 
     # cut off the last element, if it is an empty array (cause problems with the script)
@@ -92,7 +89,6 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
             }
         )
         token_rarity_score = 0
-        token_ranking = 0
         this_token_trait = []
         each_trait_score = {}
 
@@ -168,7 +164,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
             else:
                 if normalize_trait:
                     # Skip the traits that doesn't contain keys: pvs -> very unusual
-                    # Was spoted once with byopills project
+                    # Was spotted once with byopills project
                     if all_traits[y].get("pvs", "empty") == "empty":
                         break
                     else:
@@ -281,30 +277,30 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
 
     save_raw_attributes_csv(
         collection=project_name,
-        raw_attributtes=metadata_to_save,
+        raw_attributes=metadata_to_save,
         file_path=metadata_attributes_csv_file_name,
     )
 
     if warning_flag:
         print(
-            "============\n    WARNING\n==============\nThe rarity data you are trying to extrat might contain Thematic Match / Matching Sets that this script ignored. \nSo while you compare with Rarity Tools data, make sure Thematic Sets is turned off.\n\n"
+            "============\nWARNING\n==============\nThe rarity data you are trying to extract might contain Thematic Match / Matching Sets that this script ignored. \nSo while you compare with Rarity Tools data, make sure Thematic Sets is turned off.\n\n"
         )
 
     print("--- %s seconds Taken to Download ---" % (time.time() - start_time))
 
 
-def save_raw_attributes_csv(collection, raw_attributtes, file_path):
+def save_raw_attributes_csv(collection, raw_attributes, file_path):
     import pandas as pd
 
     # List to store all tokens traits
     trait_data = []
-    for token in raw_attributtes:
+    for token in raw_attributes:
         # empty dict to store this token traits
         token_raw = dict()
         token_raw["TOKEN_ID"] = token
         token_raw["TOKEN_NAME"] = f"{collection} #{str(token)}"
 
-        for trait in raw_attributtes[token]["nft_traits"]:
+        for trait in raw_attributes[token]["nft_traits"]:
             if trait["node"]["traitType"] != "Trait Count":
                 token_raw[trait["node"]["traitType"]] = trait["node"]["value"]
 

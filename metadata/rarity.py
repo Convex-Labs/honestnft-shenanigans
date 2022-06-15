@@ -102,7 +102,7 @@ def gen_rarity_score(
             non_sum_traits.append("SUM_TRAIT")
 
     else:
-        raise ValueError(f"Method {method} is not supported. Try raritytools.")
+        raise NotImplementedError(f"Method {method} is not supported. Try raritytools.")
 
     # Compute aggregate rarity
     rarity_db["RARITY_SCORE"] = rarity_db[non_sum_traits].sum(axis=1)
@@ -144,12 +144,14 @@ def build_rarity_db(
 if __name__ == "__main__":
 
     # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(description="CLI for pulling NFT metadata.")
+    ARG_PARSER = argparse.ArgumentParser(
+        description="CLI for generating rarity score of NFT collections."
+    )
     ARG_PARSER.add_argument(
         "-collection",
         type=str,
         default=None,
-        help="Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).",
+        help="Collection name.",
     )
     ARG_PARSER.add_argument(
         "-method",

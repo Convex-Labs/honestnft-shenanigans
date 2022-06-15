@@ -1,6 +1,5 @@
 import json
 import re
-import sys
 import time
 
 import requests
@@ -65,7 +64,7 @@ def get_contract_abi(address, blockchain="ethereum"):
                 }
             ]
 
-            w3 = Web3(Web3.HTTPProvider(endpoint))
+            w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 60}))
             contract = w3.eth.contract(Web3.toChecksumAddress(address), abi=erc165_abi)
 
             # Array of contract methods that were verified via ERC165
@@ -151,13 +150,9 @@ def get_contract(address, abi, blockchain="ethereum"):
 
     # Connect to web3
     if endpoint == "":
-        print(
-            "\nMust enter a Web3 provider. Open this file and set the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/\n"
-        )
-        print("Optional: Use -web3_provider as a command line argument")
-        sys.exit()
+        raise ValueError("No web3 provider specified in .env file")
 
-    w3 = Web3(Web3.HTTPProvider(endpoint))
+    w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 60}))
 
     # Check if abi contains the tokenURI function
     contract_functions = [func["name"] for func in abi if "name" in func]
@@ -236,8 +231,6 @@ def get_token_uri_from_contract_batch(
         endpoint = config.ENDPOINT
     elif blockchain == "fantom":
         endpoint = config.FANTOM_ENDPOINT
-    elif blockchain == "optimism":
-        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
     else:
@@ -245,12 +238,9 @@ def get_token_uri_from_contract_batch(
 
     if len(token_ids) > 0:
         if endpoint == "":
-            print(
-                "You must enter a Web3 provider. This is currently not a command line option. You must open this file and assign a valid provider to the ENDPOINT and IPFS_GATEWAY constants. See: https://ipfs.github.io/public-gateway-checker/"
-            )
-            sys.exit()
+            raise ValueError("No web3 provider specified in .env file")
 
-        w3 = Web3(Web3.HTTPProvider(endpoint))
+        w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 60}))
 
         calls = []
         for token_id in token_ids:
