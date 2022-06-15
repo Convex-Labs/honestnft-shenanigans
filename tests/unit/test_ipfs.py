@@ -1,8 +1,8 @@
 import unittest
 import unittest.mock as mock
 
-from utils import config
-from utils import ipfs
+from honestnft_utils import config
+from honestnft_utils import ipfs
 
 VALID_URIS = {
     "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR": "QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
@@ -77,7 +77,7 @@ class TestCase(unittest.TestCase):
         for uri, cid in INVALID_URIS.items():
             self.assertFalse(ipfs.is_valid_ipfs_uri(uri))
 
-    @mock.patch("utils.config.IPFS_GATEWAY", "")
+    @mock.patch("honestnft_utils.config.IPFS_GATEWAY", "")
     def test_mock_with_empty_gateway(self):
         self.assertEqual(
             ipfs.format_ipfs_uri(

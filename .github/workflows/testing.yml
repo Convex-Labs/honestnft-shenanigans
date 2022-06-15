@@ -31,8 +31,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip tox
-      - name: Patch utils.config to use github env secrets
-        run: cd utils && patch < ../tests/gh-actions.patch
+      - name: Patch honestnft_utils.config to use github env secrets
+        run: cd honestnft_utils && patch < ../tests/gh-actions.patch
       - name: Test with coverage
         env:
           ARBITRUM_ENDPOINT: ${{ secrets.ARBITRUM_ENDPOINT }}
