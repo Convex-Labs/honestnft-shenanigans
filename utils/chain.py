@@ -66,7 +66,7 @@ def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:
                 }
             ]
 
-            w3 = Web3(Web3.HTTPProvider(endpoint))
+            w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 60}))
             contract = w3.eth.contract(Web3.toChecksumAddress(address), abi=erc165_abi)
 
             # Array of contract methods that were verified via ERC165
@@ -156,7 +156,7 @@ def get_contract(
     if endpoint == "":
         raise ValueError("No web3 provider specified in .env file")
 
-    w3 = Web3(Web3.HTTPProvider(endpoint))
+    w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 60}))
 
     # Check if abi contains the tokenURI function
     contract_functions = [func["name"] for func in abi if "name" in func]
@@ -250,7 +250,7 @@ def get_token_uri_from_contract_batch(
         if endpoint == "":
             raise ValueError("No web3 provider specified in .env file")
 
-        w3 = Web3(Web3.HTTPProvider(endpoint))
+        w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={"timeout": 60}))
 
         calls = []
         for token_id in token_ids:
