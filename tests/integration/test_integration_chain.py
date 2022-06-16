@@ -3,7 +3,7 @@ import time
 import unittest
 
 from tests import helpers
-from utils import chain
+from honestnft_utils import chain
 
 
 class TestCase(unittest.TestCase):

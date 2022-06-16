@@ -5,7 +5,7 @@ import web3
 
 from tests import constants
 from tests import helpers
-from utils import chain
+from honestnft_utils import chain
 
 
 class TestCase(unittest.TestCase):
@@ -103,7 +103,7 @@ class TestCase(unittest.TestCase):
             blockchain="lorem_ipsum",
         )
 
-        with mock.patch("utils.config.ENDPOINT", ""):
+        with mock.patch("honestnft_utils.config.ENDPOINT", ""):
             with self.subTest("Test with missing web3 provider"):
                 self.assertRaises(
                     ValueError,
@@ -186,7 +186,7 @@ class TestCase(unittest.TestCase):
                 {},
             )
 
-        with mock.patch("utils.config.ENDPOINT", ""):
+        with mock.patch("honestnft_utils.config.ENDPOINT", ""):
             with self.subTest("Test with missing web3 provider"):
                 token_ids = [0, 1, 2, 3, 4]
                 self.assertRaises(

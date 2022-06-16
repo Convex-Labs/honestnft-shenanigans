@@ -10,9 +10,9 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from web3.exceptions import ContractLogicError
 
-from utils import chain
-from utils import config
-from utils import ipfs
+from honestnft_utils import chain
+from honestnft_utils import config
+from honestnft_utils import ipfs
 
 """
 Metadata helper methods

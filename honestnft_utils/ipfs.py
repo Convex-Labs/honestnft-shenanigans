@@ -4,7 +4,7 @@ from pathlib import Path
 
 import ipfshttpclient
 
-from utils import config
+from honestnft_utils import config
 
 
 def get_file_suffix(filename, token_id="\\d+"):
