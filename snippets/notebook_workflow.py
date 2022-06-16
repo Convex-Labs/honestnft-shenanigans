@@ -2,7 +2,7 @@ import os
 import warnings
 import papermill as pm
 
-from utils import config
+from honestnft_utils import config
 
 COLLECTION_NAME = "Quaks"
 CONTRACT = "0x07bbdaf30e89ea3ecf6cadc80d6e7c4b0843c729"

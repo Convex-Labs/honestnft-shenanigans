@@ -4,7 +4,7 @@ from typing import Optional
 import pandas as pd
 import requests
 
-from utils import config
+from honestnft_utils import config
 
 API_URL = "https://data.objkt.com/v2/graphql"
 MAX_RECORDS_PAGE = 500

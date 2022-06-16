@@ -3,7 +3,7 @@ import sys
 
 from pathlib import Path
 
-from utils import config
+from honestnft_utils import config
 
 
 def blockPrinting(func):

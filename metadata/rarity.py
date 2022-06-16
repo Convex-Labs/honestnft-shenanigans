@@ -3,7 +3,7 @@ import argparse
 import numpy as np
 import pandas as pd
 
-from utils import config
+from honestnft_utils import config
 
 
 def max_variety_count(trait_db: pd.DataFrame, trait_types: list) -> int:

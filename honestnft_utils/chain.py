@@ -9,8 +9,8 @@ from web3 import Web3
 from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
-from utils import config
-from utils import ipfs
+from honestnft_utils import config
+from honestnft_utils import ipfs
 
 
 def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:

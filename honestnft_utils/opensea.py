@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
-from utils import config
+from honestnft_utils import config
 
 SLEEP = 5
 

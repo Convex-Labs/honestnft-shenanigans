@@ -5,7 +5,7 @@ from typing import Optional, Union
 
 import ipfshttpclient
 
-from utils import config
+from honestnft_utils import config
 
 
 def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:

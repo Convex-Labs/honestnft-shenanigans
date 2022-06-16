@@ -28,7 +28,7 @@ def download(
     import time
     from pprint import pprint
 
-    from utils import config
+    from honestnft_utils import config
 
     start_time = time.time()
 
