@@ -4,7 +4,7 @@ import time
 from typing import List, Dict, Tuple
 
 import requests
-from multicall import Call, Multicall
+from multicall import Call, Multicall  # type: ignore
 from web3 import Web3
 from web3.contract import Contract
 from web3.exceptions import ContractLogicError

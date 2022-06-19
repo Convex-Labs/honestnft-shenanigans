@@ -3,7 +3,7 @@ import warnings
 from pathlib import Path
 from typing import Optional, Union
 
-import ipfshttpclient
+import ipfshttpclient  # type: ignore
 
 from honestnft_utils import config
 
