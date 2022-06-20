@@ -43,7 +43,7 @@ def is_valid_cid(cid):  # pragma: no cover
     return Validator(cid)._is_cid()
 
 
-def infer_cid_from_uri(uri):
+def infer_cid_from_uri(URI):
     """
     Given a URI, this function returns the CID.
     Returns None if the CID is not found.
@@ -53,10 +53,34 @@ def infer_cid_from_uri(uri):
     :return: cid
     :rtype: str | None
     """
-    cid_pattern = r"Qm[a-zA-Z0-9-_]+"
-    matches = re.search(cid_pattern, uri)
-    if matches:
-        return matches.group(0)
+    cid_v0_pattern = r"Qm[a-zA-Z0-9-_]+"
+    # first check if we can extract a CID v0
+    try:
+        matches = re.search(cid_v0_pattern, URI)
+        if matches:
+            if is_valid_cid(matches.group(0)):
+                return matches.group(0)
+    except TypeError as e:
+        raise TypeError(e)
+
+    # if not, try to extract a CID v1
+    parse_result = urlparse(URI)
+    if parse_result.scheme == "ipfs":
+        if is_valid_cid(parse_result.netloc):
+            return parse_result.netloc
+
+    # check for valid CID in path
+    fragments = parse_result.path.replace("/", ";").replace(".", ";").split(";")
+    for fragment in fragments:
+        if is_valid_cid(fragment):
+            return fragment
+
+    # check for valid CID in netloc
+    fragments = parse_result.netloc.split(".")
+    for fragment in fragments:
+        if is_valid_cid(fragment):
+            return fragment
+
     return None
 
 
