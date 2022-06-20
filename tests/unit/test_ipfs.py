@@ -1,20 +1,74 @@
+from cmath import e
+from typing import Type
 import unittest
 import unittest.mock as mock
 
 from honestnft_utils import config
 from honestnft_utils import ipfs
 
-VALID_URIS = {
-    "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR": "QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
-    "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
-    "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/test.txt": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
-    "https://ipfs.io/ipfs/QmP5zQxwHXUYKNCfyXXeJ8K5YUUW5bGWiFRTguczmj491N/0.txt": "QmP5zQxwHXUYKNCfyXXeJ8K5YUUW5bGWiFRTguczmj491N",
-}
+VALID_URIS = [
+    {
+        "uri": "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+        "cid": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+        "suffix": "",
+    },
+    {
+        "uri": "/ipfs/bafybcfcqbwlhwbfq2k3ne2ysffcdoc4pmmsengy",
+        "cid": "bafybcfcqbwlhwbfq2k3ne2ysffcdoc4pmmsengy",
+        "suffix": "",
+    },
+    {
+        "uri": "ipfs://bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru/0.txt",
+        "cid": "bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru",
+        "suffix": "/0.txt",
+    },
+    {
+        "uri": "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+        "cid": "QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+        "suffix": "",
+    },
+    {
+        "uri": "https://ipfs.io/ipfs/QmP5zQxwHXUYKNCfyXXeJ8K5YUUW5bGWiFRTguczmj491N/0.txt",
+        "cid": "QmP5zQxwHXUYKNCfyXXeJ8K5YUUW5bGWiFRTguczmj491N",
+        "suffix": "/0.txt",
+    },
+    {
+        "uri": "https://bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru.ipfs.dweb.link/0.txt?loc=123",
+        "cid": "bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru",
+        "suffix": "/0.txt?loc=123",
+    },
+    {
+        "uri": "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+        "cid": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+        "suffix": "",
+    },
+    {
+        "uri": "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG/test.txt",
+        "cid": "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+        "suffix": "/test.txt",
+    },
+    {
+        "uri": "https://ipfs.io/ipfs/bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru/0.txt",
+        "cid": "bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru",
+        "suffix": "/0.txt",
+    },
+    {
+        "uri": "https://hungrywolves.mypinata.cloud/ipfs/QmU9miGYP6wGPodb3AE7LbAyKSF9bxq9CbeKmF5U7DfCt1/4000",
+        "cid": "QmU9miGYP6wGPodb3AE7LbAyKSF9bxq9CbeKmF5U7DfCt1",
+        "suffix": "/4000",
+    },
+]
 
-INVALID_URIS = {
-    "ipfs://1264/test.txt": None,
-    "https://ipfs.io/ipfsqmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6u/test.txt": None,
-}
+INVALID_URIS = [
+    "https://ipfs.io/ipfs/QmYwAPJzv5CZsnA6s3Xf2nemtYgPpHdWEz79ojWnPbdG/test.txt",
+    "ipfs://1264/test.txt",
+    "https://ipfs.io/ipfsqmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6u/test.txt",
+    "https://ipfs.io/ipfs/124/test.txt",
+    "/IPFS/QmNOTAVALIDCID",
+    1234,
+    None,
+    b"19",
+]
 
 
 class TestCase(unittest.TestCase):
@@ -31,51 +85,36 @@ class TestCase(unittest.TestCase):
         )
 
     def test_format_ipfs_uri(self):
-        self.assertEqual(
-            ipfs.format_ipfs_uri(
-                "ipfs://QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG"
-            ),
-            f"{config.IPFS_GATEWAY}QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
-        )
-        self.assertEqual(
-            ipfs.format_ipfs_uri(
-                "ipfs://bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru"
-            ),
-            f"{config.IPFS_GATEWAY}bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru",
-        )
-        self.assertEqual(
-            ipfs.format_ipfs_uri(
-                "https://gateway.pinata.cloud/ipfs/bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru"
-            ),
-            f"{config.IPFS_GATEWAY}bafybeialdjathblysfa4ki6ryso7cmeiufeyvcwmeegmv53jxt3pyffzru",
-        )
-        self.assertEqual(
-            ipfs.format_ipfs_uri(
-                "https://hungrywolves.mypinata.cloud/ipfs/QmU9miGYP6wGPodb3AE7LbAyKSF9bxq9CbeKmF5U7DfCt1/4000"
-            ),
-            f"{config.IPFS_GATEWAY}QmU9miGYP6wGPodb3AE7LbAyKSF9bxq9CbeKmF5U7DfCt1/4000",
-        )
+        with self.subTest("Testing valid URIs"):
+            for entry in VALID_URIS:
+                self.assertEqual(
+                    ipfs.format_ipfs_uri(entry["uri"]),
+                    f"{config.IPFS_GATEWAY}{entry['cid']}{entry['suffix']}",
+                )
 
-        self.assertEqual(
-            ipfs.format_ipfs_uri(
-                "https://ipfs.io/ipfs/QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG"
-            ),
-            f"{config.IPFS_GATEWAY}QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
-        )
+        with self.subTest("Testing invalid URIs"):
+            for entry in INVALID_URIS:
+                if type(entry) == str:
+                    self.assertRaises(ValueError, ipfs.format_ipfs_uri, entry)
+            else:
+                self.assertRaises(TypeError, ipfs.format_ipfs_uri, entry)
 
     def test_infer_cid_from_uri(self):
-        for uri, cid in VALID_URIS.items():
-            self.assertEqual(ipfs.infer_cid_from_uri(uri), cid)
-            self.assertIs(type(ipfs.infer_cid_from_uri(uri)), str)
+        for entry in VALID_URIS:
+            self.assertEqual(ipfs.infer_cid_from_uri(entry["uri"]), entry["cid"])
+            self.assertIs(type(ipfs.infer_cid_from_uri(entry["uri"])), str)
 
-        for uri, cid in INVALID_URIS.items():
-            self.assertEqual(ipfs.infer_cid_from_uri(uri), cid)
+        for entry in INVALID_URIS:
+            if type(entry) == str:
+                self.assertIsNone(ipfs.infer_cid_from_uri(entry))
+            else:
+                self.assertRaises(TypeError, ipfs.infer_cid_from_uri, entry)
 
     def test_is_valid_ipfs_uri(self):
-        for uri, cid in VALID_URIS.items():
-            self.assertTrue(ipfs.is_valid_ipfs_uri(uri))
-        for uri, cid in INVALID_URIS.items():
-            self.assertFalse(ipfs.is_valid_ipfs_uri(uri))
+        for entry in VALID_URIS:
+            self.assertTrue(ipfs.is_valid_ipfs_uri(entry["uri"]))
+        for entry in INVALID_URIS:
+            self.assertFalse(ipfs.is_valid_ipfs_uri(entry))
 
     @mock.patch("honestnft_utils.config.IPFS_GATEWAY", "")
     def test_mock_with_empty_gateway(self):
