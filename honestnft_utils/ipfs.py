@@ -1,6 +1,7 @@
 import re
 import warnings
 from pathlib import Path
+from urllib.parse import urlparse
 
 import ipfshttpclient
 from is_ipfs import Validator
@@ -144,24 +145,37 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
 
 
 def format_ipfs_uri(uri):
-    # Reformat IPFS gateway
-    ipfs_1 = "ipfs://"
-    ipfs_2 = "https://ipfs.io/ipfs/"
-    ipfs_3 = "https://gateway.pinata.cloud/ipfs/"
-    ipfs_hash_identifier = "Qm"
+    """
+    Given a IPFS URI, this function formats it with the user prefered gateway.
 
+    :param uri: The IPFS URI to be formatted
+    :type uri: str
+    :return: The formatted IPFS URI
+    :rtype: str
+    """
+    if type(uri) != str:
+        raise TypeError("Provided URI is not a string")
     if config.IPFS_GATEWAY == "":
-        if uri.startswith(ipfs_1):
-            uri = ipfs_2 + uri[len(ipfs_1) :]
+        gateway = "https://ipfs.io/ipfs/"
     else:
-        if uri.startswith(ipfs_1):
-            uri = config.IPFS_GATEWAY + uri[len(ipfs_1) :]
-        elif uri.startswith(ipfs_2):
-            uri = config.IPFS_GATEWAY + uri[len(ipfs_2) :]
-        elif uri.startswith(ipfs_3):
-            uri = config.IPFS_GATEWAY + uri[len(ipfs_3) :]
-        elif "pinata" in uri:
-            starting_index_of_hash = uri.find(ipfs_hash_identifier)
-            uri = config.IPFS_GATEWAY + uri[starting_index_of_hash:]
+        gateway = config.IPFS_GATEWAY
 
-    return uri
+    cid = infer_cid_from_uri(uri)
+    if cid:
+        if (
+            Validator(uri)._is_ipfs_subdomain_url()
+            or Validator(uri)._is_native_ipfs_url()
+        ):
+            scheme, netloc, path, params, query, fragment = urlparse(uri)
+            new_uri = urlparse(gateway + cid + path)
+            return new_uri._replace(
+                params=params, query=query, fragment=fragment
+            ).geturl()
+
+        elif Validator(uri)._is_ipfs_path_url() or Validator(uri)._is_ipfs_path():
+            url_parse_result = urlparse(uri)
+            return url_parse_result._replace(
+                scheme="https", netloc=urlparse(gateway).netloc
+            ).geturl()
+    else:
+        raise ValueError("No CID found in URI")
