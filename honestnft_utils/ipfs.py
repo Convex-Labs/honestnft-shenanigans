@@ -3,6 +3,7 @@ import warnings
 from pathlib import Path
 
 import ipfshttpclient
+from is_ipfs import Validator
 
 from honestnft_utils import config
 
@@ -29,6 +30,17 @@ def get_file_suffix(filename, token_id="\\d+"):
         return ""
     else:
         raise ValueError("Provided token_id not found in filename")
+
+
+def is_valid_cid(cid):  # pragma: no cover
+    """
+    Given a CID, this function checks if it's a valid CID.
+
+    :param cid
+    :type cid: str
+    :rtype: bool
+    """
+    return Validator(cid)._is_cid()
 
 
 def infer_cid_from_uri(uri):
