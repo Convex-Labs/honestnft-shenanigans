@@ -68,9 +68,7 @@ def is_valid_ipfs_uri(uri):
     :type uri: str
     :rtype: bool
     """
-    if uri.find("ipfs") != -1 and infer_cid_from_uri(uri):
-        return True
-    return False
+    return Validator(uri).is_ipfs()
 
 
 def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
