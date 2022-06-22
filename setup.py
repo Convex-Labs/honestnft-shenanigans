@@ -35,5 +35,6 @@ setup(
         "multicall==0.2.0",
         "python-dotenv==0.19.2",
         "plotly==5.6.0",
+        "py-is_ipfs==0.4.0",
     ],
 )
