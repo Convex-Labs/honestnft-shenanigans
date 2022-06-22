@@ -31,18 +31,16 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
         raise ValueError("Provided token_id not found in filename")
 
 
-def is_valid_cid(cid):  # pragma: no cover
+def is_valid_cid(cid: str) -> bool:  # pragma: no cover
     """
     Given a CID, this function checks if it's a valid CID.
 
     :param cid
-    :type cid: str
-    :rtype: bool
     """
     return Validator(cid)._is_cid()
 
 
-def infer_cid_from_uri(uri: str) -> Optional[str]:
+def infer_cid_from_uri(URI: str) -> Optional[str]:
     """
     Given a URI, this function returns the CID.
     Returns None if the CID is not found.
@@ -141,9 +139,7 @@ def format_ipfs_uri(uri: str) -> str:
     Given a IPFS URI, this function formats it with the user prefered gateway.
 
     :param uri: The IPFS URI to be formatted
-    :type uri: str
     :return: The formatted IPFS URI
-    :rtype: str
     """
     if type(uri) != str:
         raise TypeError("Provided URI is not a string")
