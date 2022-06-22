@@ -218,8 +218,7 @@ def get_token_uri_from_contract(
 
     try:
         uri = uri_contract_func(token_id).call()
-        uri = ipfs.format_ipfs_uri(uri)
-        return uri
+        return format_metadata_uri(uri)
     except ContractLogicError as err:
         raise Exception(err)
 
@@ -257,7 +256,7 @@ def get_token_uri_from_contract_batch(
             call = Call(
                 target=contract.address,
                 function=[function_signature, token_id],
-                returns=[[token_id, ipfs.format_ipfs_uri]],
+                returns=[[token_id, format_metadata_uri]],
             )
             calls.append(call)
         multi = Multicall(calls, _w3=w3)
@@ -342,3 +341,18 @@ def get_token_standard(contract: Contract) -> str:
             if contract.functions.supportsInterface(identifier).call():
                 return standard
     return "Unknown standard"
+
+
+def format_metadata_uri(URI):
+    """
+    Given a metadata URI, return the formatted IPFS URI if it is an IPFS URI,
+    otherwise return the URI
+
+    :param URI: metadata URI
+    :type URI: str
+    :return: formatted URI
+    :rtype: str
+    """
+    if ipfs.is_valid_ipfs_uri(URI):
+        return ipfs.format_ipfs_uri(URI)
+    return URI

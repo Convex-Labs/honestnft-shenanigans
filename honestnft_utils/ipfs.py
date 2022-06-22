@@ -2,8 +2,10 @@ import re
 import warnings
 from pathlib import Path
 from typing import Optional, Union
+from urllib.parse import urlparse
 
 import ipfshttpclient  # type: ignore
+from is_ipfs import Validator
 
 from honestnft_utils import config
 
@@ -29,6 +31,17 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
         raise ValueError("Provided token_id not found in filename")
 
 
+def is_valid_cid(cid):  # pragma: no cover
+    """
+    Given a CID, this function checks if it's a valid CID.
+
+    :param cid
+    :type cid: str
+    :rtype: bool
+    """
+    return Validator(cid)._is_cid()
+
+
 def infer_cid_from_uri(uri: str) -> Optional[str]:
     """
     Given a URI, this function returns the CID.
@@ -37,10 +50,34 @@ def infer_cid_from_uri(uri: str) -> Optional[str]:
     :param uri
     :return: cid
     """
-    cid_pattern = r"Qm[a-zA-Z0-9-_]+"
-    matches = re.search(cid_pattern, uri)
-    if matches:
-        return matches.group(0)
+    cid_v0_pattern = r"Qm[a-zA-Z0-9-_]+"
+    # first check if we can extract a CID v0
+    try:
+        matches = re.search(cid_v0_pattern, URI)
+        if matches:
+            if is_valid_cid(matches.group(0)):
+                return matches.group(0)
+    except TypeError as e:
+        raise TypeError(e)
+
+    # if not, try to extract a CID v1
+    parse_result = urlparse(URI)
+    if parse_result.scheme == "ipfs":
+        if is_valid_cid(parse_result.netloc):
+            return parse_result.netloc
+
+    # check for valid CID in path
+    fragments = parse_result.path.replace("/", ";").replace(".", ";").split(";")
+    for fragment in fragments:
+        if is_valid_cid(fragment):
+            return fragment
+
+    # check for valid CID in netloc
+    fragments = parse_result.netloc.split(".")
+    for fragment in fragments:
+        if is_valid_cid(fragment):
+            return fragment
+
     return None
 
 
@@ -50,9 +87,7 @@ def is_valid_ipfs_uri(uri: str) -> bool:
 
     :param uri
     """
-    if uri.find("ipfs") != -1 and infer_cid_from_uri(uri):
-        return True
-    return False
+    return Validator(uri).is_ipfs()
 
 
 def fetch_ipfs_folder(
@@ -102,24 +137,37 @@ def fetch_ipfs_folder(
 
 
 def format_ipfs_uri(uri: str) -> str:
-    # Reformat IPFS gateway
-    ipfs_1 = "ipfs://"
-    ipfs_2 = "https://ipfs.io/ipfs/"
-    ipfs_3 = "https://gateway.pinata.cloud/ipfs/"
-    ipfs_hash_identifier = "Qm"
+    """
+    Given a IPFS URI, this function formats it with the user prefered gateway.
 
+    :param uri: The IPFS URI to be formatted
+    :type uri: str
+    :return: The formatted IPFS URI
+    :rtype: str
+    """
+    if type(uri) != str:
+        raise TypeError("Provided URI is not a string")
     if config.IPFS_GATEWAY == "":
-        if uri.startswith(ipfs_1):
-            uri = ipfs_2 + uri[len(ipfs_1) :]
+        gateway = "https://ipfs.io/ipfs/"
     else:
-        if uri.startswith(ipfs_1):
-            uri = config.IPFS_GATEWAY + uri[len(ipfs_1) :]
-        elif uri.startswith(ipfs_2):
-            uri = config.IPFS_GATEWAY + uri[len(ipfs_2) :]
-        elif uri.startswith(ipfs_3):
-            uri = config.IPFS_GATEWAY + uri[len(ipfs_3) :]
-        elif "pinata" in uri:
-            starting_index_of_hash = uri.find(ipfs_hash_identifier)
-            uri = config.IPFS_GATEWAY + uri[starting_index_of_hash:]
+        gateway = config.IPFS_GATEWAY
 
-    return uri
+    cid = infer_cid_from_uri(uri)
+    if cid:
+        if (
+            Validator(uri)._is_ipfs_subdomain_url()
+            or Validator(uri)._is_native_ipfs_url()
+        ):
+            scheme, netloc, path, params, query, fragment = urlparse(uri)
+            new_uri = urlparse(gateway + cid + path)
+            return new_uri._replace(
+                params=params, query=query, fragment=fragment
+            ).geturl()
+
+        elif Validator(uri)._is_ipfs_path_url() or Validator(uri)._is_ipfs_path():
+            url_parse_result = urlparse(uri)
+            return url_parse_result._replace(
+                scheme="https", netloc=urlparse(gateway).netloc
+            ).geturl()
+    else:
+        raise ValueError("No CID found in URI")
