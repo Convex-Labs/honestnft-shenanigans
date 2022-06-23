@@ -230,6 +230,8 @@ def get_token_uri_from_contract_batch(
         endpoint = config.ENDPOINT
     elif blockchain == "fantom":
         endpoint = config.FANTOM_ENDPOINT
+    elif blockchain == "optimism":
+        endpoint = config.OPTIMISM_ENDPOINT
     elif blockchain == "polygon":
         endpoint = config.POLYGON_ENDPOINT
     else:
