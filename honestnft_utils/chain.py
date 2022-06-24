@@ -4,7 +4,7 @@ import time
 from typing import List, Dict, Tuple
 
 import requests
-from multicall import Call, Multicall  # type: ignore
+from multicall import Call, Multicall
 from web3 import Web3
 from web3.contract import Contract
 from web3.exceptions import ContractLogicError
@@ -298,7 +298,7 @@ def get_base_uri(contract: Contract, abi: list) -> str:
 
     try:
         uri = uri_contract_func().call()
-        return uri
+        return str(uri)
     except ContractLogicError as err:
         raise Exception(err)
 
@@ -345,15 +345,13 @@ def get_token_standard(contract: Contract) -> str:
     return "Unknown standard"
 
 
-def format_metadata_uri(URI):
+def format_metadata_uri(URI: str) -> str:
     """
     Given a metadata URI, return the formatted IPFS URI if it is an IPFS URI,
     otherwise return the URI
 
     :param URI: metadata URI
-    :type URI: str
     :return: formatted URI
-    :rtype: str
     """
     if ipfs.is_valid_ipfs_uri(URI):
         return ipfs.format_ipfs_uri(URI)
