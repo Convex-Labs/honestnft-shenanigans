@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional, Union
 from urllib.parse import urlparse
 
-import ipfshttpclient  # type: ignore
+import ipfshttpclient
 from is_ipfs import Validator
 
 from honestnft_utils import config
@@ -31,7 +31,7 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
         raise ValueError("Provided token_id not found in filename")
 
 
-def is_valid_cid(cid: str) -> bool:  # pragma: no cover
+def is_valid_cid(cid: str) -> bool:
     """
     Given a CID, this function checks if it's a valid CID.
 
@@ -143,7 +143,7 @@ def format_ipfs_uri(uri: str) -> str:
     """
     if type(uri) != str:
         raise TypeError("Provided URI is not a string")
-    if config.IPFS_GATEWAY == "":
+    if config.IPFS_GATEWAY is None:
         gateway = "https://ipfs.io/ipfs/"
     else:
         gateway = config.IPFS_GATEWAY
@@ -165,5 +165,4 @@ def format_ipfs_uri(uri: str) -> str:
             return url_parse_result._replace(
                 scheme="https", netloc=urlparse(gateway).netloc
             ).geturl()
-    else:
-        raise ValueError("No CID found in URI")
+    raise ValueError("No CID found in URI")
