@@ -1,0 +1,21 @@
+[tool.mypy]
+warn_return_any = true
+
+[[tool.mypy.overrides]]
+module = [
+    "ipfshttpclient",
+    "pandas",
+    "multicall"
+]
+ignore_missing_imports = true
+
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    # Don't complain if non-runnable code isn't run:
+    "if __name__ == .__main__.:"
+    ]

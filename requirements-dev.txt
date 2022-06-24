@@ -2,4 +2,6 @@ pre-commit
 black
 black[jupyter]
 tox
-coverage
+coverage[toml]
+mypy
+types-requests
