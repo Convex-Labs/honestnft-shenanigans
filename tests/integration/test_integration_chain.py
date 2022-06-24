@@ -80,6 +80,7 @@ class TestCase(unittest.TestCase):
                         "binance",
                         "ethereum",
                         "fantom",
+                        "optimism",
                         "polygon",
                     ]:
                         token_uris = chain.get_token_uri_from_contract_batch(
