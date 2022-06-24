@@ -114,7 +114,7 @@ class TestCase(unittest.TestCase):
         for entry in INVALID_URIS:
             self.assertFalse(ipfs.is_valid_ipfs_uri(entry))
 
-    @mock.patch("honestnft_utils.config.IPFS_GATEWAY", "")
+    @mock.patch("honestnft_utils.config.IPFS_GATEWAY", None)
     def test_mock_with_empty_gateway(self):
         self.assertEqual(
             ipfs.format_ipfs_uri(
@@ -124,5 +124,5 @@ class TestCase(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     unittest.main()
