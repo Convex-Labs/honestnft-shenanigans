@@ -4,3 +4,4 @@ tox
 coverage[toml]
 mypy
 nbqa
+sphinx==5.0.2
