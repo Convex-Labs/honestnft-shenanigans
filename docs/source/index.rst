@@ -18,7 +18,7 @@ have appeared. We've open sourced our tools, describing how we use them, and how
 to detect when someone else has used similar methods to gain an advantage in an 
 NFT launch.
   
-Continue reading about our motivation / background `here <https://medium.com/@convexlabs/a76143ef8ad8>`_.
+Continue reading about our motivation / background `here <https://medium.com/@convexlabs/a76143ef8ad8>`__.
 
   
 Bug Bounty 
@@ -28,7 +28,7 @@ We are seeding our initial bug bounty pool with 100% of the profits we made trad
  
 Our Gnosis Safe Multisig: `0xa94a1B82B441DAA23890FF5eEb84a66D323Fd6c1 <https://etherscan.io/address/0xa94a1b82b441daa23890ff5eeb84a66d323fd6c1>`_
 
-Read more about our rewards program `here <https://medium.com/@convexlabs/list/bounties-c0efbd75cf8c/>`_
+Read more about our rewards program `here <https://medium.com/@convexlabs/list/bounties-c0efbd75cf8c/>`__
   
 Installation
 ---------------
@@ -53,7 +53,7 @@ of test data so the repository is rather large.
 Simple Tutorial
 ------------------------------
 1. Download metadata with `pulling.py <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/pulling.py>`_
-2. Generate rarity rank with `rarity.py https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/rarity.py`_ (ranks are based off rarity.tools algorithm, which we reverse engineered)
+2. Generate rarity rank with `rarity.py <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/rarity.py>`_ (ranks are based off rarity.tools algorithm, which we reverse engineered)
 3. Generate rarity map (scatterplot) with `rarity_map.ipynb <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/rarity_map.ipynb>`_
 4. Pull minting data with `find_minting_data.ipynb <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/find_minting_data.ipynb>`_
 5. Generate ks-test scores with `ks_test.ipynb <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/ks_test.ipynb>`_ (ignore ks-test results for drops with skewed rarity maps)
@@ -109,7 +109,7 @@ For help, visit the `🔨#support channel <https://discord.gg/4aHvBBEq3p>`_ in o
 
 Contributing 
 ---------------
-Contributions, issues, feature requests or even suggestions are welcome! You can open an issue/PR or join us on `Discord <https://discord.gg/gJFw7R8bys>`_ to discuss your contribution. You can even earn a nice `bounty <bug-bounty>`_.
+Contributions, issues, feature requests or even suggestions are welcome! You can open an issue/PR or join us on `Discord <https://discord.gg/gJFw7R8bys>`_ to discuss your contribution. You can even earn a nice `bounty <#bug-bounty>`_.
 
 Don't forget to check out our `contributing guide <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/CONTRIBUTING.md>`_. 
 
