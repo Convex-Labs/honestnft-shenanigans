@@ -3,7 +3,7 @@ import time
 import glob
 import requests
 
-from dappradar import DappRadar
+from sales_data.dappradar import DappRadar
 
 
 class SalesData:
