@@ -15,6 +15,13 @@ Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
 
    temp-guide
    
+.. toctree::
+    :maxdepth: 2
+    :caption: Modules
+
+    modules
+
+
 
 .. Indices and tables
 .. ==================
