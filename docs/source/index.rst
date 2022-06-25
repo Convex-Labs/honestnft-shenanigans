@@ -114,6 +114,8 @@ Contributions, issues, feature requests or even suggestions are welcome! You can
 Don't forget to check out our `contributing guide <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/CONTRIBUTING.md>`_. 
 
 
+.. automodule:: honestnft_utils
+    :members:
 
 .. toctree::
    :maxdepth: 2
