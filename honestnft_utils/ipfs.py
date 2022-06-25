@@ -94,10 +94,15 @@ def fetch_ipfs_folder(
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
-    :param parent_folder: The parent folder where the collection should be saved.
-    :param collection_name The collection name to be used as the folder name
+    :param collection_name: The collection name to be used as the folder name
+    :type collection_name: str
     :param cid: The IPFS CID of folder to download
+    :type cid: str
+    :param parent_folder: The parent folder where the collection should be saved
+    :type parent_folder: str
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
+    :type timeout: int
+    :rtype: None
     """
     parent_path = Path(parent_folder)
     cid_path = parent_path.joinpath(cid)
