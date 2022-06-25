@@ -12,7 +12,8 @@
 #
 import os
 import sys
-import sphinx_rtd_theme, sphinx_autodoc_typehints
+
+# import sphinx_rtd_theme, sphinx_autodoc_typehints
 
 sys.path.insert(0, os.path.abspath("../.."))
 
