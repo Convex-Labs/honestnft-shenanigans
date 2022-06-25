@@ -13,7 +13,7 @@ creators and other collectors.
 
 We have developed and deployed tools for the purpose of gaining an advantage when 
 buying NFTs and we aren't the only ones; we've been observing people using such 
-tools for months and recently numerous paid services such as [traitsniper.com] 
+tools for months and recently numerous paid services such as traitsniper.com 
 have appeared. We've open sourced our tools, describing how we use them, and how 
 to detect when someone else has used similar methods to gain an advantage in an 
 NFT launch.
@@ -52,11 +52,11 @@ of test data so the repository is rather large.
 
 Simple Tutorial
 ------------------------------
-1. Download metadata with [pulling.py]
-2. Generate rarity rank with [rarity.py] (ranks are based off [rarity.tools] algorithm - we reverse engineered it)
-3. Generate rarity map (scatterplot) with [rarity_map.ipynb]
-4. Pull minting data with [find_minting_data.ipynb]
-5. Generate ks-test scores with [ks_test.ipynb] (ignore ks-test results for drops with skewed rarity maps)
+1. Download metadata with `pulling.py <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/pulling.py>`_
+2. Generate rarity rank with `rarity.py https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/rarity.py`_ (ranks are based off rarity.tools algorithm, which we reverse engineered)
+3. Generate rarity map (scatterplot) with `rarity_map.ipynb <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/rarity_map.ipynb>`_
+4. Pull minting data with `find_minting_data.ipynb <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/find_minting_data.ipynb>`_
+5. Generate ks-test scores with `ks_test.ipynb <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/ks_test.ipynb>`_ (ignore ks-test results for drops with skewed rarity maps)
 6. Tell us what you find! 
 
 
@@ -109,25 +109,11 @@ For help, visit the `🔨#support channel <https://discord.gg/4aHvBBEq3p>`_ in o
 
 Contributing 
 ---------------
-Contributions, issues, feature requests or even suggestions are welcome! You can open an issue/PR or join us on [Discord] to discuss your contribution. You can even earn a nice [bounty](#bug-bounty).
+Contributions, issues, feature requests or even suggestions are welcome! You can open an issue/PR or join us on `Discord <https://discord.gg/gJFw7R8bys>`_ to discuss your contribution. You can even earn a nice `bounty <bug-bounty>`_.
 
-Don't forget to check out our [contributing guide]. 
-
-
+Don't forget to check out our `contributing guide <https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/CONTRIBUTING.md>`_. 
 
 
-.. [Paradigm's Guide to Designing Effective NFT Launches]: 
-.. [traitsniper.com]: https://www.traitsniper.com/
-.. [pulling.py]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/pulling.py
-.. [rarity.py]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/metadata/rarity.py
-.. [rarity.tools]: https://rarity.tools/
-.. [rarity_map.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/rarity_map.ipynb
-.. [find_minting_data.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/find_minting_data.ipynb
-.. [ks_test.ipynb]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/fair_drop/ks_test.ipynb
-.. [Discord]: https://discord.gg/gJFw7R8bys
-.. [Website]: https://www.honestnft.xyz/
-.. [Twitter]: https://twitter.com/Honest_NFT
-.. [contributing guide]: https://github.com/Convex-Labs/honestnft-shenanigans/blob/master/CONTRIBUTING.md
 
 .. toctree::
    :maxdepth: 2
