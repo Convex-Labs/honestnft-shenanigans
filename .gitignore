@@ -138,4 +138,7 @@ dmypy.json
 .DS_Store
 
 # Javascript
-metadata/yarn.lock 
+metadata/yarn.lock
+
+# sphinx build folder
+_build

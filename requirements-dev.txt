@@ -3,3 +3,4 @@ black
 black[jupyter]
 tox
 coverage
+sphinx==5.0.2
