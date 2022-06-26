@@ -23,7 +23,8 @@ module = [
     "sklearn.*",
     "tqdm.notebook",
     "papermill",
-    "setuptools"
+    "setuptools",
+    "urllib3.*"
 ]
 ignore_missing_imports = true
 
