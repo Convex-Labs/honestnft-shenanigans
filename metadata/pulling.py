@@ -31,7 +31,7 @@ def mount_session() -> requests.Session:
         status_forcelist=[429, 500, 502, 503, 504, 520],
         allowed_methods=["GET"],
     )
-    retry_strategy.DEFAULT_BACKOFF_MAX = 5
+    retry_strategy.DEFAULT_BACKOFF_MAX = 5  # type: ignore
     adapter = HTTPAdapter(max_retries=retry_strategy)
     session = requests.Session()
     session.mount(prefix="https://", adapter=adapter)
@@ -120,7 +120,7 @@ def fetch_all_metadata(
             try:
                 ipfs.fetch_ipfs_folder(
                     collection_name=collection,
-                    cid=cid,
+                    cid=cid,  # type: ignore
                     parent_folder=config.ATTRIBUTES_FOLDER,
                     timeout=60,
                 )
@@ -359,7 +359,7 @@ def pull_metadata(args: argparse.Namespace) -> None:
         token_ids=token_ids,
         collection=collection,
         uri_func=args.uri_func,
-        contract=contract,
+        contract=contract,  # type: ignore
         abi=abi,
         uri_base=args.uri_base,
         uri_suffix=args.uri_suffix,
@@ -493,7 +493,7 @@ if __name__ == "__main__":
         "-threads",
         type=int,
         default=None,
-        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",
+        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",  # type: ignore
     )
     ARGS = ARG_PARSER.parse_args()
 
