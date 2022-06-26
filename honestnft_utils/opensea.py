@@ -17,7 +17,7 @@ def get_opensea_events(
     event_type: Optional[str] = None,
     have: list = [],
     limit: int = 300,
-    occurred_before: Optional[datetime] = None,
+    occurred_before: Optional[str] = None,
     only_opensea: bool = False,
     token_id: Optional[int] = None,
 ) -> List[Dict[str, Any]]:
