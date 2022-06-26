@@ -3,6 +3,8 @@ import base64
 import concurrent.futures
 import json
 import os
+from typing import Union
+
 
 import pandas as pd
 import requests
@@ -71,11 +73,10 @@ def fetch(token_id: int, metadata_uri: str, filename: str) -> None:
         print(
             f"Got below error when trying to get metadata for token id {token_id}.\n{err}"
         )
-    return True
 
 
 def fetch_all_metadata(
-    token_ids: list,
+    token_ids: Union[list, range],
     collection: str,
     uri_func: str,
     contract: Contract,
