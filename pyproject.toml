@@ -1,12 +1,29 @@
+[tool.nbqa.exclude]
+mypy = "case_studies"
+
 [tool.mypy]
 warn_return_any = true
+exclude = ["case_studies"]
 
 [[tool.mypy.overrides]]
 module = [
     "ipfshttpclient",
     "pandas",
     "multicall",
-    "requests"
+    "requests",
+    "requests.*",
+    "matplotlib",
+    "matplotlib.*",
+    "seaborn",
+    "plotly",
+    "plotly.*",
+    "scipy",
+    "scipy.*", 
+    "sklearn",
+    "sklearn.*",
+    "tqdm.notebook",
+    "papermill",
+    "setuptools"
 ]
 ignore_missing_imports = true
 
@@ -17,6 +34,7 @@ exclude_lines = [
     # Don't complain if tests don't hit defensive assertion code:
     "raise AssertionError",
     "raise NotImplementedError",
+
     # Don't complain if non-runnable code isn't run:
     "if __name__ == .__main__.:"
     ]
