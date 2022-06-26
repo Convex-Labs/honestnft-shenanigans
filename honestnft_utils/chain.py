@@ -42,7 +42,7 @@ def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:
     abi_url = f"{abi_endpoint}{address}"
     response = requests.get(abi_url)
     try:
-        abi = json.loads(response.json()["result"])
+        abi: list = json.loads(response.json()["result"])
         return abi
     except Exception as err:
         print(f"Failed to get contract ABI from Etherscan: {err}")
@@ -262,7 +262,8 @@ def get_token_uri_from_contract_batch(
             )
             calls.append(call)
         multi = Multicall(calls, _w3=w3)
-        return multi()
+
+        return multi()  # type: ignore
 
     else:
         return {}

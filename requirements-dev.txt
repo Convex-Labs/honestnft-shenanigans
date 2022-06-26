@@ -4,4 +4,3 @@ black[jupyter]
 tox
 coverage[toml]
 mypy
-types-requests

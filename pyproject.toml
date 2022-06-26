@@ -5,7 +5,8 @@ warn_return_any = true
 module = [
     "ipfshttpclient",
     "pandas",
-    "multicall"
+    "multicall",
+    "requests"
 ]
 ignore_missing_imports = true
 
