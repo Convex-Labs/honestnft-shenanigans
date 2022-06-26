@@ -14,3 +14,4 @@ sales\_data
 
    sales_data.collate_sales_data
    sales_data.dappradar
+   sales_data.sales_analysis

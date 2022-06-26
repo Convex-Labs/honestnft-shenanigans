@@ -12,7 +12,10 @@ metadata
 .. toctree::
    :maxdepth: 4
 
+   metadata.from_raritysniffer
+   metadata.from_raritytools
    metadata.pull_from_objkt
    metadata.pull_from_rt
    metadata.pulling
    metadata.rarity
+   metadata.solana_pull
