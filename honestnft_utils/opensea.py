@@ -56,7 +56,7 @@ def get_opensea_events(
 
     headers = {"Accept": "application/json", "X-API-KEY": config.OPENSEA_API_KEY}
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
+    response = requests.request("GET", url, headers=headers, params=querystring)  # type: ignore
 
     if response.status_code == 200:
         decode_response = response.json()

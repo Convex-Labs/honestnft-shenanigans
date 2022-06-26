@@ -18,6 +18,9 @@
 # If you need any clarification, email me. We can discuss more
 
 
+from typing import Dict
+
+
 def download(
     project_name: str = "vogu", starting_count_y: int = 1, normalize_trait: int = 1
 ) -> None:
@@ -57,7 +60,7 @@ def download(
     number_of_traits_types = len(all_traits) - 1
     nft_metadata = response_data["items"]
     metadata_scoring = {}
-    metadata_to_save = {}
+    metadata_to_save: Dict = {}
     total_tokens_len = len(nft_metadata)
     constant_number = (
         1000000 / total_tokens_len
@@ -247,7 +250,7 @@ def download(
             {"rank": count, "rarity_score": float(sorted_rarity_table[each_item][1])}
         )
         metadata_scoring[str(sorted_rarity_table[each_item][0])].update(
-            {"RARITY_SCORE": float(sorted_rarity_table[each_item][1]), "Rank": count}
+            {"RARITY_SCORE": float(sorted_rarity_table[each_item][1]), "Rank": count}  # type: ignore
         )
 
         count = count + 1
@@ -292,7 +295,7 @@ def download(
 
 
 def save_raw_attributes_csv(
-    collection: str, raw_attributes: list, file_path: str
+    collection: str, raw_attributes: dict, file_path: str
 ) -> None:
     import pandas as pd
 
