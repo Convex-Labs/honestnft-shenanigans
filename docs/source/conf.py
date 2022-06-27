@@ -63,3 +63,6 @@ html_static_path = ["_static"]
 
 # sphinx-autodoc-typehints settings
 always_document_param_types = True
+
+# Explicitly Dis-/Enabling Notebook Execution
+nbsphinx_execute = "never"
