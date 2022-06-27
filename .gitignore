@@ -142,3 +142,6 @@ metadata/yarn.lock
 
 # sphinx build folder
 _build
+
+# development drafts folder
+.drafts

@@ -4,6 +4,7 @@ tox
 coverage[toml]
 mypy
 nbqa
-sphinx==5.0.2
+Sphinx==5.0.2
 sphinx-rtd-theme==1.0.0
-sphinx_autodoc_typehints
+sphinx-autodoc-typehints==1.18.3
+pandoc
