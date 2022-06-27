@@ -2,7 +2,7 @@
 fair\_drop.prereveal\_tests
 ===========================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/prereveal_tests

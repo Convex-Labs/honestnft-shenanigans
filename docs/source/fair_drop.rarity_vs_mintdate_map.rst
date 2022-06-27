@@ -2,7 +2,8 @@
 fair\_drop.rarity\_vs\_mintdate\_map
 ====================================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/rarity_vs_mintdate_map

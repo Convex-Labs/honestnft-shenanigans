@@ -2,7 +2,8 @@
 fair\_drop.rarity\_histogram\_overlay
 =====================================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/rarity_histogram_overlay

@@ -2,7 +2,7 @@
 fair\_drop.ks\_test
 ===================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/ks_test

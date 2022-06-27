@@ -2,7 +2,7 @@
 fair\_drop.flipping\_profit\_per\_token
 =======================================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/flipping_profit_per_token

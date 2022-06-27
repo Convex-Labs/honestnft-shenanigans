@@ -2,7 +2,8 @@
 fair\_drop.wallets\_average\_rarity\_rank\_histogram
 ====================================================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/wallets_average_rarity_rank_histogram

@@ -2,7 +2,7 @@
 fair\_drop.interactive\_plots
 =============================
 
-.. .. automodule:: fair_drop
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+.. toctree::
+   :maxdepth: 4
+
+   notebooks/interactive_plots

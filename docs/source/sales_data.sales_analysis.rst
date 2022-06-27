@@ -2,7 +2,8 @@
 sales\_data.sales\_analysis
 ===========================
 
-.. .. automodule:: sales_data.sales_analysis
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+
+.. toctree::
+   :maxdepth: 1
+
+   notebooks/Sales_Analysis
