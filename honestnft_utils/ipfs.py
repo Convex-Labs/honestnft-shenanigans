@@ -82,8 +82,6 @@ def infer_cid_from_uri(URI: str) -> Optional[str]:
 def is_valid_ipfs_uri(uri: str) -> bool:
     """
     Given a URI, this functions checks if it's a valid IPFS URI.
-
-    :param uri
     """
     return Validator(uri).is_ipfs()
 
