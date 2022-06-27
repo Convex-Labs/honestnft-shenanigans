@@ -15,8 +15,6 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
     Given a filename and an optional token_id, this function returns the file suffix.
     If the file has no extension, an empty string is returned.
 
-    :param filename
-    :param token_id
     :return: file_suffix
     """
     token_id_pattern = rf"^{token_id}"
@@ -34,8 +32,6 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
 def is_valid_cid(cid: str) -> bool:
     """
     Given a CID, this function checks if it's a valid CID.
-
-    :param cid
     """
     return Validator(cid)._is_cid()
 
@@ -45,7 +41,6 @@ def infer_cid_from_uri(URI: str) -> Optional[str]:
     Given a URI, this function returns the CID.
     Returns None if the CID is not found.
 
-    :param uri
     :return: cid
     """
     cid_v0_pattern = r"Qm[a-zA-Z0-9-_]+"
