@@ -1,11 +1,12 @@
 import argparse
+
 import numpy as np
 import pandas as pd
 
 from honestnft_utils import config
 
 
-def max_variety_count(trait_db, trait_types):
+def max_variety_count(trait_db: pd.DataFrame, trait_types: list) -> int:
     # Get the number of trait values in the largest trait class
     max_size = 0
     for trait in trait_types:
@@ -17,8 +18,13 @@ def max_variety_count(trait_db, trait_types):
 
 
 def gen_rarity_score(
-    trait_db, trait_types, method, trait_count, sum_traits, sum_trait_multiplier
-):
+    trait_db: pd.DataFrame,
+    trait_types: list,
+    method: str,
+    trait_count: bool,
+    sum_traits: list,
+    sum_trait_multiplier: int,
+) -> pd.DataFrame:
 
     # Create copy of trait database
     rarity_db = trait_db.copy(deep=True)
@@ -118,8 +124,13 @@ def gen_rarity_score(
 
 
 def build_rarity_db(
-    collection, attribute_file, method, trait_count, sum_traits, sum_trait_multiplier
-):
+    collection: str,
+    attribute_file: str,
+    method: str,
+    trait_count: bool,
+    sum_traits: list,
+    sum_trait_multiplier: int,
+) -> None:
     # Load raw attribute file from disk
     trait_db = pd.read_csv(attribute_file, delimiter=",")
 

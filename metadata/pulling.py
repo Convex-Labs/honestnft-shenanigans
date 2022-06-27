@@ -3,11 +3,14 @@ import base64
 import concurrent.futures
 import json
 import os
+from typing import Union
+
 
 import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
 from honestnft_utils import chain
@@ -19,7 +22,7 @@ Metadata helper methods
 """
 
 
-def mount_session():
+def mount_session() -> requests.Session:
     """
     Create a requests.session() with optimised strategy for retrying and respecting errors
     """
@@ -30,7 +33,7 @@ def mount_session():
         status_forcelist=[429, 500, 502, 503, 504, 520],
         allowed_methods=["GET"],
     )
-    retry_strategy.DEFAULT_BACKOFF_MAX = 5
+    retry_strategy.DEFAULT_BACKOFF_MAX = 5  # type: ignore
     adapter = HTTPAdapter(max_retries=retry_strategy)
     session = requests.Session()
     session.mount(prefix="https://", adapter=adapter)
@@ -39,7 +42,7 @@ def mount_session():
     return session
 
 
-def fetch(token_id, metadata_uri, filename):
+def fetch(token_id: int, metadata_uri: str, filename: str) -> None:
     try:
         # Try to get metadata file from server
         if metadata_uri.startswith("data:application/json;base64"):
@@ -70,20 +73,19 @@ def fetch(token_id, metadata_uri, filename):
         print(
             f"Got below error when trying to get metadata for token id {token_id}.\n{err}"
         )
-    return True
 
 
 def fetch_all_metadata(
-    token_ids,
-    collection,
-    uri_func,
-    contract,
-    abi,
-    uri_base,
-    uri_suffix,
-    blockchain,
-    threads,
-):
+    token_ids: Union[list, range],
+    collection: str,
+    uri_func: str,
+    contract: Contract,
+    abi: list,
+    uri_base: str,
+    uri_suffix: str,
+    blockchain: str,
+    threads: int,
+) -> list:
 
     # Create raw attribute folder for collection if it doesnt already exist
     folder = f"{config.ATTRIBUTES_FOLDER}/{collection}/"
@@ -119,7 +121,7 @@ def fetch_all_metadata(
             try:
                 ipfs.fetch_ipfs_folder(
                     collection_name=collection,
-                    cid=cid,
+                    cid=cid,  # type: ignore
                     parent_folder=config.ATTRIBUTES_FOLDER,
                     timeout=60,
                 )
@@ -280,7 +282,7 @@ Main method
 """
 
 
-def pull_metadata(args):
+def pull_metadata(args: argparse.Namespace) -> None:
 
     if args.contract is not None:
         # Get Ethereum contract object
@@ -358,7 +360,7 @@ def pull_metadata(args):
         token_ids=token_ids,
         collection=collection,
         uri_func=args.uri_func,
-        contract=contract,
+        contract=contract,  # type: ignore
         abi=abi,
         uri_base=args.uri_base,
         uri_suffix=args.uri_suffix,
@@ -492,7 +494,7 @@ if __name__ == "__main__":
         "-threads",
         type=int,
         default=None,
-        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",
+        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",  # type: ignore
     )
     ARGS = ARG_PARSER.parse_args()
 

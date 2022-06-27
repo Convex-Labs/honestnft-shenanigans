@@ -1,6 +1,7 @@
 import re
 import warnings
 from pathlib import Path
+from typing import Optional, Union
 from urllib.parse import urlparse
 
 import ipfshttpclient
@@ -9,17 +10,14 @@ from is_ipfs import Validator
 from honestnft_utils import config
 
 
-def get_file_suffix(filename, token_id="\\d+"):
+def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
     """
     Given a filename and an optional token_id, this function returns the file suffix.
     If the file has no extension, an empty string is returned.
 
     :param filename
-    :type filename: str
     :param token_id
-    :type token_id: str | int | None
     :return: file_suffix
-    :rtype: str
     """
     token_id_pattern = rf"^{token_id}"
     matches = re.search(token_id_pattern, filename)
@@ -33,26 +31,22 @@ def get_file_suffix(filename, token_id="\\d+"):
         raise ValueError("Provided token_id not found in filename")
 
 
-def is_valid_cid(cid):  # pragma: no cover
+def is_valid_cid(cid: str) -> bool:
     """
     Given a CID, this function checks if it's a valid CID.
 
     :param cid
-    :type cid: str
-    :rtype: bool
     """
     return Validator(cid)._is_cid()
 
 
-def infer_cid_from_uri(URI):
+def infer_cid_from_uri(URI: str) -> Optional[str]:
     """
     Given a URI, this function returns the CID.
     Returns None if the CID is not found.
 
     :param uri
-    :type uri: str
     :return: cid
-    :rtype: str | None
     """
     cid_v0_pattern = r"Qm[a-zA-Z0-9-_]+"
     # first check if we can extract a CID v0
@@ -85,29 +79,25 @@ def infer_cid_from_uri(URI):
     return None
 
 
-def is_valid_ipfs_uri(uri):
+def is_valid_ipfs_uri(uri: str) -> bool:
     """
     Given a URI, this functions checks if it's a valid IPFS URI.
 
     :param uri
-    :type uri: str
-    :rtype: bool
     """
     return Validator(uri).is_ipfs()
 
 
-def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
+def fetch_ipfs_folder(
+    collection_name: str, cid: str, parent_folder: str, timeout: Optional[int] = 60
+) -> None:
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
     :param parent_folder: The parent folder where the collection should be saved.
-    :type parent_folder:  str
     :param collection_name The collection name to be used as the folder name
-    :type collection_name: str
     :param cid: The IPFS CID of folder to download
-    :type cid: str
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
-    :type timeout: int | None
     """
     parent_path = Path(parent_folder)
     cid_path = parent_path.joinpath(cid)
@@ -144,18 +134,16 @@ def fetch_ipfs_folder(collection_name, cid, parent_folder, timeout=60):
             pass
 
 
-def format_ipfs_uri(uri):
+def format_ipfs_uri(uri: str) -> str:
     """
     Given a IPFS URI, this function formats it with the user prefered gateway.
 
     :param uri: The IPFS URI to be formatted
-    :type uri: str
     :return: The formatted IPFS URI
-    :rtype: str
     """
     if type(uri) != str:
         raise TypeError("Provided URI is not a string")
-    if config.IPFS_GATEWAY == "":
+    if config.IPFS_GATEWAY is None:
         gateway = "https://ipfs.io/ipfs/"
     else:
         gateway = config.IPFS_GATEWAY
@@ -177,5 +165,4 @@ def format_ipfs_uri(uri):
             return url_parse_result._replace(
                 scheme="https", netloc=urlparse(gateway).netloc
             ).geturl()
-    else:
-        raise ValueError("No CID found in URI")
+    raise ValueError("No CID found in URI")

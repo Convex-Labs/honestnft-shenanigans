@@ -1,4 +1,5 @@
 import argparse
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -9,7 +10,7 @@ API_URL = "https://data.objkt.com/v2/graphql"
 MAX_RECORDS_PAGE = 500
 
 
-def get_collection_name(contract_address: str):
+def get_collection_name(contract_address: str) -> Optional[str]:
     """
     Given a contract address, return the collection name from objkt.com
     """
@@ -22,7 +23,7 @@ def get_collection_name(contract_address: str):
 
     if (json_data["data"] is None) or (json_data["data"]["fa"] is None):
         return None
-    return json_data["data"]["fa"][0]["name"]
+    return str(json_data["data"]["fa"][0]["name"])
 
 
 def pull_from_objkt(contract_address: str) -> list:
@@ -72,10 +73,10 @@ def pull_from_objkt(contract_address: str) -> list:
     return metadata_list
 
 
-def pull_metadata(contract_address: str):
+def pull_metadata(contract_address: str) -> None:
     collection_name = get_collection_name(contract_address)
     if collection_name is None:
-        return "Contract not found"
+        raise Exception("Contract not found")
 
     collection_name.replace(" ", "_")
 

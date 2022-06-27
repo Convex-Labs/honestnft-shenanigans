@@ -18,7 +18,12 @@
 # If you need any clarification, email me. We can discuss more
 
 
-def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
+from typing import Dict
+
+
+def download(
+    project_name: str = "vogu", starting_count_y: int = 1, normalize_trait: int = 1
+) -> None:
     # The variable "starting_count_y" is usually 1, but in Rare case, the count has to start at 2, due to irregular data structure used by Rarity tools
     # Leave "normalize_trait" as default value 1, unless you want to turn it off. (Not recommended to turn it off, as normalize_trait will give better accuracy)
     import csv
@@ -55,7 +60,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     number_of_traits_types = len(all_traits) - 1
     nft_metadata = response_data["items"]
     metadata_scoring = {}
-    metadata_to_save = {}
+    metadata_to_save: Dict = {}
     total_tokens_len = len(nft_metadata)
     constant_number = (
         1000000 / total_tokens_len
@@ -245,7 +250,7 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
             {"rank": count, "rarity_score": float(sorted_rarity_table[each_item][1])}
         )
         metadata_scoring[str(sorted_rarity_table[each_item][0])].update(
-            {"RARITY_SCORE": float(sorted_rarity_table[each_item][1]), "Rank": count}
+            {"RARITY_SCORE": float(sorted_rarity_table[each_item][1]), "Rank": count}  # type: ignore
         )
 
         count = count + 1
@@ -289,7 +294,9 @@ def download(project_name="vogu", starting_count_y=1, normalize_trait=1):
     print("--- %s seconds Taken to Download ---" % (time.time() - start_time))
 
 
-def save_raw_attributes_csv(collection, raw_attributes, file_path):
+def save_raw_attributes_csv(
+    collection: str, raw_attributes: dict, file_path: str
+) -> None:
     import pandas as pd
 
     # List to store all tokens traits
