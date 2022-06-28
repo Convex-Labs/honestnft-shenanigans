@@ -17,10 +17,13 @@ Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
    faq
    
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 4
     :caption: Modules
-
-    modules
+    
+    fair_drop
+    honestnft_utils
+    metadata
+    sales_data
 
 
 
