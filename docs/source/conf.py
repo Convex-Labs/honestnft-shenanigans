@@ -61,6 +61,11 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+html_js_files = [
+    "require.min.js",
+    "custom.js",
+]
+
 # sphinx-autodoc-typehints settings
 always_document_param_types = True
 
