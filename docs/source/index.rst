@@ -13,6 +13,7 @@ Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
    :maxdepth: 1
    :caption: Guides
 
+   guides/install
    guides/faq
    
 .. toctree::
