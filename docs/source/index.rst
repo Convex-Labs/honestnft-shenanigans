@@ -10,11 +10,12 @@ Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
    introduction
 
 .. toctree::
-   :maxdepth: 1
+   :glob:
+   :maxdepth: 2
    :caption: Guides
 
-   guides/install
-   guides/faq
+   guides/*
+   
    
 .. toctree::
     :maxdepth: 4
