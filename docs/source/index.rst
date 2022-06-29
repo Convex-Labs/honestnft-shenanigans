@@ -14,7 +14,7 @@ Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
    :caption: Guides
 
    temp-guide
-   faq
+   guides/faq
    
 .. toctree::
     :maxdepth: 4
