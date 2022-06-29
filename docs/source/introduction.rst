@@ -30,25 +30,6 @@ Our Gnosis Safe Multisig: `0xa94a1B82B441DAA23890FF5eEb84a66D323Fd6c1 <https://e
 
 Read more about our rewards program `here <https://medium.com/@convexlabs/list/bounties-c0efbd75cf8c/>`__
   
-Installation
----------------
-
-**1. Prerequisites**
-
-- python
-- git
-
-**2. Instructions**
-
-1. Download the github repo: :code:`git clone https://github.com/Convex-Labs/honestnft-shenanigans.git`  
-2. Change directory to the downloaded repo: :code:`cd honestnft-shenanigans`
-3. Install the tools and requirements with: :code:`pip install --editable .`
-4. Rename :code:`.env-example` to :code:`.env`
-5. Add your personal API keys and web3 providers to :code:`.env`
-
-**Note**: The repo takes a few minutes to install. We've provided a decent amount 
-of test data so the repository is rather large.
-
 
 Simple Tutorial
 ------------------------------
@@ -65,27 +46,6 @@ Video Tutorial
 ------------------------------
 Tutorial: https://vimeo.com/638878051
 
-
-
-.. API References
-.. ------------------------------
-.. Web3 Provider: https://www.alchemy.com/ (Recommended)
-
-.. Basic IPFS Endpoints: https://ipfs.github.io/public-gateway-checker/
-.. <details>
-..   <summary>Note</summary>
-  
-..   When you click one the gateways, you might be redirected to a long URL. Please note that only the hostname + /ipfs/ part is necessary.  
-..   E.g.  
-  
-..   ```
-..   Correct: gateway.ipfs.io/ipfs/  
-..   Wrong: gateway.ipfs.io/ipfs/bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m#x-ipfs-companion-no-redirect  
-..   ```
-  
-..   </details>
-.. Pinata IPFS Endpoints: https://www.pinata.cloud/ (IPFS_GATEWAY in pulling.py is 
-.. set to a public endpoint; can pull faster w Pinata)
 
 How metadata leaks 
 ------------------------------
