@@ -13,7 +13,7 @@ Because our tools consist of Jupyter notebooks and Python modules, there is no "
     #. Change directory to the downloaded repo: :code:`cd honestnft-shenanigans`
     #. Install the tools and requirements with: :code:`pip install --editable .`
     #. Rename :code:`.env-example` to :code:`.env`
-    #. Add your personal API keys and web3 providers to :code:`.env`
+    #. Add your personal :doc:`API keys and web3 providers <api-keys>` to :code:`.env`
 
 
 .. note:: The repo takes a few minutes to install. We've provided a decent amount of test data so the repository is rather large.
