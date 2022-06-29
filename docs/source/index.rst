@@ -14,7 +14,9 @@ Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
    :maxdepth: 2
    :caption: Guides
 
-   guides/*
+   guides/install
+   guides/api-keys
+   guides/faq
    
    
 .. toctree::
