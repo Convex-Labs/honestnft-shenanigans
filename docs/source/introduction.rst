@@ -44,7 +44,8 @@ Simple Tutorial
 
 Video Tutorial
 ------------------------------
-Tutorial: https://vimeo.com/638878051
+.. vimeo:: 638878051
+
 
 
 How metadata leaks 
