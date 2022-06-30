@@ -32,6 +32,7 @@ Our tools have been used in numerous public investigations. Here are a few high-
    :caption: Guides
 
    guides/install
+   guides/updating
    guides/api-keys
    guides/faq
    
