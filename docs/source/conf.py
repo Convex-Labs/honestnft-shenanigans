@@ -68,6 +68,7 @@ html_js_files = [
 
 # sphinx-autodoc-typehints settings
 always_document_param_types = True
+autodoc_member_order = "bysource"
 
 # Explicitly Dis-/Enabling Notebook Execution
 nbsphinx_execute = "never"
