@@ -15,7 +15,7 @@ Instructions
 
 #. Download the github repo: :code:`git clone https://github.com/Convex-Labs/honestnft-shenanigans.git`
 #. Change directory to the downloaded repo: :code:`cd honestnft-shenanigans`
-#. Install the tools and requirements with: :code:`pip install --editable .`
+#. Install the tools and requirements with: :code:`python3 -m pip install --editable .`
 #. Rename :code:`.env-example` to :code:`.env`
 #. Add your personal :doc:`API keys and web3 providers <api-keys>` to :code:`.env`
 
