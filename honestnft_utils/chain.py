@@ -16,6 +16,7 @@ from honestnft_utils import ipfs
 def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:
     """
     Given a contract address, return the contract ABI from Etherscan.
+    If the contract is unverified, the ABI will be partially constructed according to ERC165.
 
     :param address: The contract address
     :param blockchain: The blockchain to use. Options are:
