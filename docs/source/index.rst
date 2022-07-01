@@ -1,5 +1,5 @@
 Welcome to HonestNFT Shenanigan Scanning Tools's documentation!
-========================================================================
+===============================================================
 
 In October 2021, we open sourced our code for scraping and analyzing NFT metadata. 
 Additionally, we developed and published methodologies for:
@@ -7,10 +7,11 @@ Additionally, we developed and published methodologies for:
 * identifying shenanigans carried out by insiders
 * preventing insider trading through simple but robust commit-reveal schemes
 
-
-Our powerful suite of tools makes it easy for analysts to collect rarity data and detect what we call "anomalously lucky" NFT traders. 
-Since open sourcing our code, it has been forked 60+ times and starred 150+ times on Github. We have already paid out over $50k in bounties to open source code contributors who expanded our toolset, as well as to sleuths who used our code to shine a light on bad behavior in the NFT space. 
-
+Our powerful suite of tools makes it easy for analysts to collect rarity data and detect what we 
+call "anomalously lucky" NFT traders. Since open sourcing our code, it has been forked 60+ times 
+and starred 150+ times on Github. We have already paid out over $50k in bounties to open source 
+code contributors who expanded our toolset, as well as to sleuths who used our code to shine a 
+light on bad behavior in the NFT space. 
 
 Our tools have been used in numerous public investigations. Here are a few high-profile examples:
 
@@ -19,6 +20,8 @@ Our tools have been used in numerous public investigations. Here are a few high-
 * `Starcatchers NFT insider trading investigation <https://twitter.com/mehdeegbr/status/1511328109446168576>`_ *MetaMehdee 4/5/2022*
 
 
+Table of Contents
+-----------------
 
 .. toctree::
    :maxdepth: 1
@@ -27,8 +30,8 @@ Our tools have been used in numerous public investigations. Here are a few high-
    introduction
 
 .. toctree::
+   :maxdepth: 1
    :glob:
-   :maxdepth: 2
    :caption: Guides
 
    guides/install
@@ -38,19 +41,18 @@ Our tools have been used in numerous public investigations. Here are a few high-
    
    
 .. toctree::
-    :maxdepth: 4
-    :caption: Modules
+   :maxdepth: 1
+   :caption: Modules
     
-    fair_drop
-    honestnft_utils
-    metadata
-    sales_data
+   fair_drop
+   honestnft_utils
+   metadata
+   sales_data
 
 
+Indices and tables
+------------------
 
-.. Indices and tables
-.. ==================
-
-.. * :ref:`genindex`
-.. * :ref:`modindex`
-.. * :ref:`search`
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
