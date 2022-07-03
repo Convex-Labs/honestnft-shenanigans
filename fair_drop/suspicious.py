@@ -18,6 +18,9 @@ args = parser.parse_args()
 def is_nft_suspicious(nft_url):
     scraper = cloudscraper.create_scraper()
     res = scraper.get(nft_url)
-
+    if res.status_code == 429:  # Rate limited by OpenSea
+        res = scraper.get(nft_url)
+    if res.status_code == 404:  # NFT not found
+        return None
     if res.status_code == 200:
         return res.text.find("Reported for suspicious") > 0
