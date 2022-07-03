@@ -38,3 +38,22 @@ def is_nft_suspicious(nft_url):
             return True
         else:
             return False
+
+
+results = {}
+OPENSEA_BASE_URL = (
+    "https://opensea.io/assets/ethereum/"  # TODO adjust for other blockchains
+)
+
+
+def scrape_all_collection_suspicious_nfts(collection_address):
+    i = 1
+    result = is_nft_suspicious(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
+    while result is not None:
+        results[i] = result
+        i += 1
+        result = is_nft_suspicious(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
+    logging.info(f"Stopped scraping at NFT of ID {i}")
+
+
+scrape_all_collection_suspicious_nfts(args.collection_address)
