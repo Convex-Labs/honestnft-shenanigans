@@ -152,43 +152,49 @@ def build_rarity_db(
     print(rarity_db.head(5).T)
 
 
-if __name__ == "__main__":
-
-    # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(
+def _cli_parser() -> argparse.ArgumentParser:
+    """
+    Create the command line argument parser
+    """
+    parser = argparse.ArgumentParser(
         description="CLI for generating rarity score of NFT collections."
     )
-    ARG_PARSER.add_argument(
+    parser.add_argument(
         "-collection",
         type=str,
         default=None,
         help="Collection name.",
     )
-    ARG_PARSER.add_argument(
+    parser.add_argument(
         "-method",
         type=str,
         default="raritytools",
         help="Method to use to compute rarity. (default: raritytools)",
     )
-    ARG_PARSER.add_argument(
+    parser.add_argument(
         "-trait_count",
         type=bool,
         default=True,
         help="Toggle using trait count in computation. (default: True)",
     )
-    ARG_PARSER.add_argument(
+    parser.add_argument(
         "-sum_traits",
         type=str,
         nargs="+",
         help="Traits to sum instead of computing rarity. Can be one or many. (default: None)",
     )
-    ARG_PARSER.add_argument(
+    parser.add_argument(
         "-sum_trait_mult",
         type=float,
         default=35,
         help="Trait score multiplier to use for summed traits. (default: 35)",
     )
-    ARGS = ARG_PARSER.parse_args()
+    return parser
+
+
+if __name__ == "__main__":
+
+    ARGS = _cli_parser().parse_args()
 
     # Build attribute file
     ATTRIBUTE_FILE = f"{config.ATTRIBUTES_FOLDER}/{ARGS.collection}.csv"
