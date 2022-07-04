@@ -10,3 +10,4 @@ sphinx-autodoc-typehints==1.18.3
 pandoc
 nbsphinx==0.8.9
 sphinxcontrib-youtube==1.2.0
+git+https://github.com/Barabazs/autoprogram#egg=sphinxcontrib-autoprogram
