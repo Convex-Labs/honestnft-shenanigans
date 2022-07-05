@@ -19,7 +19,7 @@ strict_equality = true
 # warn_unreachable = true
 # warn_unused_ignores = true
 
-exclude = ["case_studies","tests"]
+exclude = ["case_studies","tests","docs"]
 
 [[tool.mypy.overrides]]
 module = [
@@ -40,7 +40,9 @@ module = [
     "tqdm.notebook",
     "papermill",
     "setuptools",
-    "urllib3.*"
+    "urllib3.*",
+    "docutils",
+    "docutils.*",
 ]
 ignore_missing_imports = true
 
