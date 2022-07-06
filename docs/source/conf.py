@@ -74,3 +74,5 @@ autodoc_member_order = "bysource"
 
 # Explicitly Dis-/Enabling Notebook Execution
 nbsphinx_execute = "never"
+
+highlight_language = "none"
