@@ -8,9 +8,8 @@ sales\_data
    :show-inheritance:
 
 
-
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    sales_data.collate_sales_data
    sales_data.dappradar

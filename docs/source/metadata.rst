@@ -10,10 +10,8 @@ You can use these do download (pull) NFT metadata from various sources or calcul
    :undoc-members:
    :show-inheritance:
 
-
-
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    metadata.from_raritysniffer
    metadata.from_raritytools

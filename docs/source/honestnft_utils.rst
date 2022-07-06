@@ -11,9 +11,8 @@ Each module serves a specific purpose, e.g. honestnft_utils.chain can be used to
    :show-inheritance:
 
 
-
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    honestnft_utils.chain
    honestnft_utils.config

@@ -11,7 +11,7 @@ As of now, most notebooks are undocumented or only contain inline documentation.
    :show-inheritance:
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    fair_drop.airdrop_or_mint
    fair_drop.find_minting_data
