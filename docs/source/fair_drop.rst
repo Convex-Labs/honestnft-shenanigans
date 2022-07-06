@@ -2,6 +2,9 @@
 fair\_drop
 ==========
 
+The `fair_drop` package contains the data analysis notebooks used to investigate potential NFT shenanigans.
+As of now, most notebooks are undocumented or only contain inline documentation. Therefore we included a copy of each notebook below.
+
 .. automodule:: fair_drop
    :members:
    :undoc-members:

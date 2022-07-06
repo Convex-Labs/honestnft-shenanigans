@@ -2,6 +2,9 @@
 metadata
 ========
 
+The metadata package is a collection of modules that are used from the terminal.
+You can use these do download (pull) NFT metadata from various sources or calculate the rarity score of that metadata.
+
 .. automodule:: metadata
    :members:
    :undoc-members:
