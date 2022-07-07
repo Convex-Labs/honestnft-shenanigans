@@ -25,14 +25,13 @@ from typing import Dict
 
 import requests
 from honestnft_utils import config
+from honestnft_utils import misc
 
 
 def download(
-    project_name: str = "vogu", starting_count_y: int = 1, normalize_trait: int = 1
+    project_name: str = "vogu", starting_count_y: int = 1, normalize_trait: bool = True
 ) -> None:
     # The variable "starting_count_y" is usually 1, but in Rare case, the count has to start at 2, due to irregular data structure used by Rarity tools
-    # Leave "normalize_trait" as default value 1, unless you want to turn it off. (Not recommended to turn it off, as normalize_trait will give better accuracy)
-
     start_time = time.time()
 
     print("Project : " + str(project_name))
@@ -344,10 +343,12 @@ def _cli_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-n",
         "--normalize_trait",
-        help="Default rarity.tools setting is 'On'. Most projects also have this turned on.",
-        type=str,
-        choices=["on", "off"],
-        default="on",
+        help="Default rarity.tools setting is 'True'. Most projects also have this turned on.",
+        type=misc.strtobool,
+        const=True,
+        nargs="?",
+        default=True,
+        choices=[True, False],
     )
 
     return parser
@@ -355,13 +356,9 @@ def _cli_parser() -> argparse.ArgumentParser:
 
 if __name__ == "__main__":
     args = _cli_parser().parse_args()
-    if args.normalize_trait == "on":
-        normalize_trait = 1
-    else:
-        normalize_trait = 0
 
     download(
         project_name=args.collection,
         starting_count_y=args.starting_count_y,
-        normalize_trait=normalize_trait,
+        normalize_trait=args.normalize_trait,
     )
