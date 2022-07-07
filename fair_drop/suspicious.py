@@ -14,6 +14,7 @@ parser.add_argument(
     dest="collection_address",
     help="Address of the NFT collection",
     metavar="COLLECTION",
+    required=True,
 )
 
 args = parser.parse_args()
