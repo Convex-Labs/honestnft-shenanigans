@@ -13,16 +13,14 @@
 import os
 import sys
 
-# import sphinx_rtd_theme, sphinx_autodoc_typehints
-
 sys.path.insert(0, os.path.abspath("../.."))
 
 
 # -- Project information -----------------------------------------------------
 
 project = "HonestNFT Shenanigan Scanning Tools"
-copyright = "2022, Barabazs"
-author = "Barabazs"
+copyright = "2022, HonestNFT"
+author = "HonestNFT"
 
 # The full version, including alpha/beta/rc tags
 release = "0.0.1"
