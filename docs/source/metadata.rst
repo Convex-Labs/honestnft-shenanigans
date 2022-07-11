@@ -14,7 +14,6 @@ You can use these do download (pull) NFT metadata from various sources or calcul
    :maxdepth: 1
 
    metadata.from_raritysniffer
-   metadata.from_raritytools
    metadata.pull_from_objkt
    metadata.pull_from_rt
    metadata.pulling
