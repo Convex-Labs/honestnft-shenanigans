@@ -31,7 +31,7 @@ def is_nft_suspicious(nft_url):
         logging.error(f"Hitting rate limits")
     if res.status_code == 404:  # NFT not found
         logging.info("NFT not found. Probably reached the end of a collection")
-        return None
+        return None, None
     if res.status_code == 200:
         soup = BeautifulSoup(res.text, "html.parser")
         collection_name = soup.find(class_="item--collection-detail").text
@@ -54,22 +54,34 @@ def is_nft_suspicious(nft_url):
             return False, data
 
 
-results = {}
 OPENSEA_BASE_URL = (
     "https://opensea.io/assets/ethereum/"  # TODO adjust for other blockchains
 )
 
 
+def list_collection_nfts_urls(collection_address):
+    """List all OpenSea URLs of NFTs in a collection
+
+    Args:
+        collection_address (string): NFT collection address
+
+    Returns:
+        array: list of the OpenSea URLs of NFTs
+    """
+    # ! This is just a mock function. It is to be replaced with a call to the OpenSea API
+    nft_urls = []
+    for i in range(9999, 10005):
+        nft_urls.append(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
+    return nft_urls
+
+
 def scrape_all_collection_suspicious_nfts(collection_address):
-    i = 1
-    result = is_nft_suspicious(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
+    collection_nfts_urls = list_collection_nfts_urls(collection_address)
     nfts = []
-    while result is not None:
-        results[i] = result
-        i += 1
-        is_suspicious, result = is_nft_suspicious(
-            f"{OPENSEA_BASE_URL}{collection_address}/{i}"
-        )
+    for url in collection_nfts_urls:
+        is_suspicious, result = is_nft_suspicious(url)
+        if is_suspicious is None:  # ! To detect end of collection. To be removed.
+            break
         result["is_suspicious"] = is_suspicious
         nfts.append(result)
     logging.info(f"Stopped scraping at NFT of ID {i}")
