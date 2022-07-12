@@ -19,7 +19,7 @@ strict_equality = true
 # warn_unreachable = true
 # warn_unused_ignores = true
 
-exclude = ["case_studies","tests","docs"]
+exclude = ["case_studies","tests","docs","venv"]
 
 [[tool.mypy.overrides]]
 module = [
