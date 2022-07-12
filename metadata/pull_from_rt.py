@@ -313,8 +313,11 @@ def save_raw_attributes_csv(
         trait_data.append(token_raw)
 
     # convert list to pandas dataframe and save to disk
-    raw_attributes_csv = pd.DataFrame.from_records(trait_data)
-    raw_attributes_csv.to_csv(file_path)
+    attribute_df = pd.DataFrame.from_records(trait_data)
+    attribute_df["TOKEN_ID"] = attribute_df["TOKEN_ID"].astype(int)
+    attribute_df = attribute_df.sort_values(["TOKEN_ID"], ascending=True)
+    attribute_df = attribute_df.set_index("TOKEN_ID")
+    attribute_df.to_csv(file_path)
 
 
 def _cli_parser() -> argparse.ArgumentParser:
