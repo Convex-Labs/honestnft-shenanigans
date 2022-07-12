@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 import logging
 import cloudscraper
+import pandas as pd
 from bs4 import BeautifulSoup
 
 
@@ -20,9 +21,11 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+COLLECTION_CSV_PATH = f"suspicious_{args.collection_address}.csv"
+
 
 def is_nft_suspicious(nft_url):
-    logging.info(f"Scraping NFT with link: {nft_url}")
+    logging.debug(f"Scraping NFT with link: {nft_url}")
     scraper = cloudscraper.create_scraper()
     res = scraper.get(nft_url)
 
@@ -84,7 +87,23 @@ def scrape_all_collection_suspicious_nfts(collection_address):
             break
         result["is_suspicious"] = is_suspicious
         nfts.append(result)
-    logging.info(f"Stopped scraping at NFT of ID {i}")
+    df = pd.DataFrame(nfts)
+    df.to_csv(COLLECTION_CSV_PATH)
+    logging.info(f"Stopped scraping. Reached end of the collection")
+
+
+def load_scrape_cache(collection_address):
+    """Loads cache of previously scraped collections, based on CSV files saved.
+
+    Args:
+        collection_address (string): Blockchain address of the NFT collection
+    """
+    try:
+        df = pd.read_csv(COLLECTION_CSV_PATH)
+        return df
+    except FileNotFoundError:
+        logging.info("New collection to scrape. No cache detected.")
+        return pd.DataFrame()
 
 
 scrape_all_collection_suspicious_nfts(args.collection_address)
