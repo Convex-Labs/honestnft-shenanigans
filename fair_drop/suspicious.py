@@ -33,25 +33,25 @@ def is_nft_suspicious(nft_url):
         logging.info("NFT not found. Probably reached the end of a collection")
         return None
     if res.status_code == 200:
+        soup = BeautifulSoup(res.text, "html.parser")
+        collection_name = soup.find(class_="item--collection-detail").text
+        owner = soup.find(class_="AccountLink--ellipsis-overflow").text.replace(
+            "Owned by\xa0", ""
+        )
+        data = {
+            "collection": args.collection_address,
+            "collection_name": collection_name,
+            "blockchain": "ethereum",
+            "url": nft_url,
+            "owner": owner,
+        }
         if res.text.find("Reported for suspicious") > 0:
             logging.info(
                 f"Found suspicious NFT of URL {nft_url} in collection of address {args.collection_address}"
             )
-            soup = BeautifulSoup(res.text, "html.parser")
-            collection_name = soup.find(class_="item--collection-detail").text
-            owner = soup.find(class_="AccountLink--ellipsis-overflow").text.replace(
-                "Owned by\xa0", ""
-            )
-            data = {
-                "collection": args.collection_address,
-                "collection_name": collection_name,
-                "blockchain": "ethereum",
-                "url": nft_url,
-                "owner": owner,
-            }
-            return data
+            return True, data
         else:
-            return False
+            return False, data
 
 
 results = {}
@@ -63,10 +63,15 @@ OPENSEA_BASE_URL = (
 def scrape_all_collection_suspicious_nfts(collection_address):
     i = 1
     result = is_nft_suspicious(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
+    nfts = []
     while result is not None:
         results[i] = result
         i += 1
-        result = is_nft_suspicious(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
+        is_suspicious, result = is_nft_suspicious(
+            f"{OPENSEA_BASE_URL}{collection_address}/{i}"
+        )
+        result["is_suspicious"] = is_suspicious
+        nfts.append(result)
     logging.info(f"Stopped scraping at NFT of ID {i}")
 
 
