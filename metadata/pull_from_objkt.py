@@ -106,7 +106,8 @@ def _cli_parser() -> argparse.ArgumentParser:
         description="Download Tezos NFT metadata from OBJKT.com"
     )
     parser.add_argument(
-        "-contract",
+        "-c",
+        "--contract",
         type=str,
         required=True,
         default=None,

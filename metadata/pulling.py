@@ -386,7 +386,7 @@ def _cli_parser() -> argparse.ArgumentParser:
         "--contract",
         type=str,
         default=None,
-        help="Collection contract id (use if want to infer params from contract).",
+        help="Collection contract address (use if want to infer params from contract).",
     )
     parser.add_argument(
         "--uri_base",
@@ -449,7 +449,6 @@ def _cli_parser() -> argparse.ArgumentParser:
         help=f"IPFS gateway. (default: {config.IPFS_GATEWAY}).",
     )
     parser.add_argument(
-        "-w",
         "--web3_provider",
         type=str,
         default=None,

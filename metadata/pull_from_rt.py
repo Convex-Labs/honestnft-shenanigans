@@ -328,7 +328,6 @@ def _cli_parser() -> argparse.ArgumentParser:
         description="CLI for pulling NFT attribute metadata and rarity data from rarity.tools"
     )
     parser.add_argument(
-        "-c",
         "--collection",
         help="Collection Name as it appears in the rarity.tools URL e.g.: boredapeyachtclub",
         type=str,
@@ -336,7 +335,6 @@ def _cli_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
-        "-s",
         "--starting_count_y",
         help="Only use if you encounter errors due to irregular data structure.",
         type=int,
@@ -344,7 +342,6 @@ def _cli_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
-        "-n",
         "--normalize_trait",
         help="Default rarity.tools setting is 'True'. Most projects also have this turned on.",
         type=misc.strtobool,

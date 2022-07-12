@@ -160,31 +160,31 @@ def _cli_parser() -> argparse.ArgumentParser:
         description="CLI for generating rarity score of NFT collections."
     )
     parser.add_argument(
-        "-collection",
+        "--collection",
         type=str,
         default=None,
         help="Collection name.",
     )
     parser.add_argument(
-        "-method",
+        "--method",
         type=str,
         default="raritytools",
         help="Method to use to compute rarity. (default: raritytools)",
     )
     parser.add_argument(
-        "-trait_count",
+        "--trait_count",
         type=bool,
         default=True,
         help="Toggle using trait count in computation. (default: True)",
     )
     parser.add_argument(
-        "-sum_traits",
+        "--sum_traits",
         type=str,
         nargs="+",
         help="Traits to sum instead of computing rarity. Can be one or many. (default: None)",
     )
     parser.add_argument(
-        "-sum_trait_mult",
+        "--sum_trait_multiplier",
         type=float,
         default=35,
         help="Trait score multiplier to use for summed traits. (default: 35)",
@@ -194,17 +194,17 @@ def _cli_parser() -> argparse.ArgumentParser:
 
 if __name__ == "__main__":
 
-    ARGS = _cli_parser().parse_args()
+    args = _cli_parser().parse_args()
 
     # Build attribute file
-    ATTRIBUTE_FILE = f"{config.ATTRIBUTES_FOLDER}/{ARGS.collection}.csv"
+    attribute_file = f"{config.ATTRIBUTES_FOLDER}/{args.collection}.csv"
 
     # Build rarity database and save to disk
     build_rarity_db(
-        ARGS.collection,
-        ATTRIBUTE_FILE,
-        ARGS.method,
-        ARGS.trait_count,
-        ARGS.sum_traits,
-        ARGS.sum_trait_mult,
+        args.collection,
+        attribute_file,
+        args.method,
+        args.trait_count,
+        args.sum_traits,
+        args.sum_trait_multiplier,
     )
