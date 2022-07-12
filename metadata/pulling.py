@@ -375,6 +375,112 @@ def pull_metadata(args: argparse.Namespace) -> None:
     trait_db.to_csv(f"{config.ATTRIBUTES_FOLDER}/{collection}.csv")
 
 
+def _cli_parser() -> argparse.ArgumentParser:
+    """
+    Create the command line argument parser
+    """
+
+    parser = argparse.ArgumentParser(description="CLI for pulling NFT metadata.")
+    parser.add_argument(
+        "-c",
+        "--contract",
+        type=str,
+        default=None,
+        help="Collection contract address (use if want to infer params from contract).",
+    )
+    parser.add_argument(
+        "--uri_base",
+        type=str,
+        default=None,
+        help="URI base. Not used if contract is provided. (use if want to pull direct from URL).",
+    )
+    parser.add_argument(
+        "--uri_suffix",
+        type=str,
+        default=None,
+        help="URI suffix. Not used if contract is provided. (default: No suffix).",
+    )
+    parser.add_argument(
+        "--collection",
+        type=str,
+        default=None,
+        help="Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).",
+    )
+    parser.add_argument(
+        "--supply_func",
+        type=str,
+        default="totalSupply",
+        help='Total supply contract function. Not used if pulling direct from URL. (default: "totalSupply").',
+    )
+    parser.add_argument(
+        "--name_func",
+        type=str,
+        default="name",
+        help='Collection name contract function. Not used if pulling direct from URL. (default: "name").',
+    )
+    parser.add_argument(
+        "--uri_func",
+        type=str,
+        default="tokenURI",
+        help='URI contract function. Not used if pulling direct from URL. (default: "tokenURI").',
+    )
+    parser.add_argument(
+        "--lower_id",
+        type=int,
+        default=None,
+        help="Lower bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).",
+    )
+    parser.add_argument(
+        "--upper_id",
+        type=int,
+        default=None,
+        help="Upper bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).",
+    )
+    parser.add_argument(
+        "--max_supply",
+        type=int,
+        default=None,
+        help="Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).",
+    )
+    parser.add_argument(
+        "--ipfs_gateway",
+        type=str,
+        default=None,
+        help=f"IPFS gateway. (default: {config.IPFS_GATEWAY}).",
+    )
+    parser.add_argument(
+        "--web3_provider",
+        type=str,
+        default=None,
+        help="Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)",
+    )
+    parser.add_argument(
+        "-b",
+        "--blockchain",
+        type=str,
+        choices=[
+            "arbitrum",
+            "avalanche",
+            "binance",
+            "ethereum",
+            "fantom",
+            "optimism",
+            "polygon",
+        ],
+        default="ethereum",
+        help="Blockchain where the contract is located. (default: ethereum)",
+    )
+    parser.add_argument(
+        "-t",
+        "--threads",
+        type=int,
+        default=None,
+        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",  # type: ignore
+    )
+
+    return parser
+
+
 if __name__ == "__main__":
 
     """
@@ -402,101 +508,8 @@ if __name__ == "__main__":
     """
 
     # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(description="CLI for pulling NFT metadata.")
-    ARG_PARSER.add_argument(
-        "-contract",
-        type=str,
-        default=None,
-        help="Collection contract id (use if want to infer params from contract).",
-    )
-    ARG_PARSER.add_argument(
-        "-uri_base",
-        type=str,
-        default=None,
-        help="URI base. Not used if contract is provided. (use if want to pull direct from URL).",
-    )
-    ARG_PARSER.add_argument(
-        "-uri_suffix",
-        type=str,
-        default=None,
-        help="URI suffix. Not used if contract is provided. (default: No suffix).",
-    )
-    ARG_PARSER.add_argument(
-        "-collection",
-        type=str,
-        default=None,
-        help="Collection name. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-supply_func",
-        type=str,
-        default="totalSupply",
-        help='Total supply contract function. Not used if pulling direct from URL. (default: "totalSupply").',
-    )
-    ARG_PARSER.add_argument(
-        "-name_func",
-        type=str,
-        default="name",
-        help='Collection name contract function. Not used if pulling direct from URL. (default: "name").',
-    )
-    ARG_PARSER.add_argument(
-        "-uri_func",
-        type=str,
-        default="tokenURI",
-        help='URI contract function. Not used if pulling direct from URL. (default: "tokenURI").',
-    )
-    ARG_PARSER.add_argument(
-        "-lower_id",
-        type=int,
-        default=None,
-        help="Lower bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-upper_id",
-        type=int,
-        default=None,
-        help="Upper bound token id. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-max_supply",
-        type=int,
-        default=None,
-        help="Max token supply. (Required if pulling direct from URL. Otherwise will infer if not provided).",
-    )
-    ARG_PARSER.add_argument(
-        "-ipfs_gateway",
-        type=str,
-        default=None,
-        help=f"IPFS gateway. (default: {config.IPFS_GATEWAY}).",
-    )
-    ARG_PARSER.add_argument(
-        "-web3_provider",
-        type=str,
-        default=None,
-        help="Web3 Provider. (Recommended provider is alchemy.com. See Discord for additional details)",
-    )
-    ARG_PARSER.add_argument(
-        "-blockchain",
-        type=str,
-        choices=[
-            "arbitrum",
-            "avalanche",
-            "binance",
-            "ethereum",
-            "fantom",
-            "optimism",
-            "polygon",
-        ],
-        default="ethereum",
-        help="Blockchain where the contract is located. (default: ethereum)",
-    )
-    ARG_PARSER.add_argument(
-        "-threads",
-        type=int,
-        default=None,
-        help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",  # type: ignore
-    )
-    ARGS = ARG_PARSER.parse_args()
+
+    ARGS = _cli_parser().parse_args()
 
     if ARGS.ipfs_gateway is not None:
         config.IPFS_GATEWAY = ARGS.ipfs_gateway

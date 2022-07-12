@@ -14,6 +14,22 @@ from honestnft_utils import ipfs
 
 
 def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:
+    """
+    Given a contract address, return the contract ABI from Etherscan.
+    If the contract is unverified, the ABI will be partially constructed according to ERC165.
+
+    :param address: The contract address
+    :param blockchain: The blockchain to use. Options are:
+        - arbitrum
+        - avalanche
+        - binance
+        - ethereum
+        - fantom
+        - optimism
+        - polygon
+
+    :return: The contract ABI
+    """
     if blockchain == "arbitrum":
         abi_endpoint = config.ARBITRUM_ABI_ENDPOINT
         endpoint = config.ARBITRUM_ENDPOINT
@@ -135,6 +151,25 @@ def get_contract_abi(address: str, blockchain: str = "ethereum") -> list:
 def get_contract(
     address: str, abi: list, blockchain: str = "ethereum"
 ) -> Tuple[list, Contract]:
+    """
+    Given a contract address and ABI, return a web3 Contract object.
+
+    If the given address turns out be a proxy contract, the returned contract
+    will be the implementation contract and the corresponding ABI.
+
+    :param address: The contract address
+    :param abi: The contract ABI
+    :param blockchain: The blockchain to use. Options are:
+        - arbitrum
+        - avalanche
+        - binance
+        - ethereum
+        - fantom
+        - optimism
+        - polygon
+
+    :return: A tuple of the contract ABI and the contract object
+    """
     if blockchain == "arbitrum":
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
@@ -198,6 +233,14 @@ def get_contract(
 
 
 def get_contract_function(contract: Contract, func_name: str, abi: list):
+    """
+    Given a contract object, a function name and a contract ABI, return the contract function.
+
+    :param contract: The contract object
+    :param func_name: The function name
+    :param abi: The contract ABI
+    :return: The contract function object
+    """
     if func_name in dir(contract.functions):
         # The function name given is a valid function in the ABI, so return that function
         return getattr(contract.functions, func_name)
@@ -213,6 +256,15 @@ def get_contract_function(contract: Contract, func_name: str, abi: list):
 def get_token_uri_from_contract(
     contract: Contract, token_id: int, uri_func: str, abi: list
 ) -> str:
+    """
+    Given a contract, token ID, and URI function name, return the token URI.
+
+    :param contract: The contract object
+    :param token_id: The token ID
+    :param uri_func: The URI function name
+    :param abi: The contract ABI
+    :return: The token URI
+    """
     # Fetch URI from contract
     uri_contract_func = get_contract_function(contract, uri_func, abi)
 
@@ -230,6 +282,24 @@ def get_token_uri_from_contract_batch(
     abi: list,
     blockchain: str = "ethereum",
 ) -> Dict[int, str]:
+    """
+    Given a contract, token IDs, and function signature, return the token URIs.
+
+    :param contract: The contract object
+    :param token_ids: A list of token IDs
+    :param function_signature: The function signature
+    :param abi: The contract ABI
+    :param blockchain: The blockchain to use. Options are:
+        - ethereum
+        - arbitrum
+        - avalanche
+        - binance
+        - fantom
+        - optimism
+        - polygon
+
+    :return: A dictionary of token IDs and URIs
+    """
     if blockchain == "arbitrum":
         endpoint = config.ARBITRUM_ENDPOINT
     elif blockchain == "avalanche":
@@ -270,6 +340,14 @@ def get_token_uri_from_contract_batch(
 
 
 def get_lower_token_id(contract: Contract, uri_func: str, abi: list) -> int:
+    """
+    Given a contract, URI function name, and ABI, this function tries to infer the lowest token ID on-chain.
+
+    :param contract: The contract object
+    :param uri_func: The URI function name
+    :param abi: The contract ABI
+    :return: The lower token ID
+    """
     # Initiate parameters
     lower_token_id = None
 
@@ -295,6 +373,13 @@ def get_lower_token_id(contract: Contract, uri_func: str, abi: list) -> int:
 
 
 def get_base_uri(contract: Contract, abi: list) -> str:
+    """
+    Given a contract and ABI, return the base URI as found on-chain.
+
+    :param contract: The contract object
+    :param abi: The contract ABI
+    :return: The base URI
+    """
     uri_contract_func = get_contract_function(contract, "baseURI", abi)
 
     try:
@@ -309,9 +394,9 @@ def get_function_signature(func_name: str, abi: list) -> str:
     Given a function name and an ABI, return the function signature
     e.g. get_function_signature("tokenURI", abi) => "tokenURI(uint256)(string)"
 
-    :param func_name:
-    :param abi:
-    :return: function signature
+    :param func_name: The function name
+    :param abi: The contract ABI
+    :return: The function signature
     """
     try:
         filtered = list(
@@ -329,11 +414,11 @@ def get_function_signature(func_name: str, abi: list) -> str:
 
 def get_token_standard(contract: Contract) -> str:
     """
-    Given a contract object, return the token standard
+    Given a contract object, tries to infer the token standard on-chain.
     eg. get_token_standard(contract) => "ERC-721"
 
-    :param contract:
-    :return: ERC standard
+    :param contract: The contract object
+    :return: The ERC standard
     """
     erc_dict = {
         "ERC-721": ["0x80AC58CD", "0x150B7A02", "0x5B5E139F"],
@@ -349,10 +434,10 @@ def get_token_standard(contract: Contract) -> str:
 def format_metadata_uri(URI: str) -> str:
     """
     Given a metadata URI, return the formatted IPFS URI if it is an IPFS URI,
-    otherwise return the URI
+    otherwise return the supplied URI.
 
-    :param URI: metadata URI
-    :return: formatted URI
+    :param URI: The metadata URI
+    :return: The formatted URI
     """
     if ipfs.is_valid_ipfs_uri(URI):
         return ipfs.format_ipfs_uri(URI)

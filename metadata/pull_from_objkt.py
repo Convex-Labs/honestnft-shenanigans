@@ -98,19 +98,27 @@ def pull_metadata(contract_address: str) -> None:
     trait_db.to_csv(f"{config.ATTRIBUTES_FOLDER}/{collection_name}.csv")
 
 
-if __name__ == "__main__":
-    # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(
+def _cli_parser() -> argparse.ArgumentParser:
+    """
+    Create the command line argument parser
+    """
+    parser = argparse.ArgumentParser(
         description="Download Tezos NFT metadata from OBJKT.com"
     )
-    ARG_PARSER.add_argument(
-        "-contract",
+    parser.add_argument(
+        "-c",
+        "--contract",
         type=str,
         required=True,
         default=None,
         help="Collection contract address",
     )
+    return parser
 
-    ARGS = ARG_PARSER.parse_args()
+
+if __name__ == "__main__":
+    # Parse command line arguments
+
+    ARGS = _cli_parser().parse_args()
 
     pull_metadata(ARGS.contract)

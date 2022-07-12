@@ -15,8 +15,6 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
     Given a filename and an optional token_id, this function returns the file suffix.
     If the file has no extension, an empty string is returned.
 
-    :param filename
-    :param token_id
     :return: file_suffix
     """
     token_id_pattern = rf"^{token_id}"
@@ -34,8 +32,6 @@ def get_file_suffix(filename: str, token_id: Union[int, str] = "\\d+") -> str:
 def is_valid_cid(cid: str) -> bool:
     """
     Given a CID, this function checks if it's a valid CID.
-
-    :param cid
     """
     return Validator(cid)._is_cid()
 
@@ -45,7 +41,6 @@ def infer_cid_from_uri(URI: str) -> Optional[str]:
     Given a URI, this function returns the CID.
     Returns None if the CID is not found.
 
-    :param uri
     :return: cid
     """
     cid_v0_pattern = r"Qm[a-zA-Z0-9-_]+"
@@ -82,8 +77,6 @@ def infer_cid_from_uri(URI: str) -> Optional[str]:
 def is_valid_ipfs_uri(uri: str) -> bool:
     """
     Given a URI, this functions checks if it's a valid IPFS URI.
-
-    :param uri
     """
     return Validator(uri).is_ipfs()
 
@@ -94,10 +87,15 @@ def fetch_ipfs_folder(
     """
     Given a collection name, a cid and an optional timeout, this function downloads the entire metadata folder from IPFS.
 
-    :param parent_folder: The parent folder where the collection should be saved.
-    :param collection_name The collection name to be used as the folder name
+    :param collection_name: The collection name to be used as the folder name
+    :type collection_name: str
     :param cid: The IPFS CID of folder to download
+    :type cid: str
+    :param parent_folder: The parent folder where the collection should be saved
+    :type parent_folder: str
     :param timeout: Connection timeout (in seconds) when connecting to the API daemon
+    :type timeout: int
+    :rtype: None
     """
     parent_path = Path(parent_folder)
     cid_path = parent_path.joinpath(cid)
