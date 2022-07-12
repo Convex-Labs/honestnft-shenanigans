@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 import logging
 import cloudscraper
+from bs4 import BeautifulSoup
 
 
 logging.basicConfig(level=logging.INFO)
@@ -36,7 +37,19 @@ def is_nft_suspicious(nft_url):
             logging.info(
                 f"Found suspicious NFT of URL {nft_url} in collection of address {args.collection_address}"
             )
-            return True
+            soup = BeautifulSoup(res.text, "html.parser")
+            collection_name = soup.find(class_="item--collection-detail").text
+            owner = soup.find(class_="AccountLink--ellipsis-overflow").text.replace(
+                "Owned by\xa0", ""
+            )
+            data = {
+                "collection": args.collection_address,
+                "collection_name": collection_name,
+                "blockchain": "ethereum",
+                "url": nft_url,
+                "owner": owner,
+            }
+            return data
         else:
             return False
 
