@@ -119,6 +119,18 @@ def load_scrape_cache(collection_address):
         return df
     except FileNotFoundError:
         logging.info("New collection to scrape. No cache detected.")
+        logging.debug("Creating CSV with header for new collection to scrape")
+        df = pd.DataFrame(
+            columns=[
+                "collection",
+                "collection_name",
+                "blockchain",
+                "url",
+                "owner",
+                "is_suspicious",
+            ]
+        )
+        df.to_csv(COLLECTION_CSV_PATH, index=False)
         return pd.DataFrame()
 
 
