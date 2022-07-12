@@ -80,6 +80,17 @@ def list_collection_nfts_urls(collection_address):
 
 def scrape_all_collection_suspicious_nfts(collection_address):
     collection_nfts_urls = list_collection_nfts_urls(collection_address)
+    logging.info(f"Collection contains {len(collection_nfts_urls)} NFTs")
+    collection_cache = load_scrape_cache(collection_nfts_urls)
+    logging.info(f"Found {len(collection_cache)} NFTs in collection cache")
+    # TODO removed scraped URLs from the list to be scraped
+    for index, nft in collection_cache.iterrows():
+        if (
+            nft["url"] in collection_nfts_urls
+        ):  # TODO add an expiry rule, depending on date of last scraped
+            logging.info(f"NFT to be scraped already in cache. Skipping {nft['url']}")
+            collection_nfts_urls.remove(nft["url"])
+    logging.info(f"Scraping a list of {len(collection_nfts_urls)} NFTs")
     nfts = []
     for url in collection_nfts_urls:
         is_suspicious, result = is_nft_suspicious(url)
