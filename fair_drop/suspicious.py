@@ -49,9 +49,7 @@ def is_nft_suspicious(nft_url):
             "owner": owner,
         }
         if res.text.find("Reported for suspicious") > 0:
-            logging.info(
-                f"Found suspicious NFT of URL {nft_url} in collection of address {args.collection_address}"
-            )
+            logging.info(f"Found suspicious NFT of URL {nft_url}")
             return True, data
         else:
             return False, data
@@ -88,18 +86,25 @@ def scrape_all_collection_suspicious_nfts(collection_address):
         if (
             nft["url"] in collection_nfts_urls
         ):  # TODO add an expiry rule, depending on date of last scraped
-            logging.info(f"NFT to be scraped already in cache. Skipping {nft['url']}")
+            logging.debug(f"NFT to be scraped already in cache. Skipping {nft['url']}")
             collection_nfts_urls.remove(nft["url"])
     logging.info(f"Scraping a list of {len(collection_nfts_urls)} NFTs")
-    nfts = []
-    for url in collection_nfts_urls:
+    scraped_data = []
+    for index, url in enumerate(collection_nfts_urls):
+        if index % 25 == 0:
+            logging.info(f"Scraped {index} NFTs so far...")
+            df = pd.DataFrame(scraped_data)
+            df.to_csv(COLLECTION_CSV_PATH, mode="a", header=False, index=False)
+            scraped_data = []
         is_suspicious, result = is_nft_suspicious(url)
         if is_suspicious is None:  # ! To detect end of collection. To be removed.
             break
         result["is_suspicious"] = is_suspicious
-        nfts.append(result)
-    df = pd.DataFrame(nfts)
-    df.to_csv(COLLECTION_CSV_PATH)
+        scraped_data.append(result)
+    if scraped_data is not []:
+        df = pd.DataFrame(scraped_data)
+        df.to_csv(COLLECTION_CSV_PATH, mode="a", header=False, index=False)
+
     logging.info(f"Stopped scraping. Reached end of the collection")
 
 
