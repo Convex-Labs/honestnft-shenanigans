@@ -115,7 +115,7 @@ def list_collection_nfts_urls(collection_address):
     """
     # ! This is just a mock function. It is to be replaced with a call to the OpenSea API
     nft_urls = []
-    for i in range(9999, 10005):
+    for i in range(0, 9999):
         nft_urls.append(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
     return nft_urls
 
