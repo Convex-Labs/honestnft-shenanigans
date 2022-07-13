@@ -1,10 +1,13 @@
 # See https://github.com/convex-labs/honestnft-shenanigans/issues/86 for more details
 # Given a collection of NFTs on OpenSea, detect suspicious NFTs
+import time
 from argparse import ArgumentParser
 import logging
+
 import cloudscraper
 import pandas as pd
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter, Retry
 
 
 logging.basicConfig(level=logging.INFO)
@@ -18,20 +21,61 @@ parser.add_argument(
     metavar="COLLECTION",
     required=True,
 )
+parser.add_argument(
+    "-s",
+    "--sleep",
+    dest="sleep_timer",
+    help="Sleep parameter",
+    metavar="SLEEP",
+    required=False,
+    default=30,
+)
+parser.add_argument(
+    "-r",
+    "--retry",
+    dest="retries_on_rate_limit",
+    help="Number of retries to attempt when rate limited by OpenSea",
+    metavar="RETRY",
+    required=False,
+    default=3,
+)
 
 args = parser.parse_args()
 
-COLLECTION_CSV_PATH = f"suspicious_{args.collection_address}.csv"
+COLLECTION_CSV_PATH = f"fair_drop/suspicious_{args.collection_address}.csv"
+
+scraper = cloudscraper.create_scraper()
+# Configration of cloudscraper underlying requests module
+# CloudScraper is a sub-class of Session
+retry_strategy = Retry(
+    total=3,
+    status_forcelist=[429, 500, 502, 503, 504],
+    allowed_methods=["HEAD", "GET", "OPTIONS"],
+    backoff_factor=8,
+    raise_on_status=False,  # If retries fail, return response instead of raising exception
+)
+adapter = HTTPAdapter(max_retries=retry_strategy)
+scraper.mount("https://", adapter)
+scraper.mount("http://", adapter)
 
 
 def is_nft_suspicious(nft_url):
     logging.debug(f"Scraping NFT with link: {nft_url}")
-    scraper = cloudscraper.create_scraper()
     res = scraper.get(nft_url)
 
-    if res.status_code == 429:  # Rate limited by OpenSea
+    retries_on_rate_limit = 0
+    while res.status_code == 429:  # Rate limited by OpenSea
+        logging.error(
+            f"Hitting rate limits. Will sleep for {args.sleep_time} seconds and retry"
+        )
+        time.sleep(args.sleep_time)
         res = scraper.get(nft_url)
-        logging.error(f"Hitting rate limits")
+        retries_on_rate_limit += 1
+        if (
+            res.status_code == 429
+            and retries_on_rate_limit > args.retries_on_rate_limit
+        ):
+            return None, None  # Make sure rate limiting is handled well
     if res.status_code == 404:  # NFT not found
         logging.info("NFT not found. Probably reached the end of a collection")
         return None, None
