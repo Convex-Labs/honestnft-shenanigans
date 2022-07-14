@@ -6,12 +6,15 @@ API keys & Providers
 Blockchain RPC endpoint (web3 providers)
 ----------------------------------------
 
+.. note::
+  We added public web3 providers to the .env-example so you can get started right away. If you run into issues or rate-limiting, 
+  you might need to set up a private endpoint.
+
 You will need a web3 provider for each blockchain you want to use. Most providers have a free tier that should be enough for our use-case.
 Some examples are:
 
 * Alchemy_
 * Infura_
-* Moralis_ (speedynodes)
 
 
 IPFS gateway
