@@ -15,7 +15,6 @@ Some examples are:
 
 * Alchemy_
 * Infura_
-* Moralis_ (speedynodes)
 
 
 IPFS gateway
