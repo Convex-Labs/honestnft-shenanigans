@@ -32,7 +32,7 @@ POLYGON_ABI_ENDPOINT = (
 ###
 # web3 providers
 ###
-ENDPOINT = config.get("ethereum_web3_provider")
+ENDPOINT = config.get("web3_provider")
 ARBITRUM_ENDPOINT = config.get("arbitrum_web3_provider")
 AVALANCHE_ENDPOINT = config.get("avalanche_web3_provider")
 BINANCE_ENDPOINT = config.get("binance_web3_provider")
