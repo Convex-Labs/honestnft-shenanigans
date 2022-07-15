@@ -45,7 +45,11 @@ Moralis
 ^^^^^^^
 A free key can be registered at Moralis_.
 
+The Index
+^^^^^^^^^
+A free key can be registered at TheIndex_.
+
 .. _Alchemy: https://www.alchemy.com
 .. _Moralis: https://moralis.io
 .. _Infura: https://infura.io/
-.. 
+.. _TheIndex: https://www.theindex.io/

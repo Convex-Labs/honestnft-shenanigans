@@ -38,6 +38,7 @@ extensions = [
     "nbsphinx",
     "sphinxcontrib.youtube",
     "sphinxcontrib.autoprogram",
+    "sphinx.ext.autosectionlabel",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -74,3 +75,5 @@ autodoc_member_order = "bysource"
 nbsphinx_execute = "never"
 
 highlight_language = "none"
+
+autosectionlabel_prefix_document = True
