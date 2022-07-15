@@ -68,3 +68,4 @@ IPFS_GATEWAY = config.get("ipfs_gateway")
 ###
 OPENSEA_API_KEY = config.get("opensea_api_key")
 MORALIS_API_KEY = config.get("moralis_api_key")
+THE_INDEX_API_KEY = config.get("the_index_api_key")

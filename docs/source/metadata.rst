@@ -16,6 +16,6 @@ You can use these do download (pull) NFT metadata from various sources or calcul
    metadata.from_raritysniffer
    metadata.pull_from_objkt
    metadata.pull_from_rt
+   metadata.pull_from_solana
    metadata.pulling
    metadata.rarity
-   metadata.solana_pull

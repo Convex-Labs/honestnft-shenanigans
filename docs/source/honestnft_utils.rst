@@ -18,4 +18,5 @@ Each module serves a specific purpose, e.g. honestnft_utils.chain can be used to
    honestnft_utils.config
    honestnft_utils.constants
    honestnft_utils.ipfs
+   honestnft_utils.misc
    honestnft_utils.opensea
