@@ -8,7 +8,7 @@ Whereas most of our modules rely on the contract address, this one relies on the
 
 .. code-block:: shell
 
-   $ python3 metadata.pull_from_rt.py --collection cryptopunks
+   $ python3 metadata/pull_from_rt.py --collection cryptopunks
 
 
 .. autoprogram:: metadata.pull_from_rt:_cli_parser()
