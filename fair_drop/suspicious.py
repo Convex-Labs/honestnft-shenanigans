@@ -30,21 +30,13 @@ parser.add_argument(
     required=False,
     default=30,
 )
-parser.add_argument(
-    "-r",
-    "--retry",
-    dest="retries_on_rate_limit",
-    help="Number of retries to attempt when rate limited by OpenSea",
-    metavar="RETRY",
-    required=False,
-    default=3,
-)
+
 
 args = parser.parse_args()
 
 COLLECTION_CSV_PATH = f"fair_drop/suspicious_{args.collection_address}.csv"
 
-scraper = cloudscraper.create_scraper()
+scraper = cloudscraper.create_scraper(browser="chrome")
 # Configration of cloudscraper underlying requests module
 # CloudScraper is a sub-class of Session
 retry_strategy = Retry(
@@ -53,6 +45,7 @@ retry_strategy = Retry(
     allowed_methods=["HEAD", "GET", "OPTIONS"],
     backoff_factor=8,
     raise_on_status=False,  # If retries fail, return response instead of raising exception
+    respect_retry_after_header=True,
 )
 adapter = HTTPAdapter(max_retries=retry_strategy)
 scraper.mount("https://", adapter)
@@ -63,19 +56,6 @@ def is_nft_suspicious(nft_url):
     logging.debug(f"Scraping NFT with link: {nft_url}")
     res = scraper.get(nft_url)
 
-    retries_on_rate_limit = 0
-    while res.status_code == 429:  # Rate limited by OpenSea
-        logging.error(
-            f"Hitting rate limits. Will sleep for {args.sleep_time} seconds and retry"
-        )
-        time.sleep(args.sleep_time)
-        res = scraper.get(nft_url)
-        retries_on_rate_limit += 1
-        if (
-            res.status_code == 429
-            and retries_on_rate_limit > args.retries_on_rate_limit
-        ):
-            return None, None  # Make sure rate limiting is handled well
     if res.status_code == 404:  # NFT not found
         logging.info("NFT not found. Probably reached the end of a collection")
         return None, None
