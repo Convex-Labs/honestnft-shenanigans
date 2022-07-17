@@ -80,103 +80,86 @@ class TestUtils(unittest.TestCase):
     def test_compare_methods(self):
         for collection in self.test_data:
 
-            rarity_file_method_HonestNFT = (
+            rarity_file_method_HNFT = (
                 f"{self.TEMP_FOLDER}/{collection['name']}_raritytools-from-pulling.csv"
             )
             rarity_file_method_RT = (
                 f"{self.TEMP_FOLDER}/{collection['name']}_raritytools-from-rt.csv"
             )
 
-            RARITY_DB_HONESTNFT = pd.read_csv(rarity_file_method_HonestNFT)
-            RARITY_DB_HONESTNFT = RARITY_DB_HONESTNFT[
-                RARITY_DB_HONESTNFT["TOKEN_ID"].duplicated() == False
-            ]
+            DF_HNFT = pd.read_csv(rarity_file_method_HNFT)
+            DF_HNFT = DF_HNFT[DF_HNFT["TOKEN_ID"].duplicated() == False]
 
-            RARITY_DB_RT = pd.read_csv(rarity_file_method_RT)
-            RARITY_DB_RT = RARITY_DB_RT[RARITY_DB_RT["TOKEN_ID"].duplicated() == False]
+            DF_RT = pd.read_csv(rarity_file_method_RT)
+            DF_RT = DF_RT[DF_RT["TOKEN_ID"].duplicated() == False]
 
             with self.subTest("Compare length of collections"):
                 self.assertEqual(
-                    len(RARITY_DB_HONESTNFT),
-                    len(RARITY_DB_RT),
-                    f"Lengths of two rarity databases are not equal.\nHonestNFT: {len(RARITY_DB_HONESTNFT)} vs RarityTools: {len(RARITY_DB_RT)}",
+                    len(DF_HNFT),
+                    len(DF_RT),
+                    f"Lengths of two rarity databases are not equal.\nHonestNFT: {len(DF_HNFT)} vs RarityTools: {len(DF_RT)}",
                 )
 
             with self.subTest("Compare rank based on TOKEN_ID"):
 
-                min_token_id_HonestNFT = RARITY_DB_HONESTNFT["TOKEN_ID"].min()
-                max_token_id_HonestNFT = RARITY_DB_HONESTNFT["TOKEN_ID"].max()
-                token_id_range = range(
-                    min_token_id_HonestNFT, max_token_id_HonestNFT + 1
-                )
+                min_token_id_HNFT = DF_HNFT["TOKEN_ID"].min()
+                max_token_id_HNFT = DF_HNFT["TOKEN_ID"].max()
+                token_id_range = range(min_token_id_HNFT, max_token_id_HNFT + 1)
 
                 for token_id in token_id_range:
 
-                    honest_nft_rank = RARITY_DB_HONESTNFT.loc[
-                        RARITY_DB_HONESTNFT["TOKEN_ID"] == token_id, "Rank"
+                    hnft_rank = DF_HNFT.loc[
+                        DF_HNFT["TOKEN_ID"] == token_id, "Rank"
                     ].item()
 
-                    rt_rank = RARITY_DB_RT.loc[
-                        RARITY_DB_RT["TOKEN_ID"] == token_id, "Rank"
-                    ].item()
+                    rt_rank = DF_RT.loc[DF_RT["TOKEN_ID"] == token_id, "Rank"].item()
 
-                    if honest_nft_rank == rt_rank:
+                    if hnft_rank == rt_rank:
                         # print("Ranks are the same")
                         pass
                     else:
-                        # self.fail(collection["name"])
                         # Check if the rarity_score is the same for previous or next rank.
 
-                        score_previous_rank_honestnft = RARITY_DB_HONESTNFT.loc[
-                            RARITY_DB_HONESTNFT["Rank"] == honest_nft_rank - 1,
+                        score_previous_rank_HNFT = DF_HNFT.loc[
+                            DF_HNFT["Rank"] == hnft_rank - 1,
                             "RARITY_SCORE",
                         ].item()
 
-                        score_current_rank_honestnft = RARITY_DB_HONESTNFT.loc[
-                            RARITY_DB_HONESTNFT["Rank"] == honest_nft_rank,
+                        score_current_rank_HNFT = DF_HNFT.loc[
+                            DF_HNFT["Rank"] == hnft_rank,
                             "RARITY_SCORE",
                         ].item()
 
-                        score_next_rank_honestnft = RARITY_DB_HONESTNFT.loc[
-                            RARITY_DB_HONESTNFT["Rank"] == honest_nft_rank + 1,
+                        score_next_rank_HNFT = DF_HNFT.loc[
+                            DF_HNFT["Rank"] == hnft_rank + 1,
                             "RARITY_SCORE",
                         ].item()
 
-                        if (
-                            score_current_rank_honestnft
-                            == score_previous_rank_honestnft
-                            or score_current_rank_honestnft == score_next_rank_honestnft
-                        ):
-                            pass
-                        else:
-                            self.fail(
-                                f"Ranks are not the same for token_id {token_id}.\nHonestNFT: {honest_nft_rank} vs RarityTools: {rt_rank}"
-                            )
-
-                        score_previous_rank_raritytools = RARITY_DB_RT.loc[
-                            RARITY_DB_RT["Rank"] == rt_rank - 1,
+                        score_previous_rank_RT = DF_RT.loc[
+                            DF_RT["Rank"] == rt_rank - 1,
                             "RARITY_SCORE",
                         ].item()
-                        score_current_rank_raritytools = RARITY_DB_RT.loc[
-                            RARITY_DB_RT["Rank"] == rt_rank,
+                        score_current_rank_RT = DF_RT.loc[
+                            DF_RT["Rank"] == rt_rank,
                             "RARITY_SCORE",
                         ].item()
-                        score_next_rank_raritytools = RARITY_DB_RT.loc[
-                            RARITY_DB_RT["Rank"] == rt_rank + 1,
+                        score_next_rank_RT = DF_RT.loc[
+                            DF_RT["Rank"] == rt_rank + 1,
                             "RARITY_SCORE",
                         ].item()
 
                         if (
-                            score_current_rank_raritytools
-                            == score_previous_rank_raritytools
-                            or score_current_rank_raritytools
-                            == score_next_rank_raritytools
+                            (score_current_rank_HNFT == score_previous_rank_HNFT)
+                            or (score_current_rank_HNFT == score_next_rank_HNFT)
+                        ) and (
+                            (score_current_rank_RT == score_previous_rank_RT)
+                            or (score_current_rank_RT == score_next_rank_RT)
                         ):
                             pass
 
                         else:
                             self.fail(
-                                f"Ranks are not the same for token_id {token_id}.\nHonestNFT: {honest_nft_rank} vs RarityTools: {rt_rank}"
+                                f"Ranks are not the same for token_id {token_id}.\nHonestNFT: {hnft_rank} vs RarityTools: {rt_rank}"
                             )
 
     @classmethod
