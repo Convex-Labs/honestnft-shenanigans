@@ -32,12 +32,11 @@ parser.add_argument(
     default=30,
 )
 
-
 args = parser.parse_args()
 
 COLLECTION_CSV_PATH = f"fair_drop/suspicious_{args.collection_address}.csv"
 
-scraper = cloudscraper.create_scraper(browser="chrome")
+scraper = cloudscraper.create_scraper()
 # Configration of cloudscraper underlying requests module
 # CloudScraper is a sub-class of Session
 retry_strategy = Retry(
