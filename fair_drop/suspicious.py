@@ -1,6 +1,7 @@
 # See https://github.com/convex-labs/honestnft-shenanigans/issues/86 for more details
 # Given a collection of NFTs on OpenSea, detect suspicious NFTs
 import time
+from multiprocessing import Pool
 from argparse import ArgumentParser
 import logging
 
@@ -30,15 +31,6 @@ parser.add_argument(
     required=False,
     default=30,
 )
-parser.add_argument(
-    "-r",
-    "--retry",
-    dest="retries_on_rate_limit",
-    help="Number of retries to attempt when rate limited by OpenSea",
-    metavar="RETRY",
-    required=False,
-    default=3,
-)
 
 args = parser.parse_args()
 
@@ -53,6 +45,7 @@ retry_strategy = Retry(
     allowed_methods=["HEAD", "GET", "OPTIONS"],
     backoff_factor=8,
     raise_on_status=False,  # If retries fail, return response instead of raising exception
+    respect_retry_after_header=True,
 )
 adapter = HTTPAdapter(max_retries=retry_strategy)
 scraper.mount("https://", adapter)
@@ -63,19 +56,6 @@ def is_nft_suspicious(nft_url):
     logging.debug(f"Scraping NFT with link: {nft_url}")
     res = scraper.get(nft_url)
 
-    retries_on_rate_limit = 0
-    while res.status_code == 429:  # Rate limited by OpenSea
-        logging.error(
-            f"Hitting rate limits. Will sleep for {args.sleep_time} seconds and retry"
-        )
-        time.sleep(args.sleep_time)
-        res = scraper.get(nft_url)
-        retries_on_rate_limit += 1
-        if (
-            res.status_code == 429
-            and retries_on_rate_limit > args.retries_on_rate_limit
-        ):
-            return None, None  # Make sure rate limiting is handled well
     if res.status_code == 404:  # NFT not found
         logging.info("NFT not found. Probably reached the end of a collection")
         return None, None
@@ -133,23 +113,24 @@ def scrape_all_collection_suspicious_nfts(collection_address):
             logging.debug(f"NFT to be scraped already in cache. Skipping {nft['url']}")
             collection_nfts_urls.remove(nft["url"])
     logging.info(f"Scraping a list of {len(collection_nfts_urls)} NFTs")
-    scraped_data = []
-    for index, url in enumerate(collection_nfts_urls):
-        if index % 25 == 0:
-            logging.info(f"Scraped {index} NFTs so far...")
-            df = pd.DataFrame(scraped_data)
+    BATCH_SIZE = 50
+    nft_urls_batches = [
+        collection_nfts_urls[i : i + BATCH_SIZE]
+        for i in range(0, len(collection_nfts_urls), BATCH_SIZE)
+    ]
+    for index, batch in enumerate(nft_urls_batches):
+        print(f"Scraped {index * BATCH_SIZE} NFT URLs so far")
+        with Pool(5) as p:
+            # ! Multiple return values
+            results = p.map(is_nft_suspicious, batch)
+            results = list(filter(((None, None)).__ne__, results))
+            if results == []:  # Reached a batch full of NFTs not found
+                print(f"Reached a batch of NFTs not found. Exiting...")
+                return
+            df = pd.DataFrame([{**y, **{"suspicious": x}} for x, y in results])
             df.to_csv(COLLECTION_CSV_PATH, mode="a", header=False, index=False)
-            scraped_data = []
-        is_suspicious, result = is_nft_suspicious(url)
-        if is_suspicious is None:  # ! To detect end of collection. To be removed.
-            break
-        result["is_suspicious"] = is_suspicious
-        scraped_data.append(result)
-    if scraped_data is not []:
-        df = pd.DataFrame(scraped_data)
-        df.to_csv(COLLECTION_CSV_PATH, mode="a", header=False, index=False)
 
-    logging.info(f"Stopped scraping. Reached end of the collection")
+    return
 
 
 def load_scrape_cache(collection_address):
