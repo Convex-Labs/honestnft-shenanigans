@@ -7,39 +7,17 @@ from typing import Union
 
 
 import pandas as pd
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
 from honestnft_utils import chain
 from honestnft_utils import config
 from honestnft_utils import ipfs
+from honestnft_utils import misc
 
 """
 Metadata helper methods
 """
-
-
-def mount_session() -> requests.Session:
-    """
-    Create a requests.session() with optimised strategy for retrying and respecting errors
-    """
-    retry_strategy = Retry(
-        total=5,
-        respect_retry_after_header=True,
-        backoff_factor=0.5,
-        status_forcelist=[429, 500, 502, 503, 504, 520],
-        allowed_methods=["GET"],
-    )
-    retry_strategy.DEFAULT_BACKOFF_MAX = 5  # type: ignore
-    adapter = HTTPAdapter(max_retries=retry_strategy)
-    session = requests.Session()
-    session.mount(prefix="https://", adapter=adapter)
-    session.mount(prefix="http://", adapter=adapter)
-
-    return session
 
 
 def fetch(token_id: int, metadata_uri: str, filename: str) -> None:
@@ -54,7 +32,7 @@ def fetch(token_id: int, metadata_uri: str, filename: str) -> None:
                 print(err)
                 raise Exception(f"Failed to decode on-chain metadata: {metadata_uri}")
         else:
-            _session = mount_session()
+            _session = misc.mount_session()
             # Fetch metadata from server
             uri_response = _session.get(metadata_uri, timeout=3.05)
             try:
