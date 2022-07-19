@@ -128,7 +128,7 @@ def scrape_all_collection_suspicious_nfts(collection_address):
                 print(f"Reached a batch of NFTs not found. Exiting...")
                 return
             df = pd.DataFrame([{**y, **{"suspicious": x}} for x, y in results])
-            df.to_csv(COLLECTION_CSV_PATH + ".new", mode="a", header=False, index=False)
+            df.to_csv(COLLECTION_CSV_PATH, mode="a", header=False, index=False)
 
     return
 
