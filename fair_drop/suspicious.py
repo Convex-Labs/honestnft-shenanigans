@@ -27,15 +27,16 @@ parser.add_argument(
     "--retries",
     dest="retries",
     help="Number of retry attempts",
+    epilog="See https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html",
     metavar="RETRIES",
     required=False,
     default=3,
 )
 parser.add_argument(
-    "-b",
     "--backoff",
     dest="backoff",
     help="Retries backoff parameter for failed requests",
+    epilog="See https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html",
     metavar="RETRIES",
     required=False,
     default=3,
