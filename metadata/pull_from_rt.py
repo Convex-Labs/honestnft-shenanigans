@@ -17,22 +17,21 @@
 # email: nft131@gmail.com
 # If you need any clarification, email me. We can discuss more
 
-
+import argparse
+import csv
+import time
+from pprint import pprint
 from typing import Dict
+
+import requests
+from honestnft_utils import config
+from honestnft_utils import misc
 
 
 def download(
-    project_name: str = "vogu", starting_count_y: int = 1, normalize_trait: int = 1
+    project_name: str = "vogu", starting_count_y: int = 1, normalize_trait: bool = True
 ) -> None:
     # The variable "starting_count_y" is usually 1, but in Rare case, the count has to start at 2, due to irregular data structure used by Rarity tools
-    # Leave "normalize_trait" as default value 1, unless you want to turn it off. (Not recommended to turn it off, as normalize_trait will give better accuracy)
-    import csv
-    import requests
-    import time
-    from pprint import pprint
-
-    from honestnft_utils import config
-
     start_time = time.time()
 
     print("Project : " + str(project_name))
@@ -314,5 +313,52 @@ def save_raw_attributes_csv(
         trait_data.append(token_raw)
 
     # convert list to pandas dataframe and save to disk
-    raw_attributes_csv = pd.DataFrame.from_records(trait_data)
-    raw_attributes_csv.to_csv(file_path)
+    attribute_df = pd.DataFrame.from_records(trait_data)
+    attribute_df["TOKEN_ID"] = attribute_df["TOKEN_ID"].astype(int)
+    attribute_df = attribute_df.sort_values(["TOKEN_ID"], ascending=True)
+    attribute_df = attribute_df.set_index("TOKEN_ID")
+    attribute_df.to_csv(file_path)
+
+
+def _cli_parser() -> argparse.ArgumentParser:
+    """
+    Create the command line argument parser
+    """
+    parser = argparse.ArgumentParser(
+        description="CLI for pulling NFT attribute metadata and rarity data from rarity.tools"
+    )
+    parser.add_argument(
+        "--collection",
+        help="Collection Name as it appears in the rarity.tools URL e.g.: boredapeyachtclub",
+        type=str,
+        required=True,
+    )
+
+    parser.add_argument(
+        "--starting_count_y",
+        help="Only use if you encounter errors due to irregular data structure.",
+        type=int,
+        default=1,
+    )
+
+    parser.add_argument(
+        "--normalize_trait",
+        help="Default rarity.tools setting is 'True'. Most projects also have this turned on.",
+        type=misc.strtobool,
+        const=True,
+        nargs="?",
+        default=True,
+        choices=[True, False],
+    )
+
+    return parser
+
+
+if __name__ == "__main__":
+    args = _cli_parser().parse_args()
+
+    download(
+        project_name=args.collection,
+        starting_count_y=args.starting_count_y,
+        normalize_trait=args.normalize_trait,
+    )

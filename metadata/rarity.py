@@ -152,53 +152,59 @@ def build_rarity_db(
     print(rarity_db.head(5).T)
 
 
-if __name__ == "__main__":
-
-    # Parse command line arguments
-    ARG_PARSER = argparse.ArgumentParser(
+def _cli_parser() -> argparse.ArgumentParser:
+    """
+    Create the command line argument parser
+    """
+    parser = argparse.ArgumentParser(
         description="CLI for generating rarity score of NFT collections."
     )
-    ARG_PARSER.add_argument(
-        "-collection",
+    parser.add_argument(
+        "--collection",
         type=str,
         default=None,
         help="Collection name.",
     )
-    ARG_PARSER.add_argument(
-        "-method",
+    parser.add_argument(
+        "--method",
         type=str,
         default="raritytools",
         help="Method to use to compute rarity. (default: raritytools)",
     )
-    ARG_PARSER.add_argument(
-        "-trait_count",
+    parser.add_argument(
+        "--trait_count",
         type=bool,
         default=True,
         help="Toggle using trait count in computation. (default: True)",
     )
-    ARG_PARSER.add_argument(
-        "-sum_traits",
+    parser.add_argument(
+        "--sum_traits",
         type=str,
         nargs="+",
         help="Traits to sum instead of computing rarity. Can be one or many. (default: None)",
     )
-    ARG_PARSER.add_argument(
-        "-sum_trait_mult",
+    parser.add_argument(
+        "--sum_trait_multiplier",
         type=float,
         default=35,
         help="Trait score multiplier to use for summed traits. (default: 35)",
     )
-    ARGS = ARG_PARSER.parse_args()
+    return parser
+
+
+if __name__ == "__main__":
+
+    args = _cli_parser().parse_args()
 
     # Build attribute file
-    ATTRIBUTE_FILE = f"{config.ATTRIBUTES_FOLDER}/{ARGS.collection}.csv"
+    attribute_file = f"{config.ATTRIBUTES_FOLDER}/{args.collection}.csv"
 
     # Build rarity database and save to disk
     build_rarity_db(
-        ARGS.collection,
-        ATTRIBUTE_FILE,
-        ARGS.method,
-        ARGS.trait_count,
-        ARGS.sum_traits,
-        ARGS.sum_trait_mult,
+        args.collection,
+        attribute_file,
+        args.method,
+        args.trait_count,
+        args.sum_traits,
+        args.sum_trait_multiplier,
     )
