@@ -97,7 +97,7 @@ class TestUtils(unittest.TestCase):
                 self.assertEqual(
                     len(DF_HNFT),
                     len(DF_RT),
-                    f"Lengths of two rarity databases are not equal.\nHonestNFT: {len(DF_HNFT)} vs RarityTools: {len(DF_RT)}",
+                    f"Rarity databases length for project {collection['name']} are not equal.\nHonestNFT: {len(DF_HNFT)} vs RarityTools: {len(DF_RT)}",
                 )
 
             with self.subTest("Compare rank based on TOKEN_ID"):
@@ -113,54 +113,11 @@ class TestUtils(unittest.TestCase):
                     ].item()
 
                     rt_rank = DF_RT.loc[DF_RT["TOKEN_ID"] == token_id, "Rank"].item()
-
-                    if hnft_rank == rt_rank:
-                        # print("Ranks are the same")
-                        pass
-                    else:
-                        # Check if the rarity_score is the same for previous or next rank.
-
-                        score_previous_rank_HNFT = DF_HNFT.loc[
-                            DF_HNFT["Rank"] == hnft_rank - 1,
-                            "RARITY_SCORE",
-                        ].item()
-
-                        score_current_rank_HNFT = DF_HNFT.loc[
-                            DF_HNFT["Rank"] == hnft_rank,
-                            "RARITY_SCORE",
-                        ].item()
-
-                        score_next_rank_HNFT = DF_HNFT.loc[
-                            DF_HNFT["Rank"] == hnft_rank + 1,
-                            "RARITY_SCORE",
-                        ].item()
-
-                        score_previous_rank_RT = DF_RT.loc[
-                            DF_RT["Rank"] == rt_rank - 1,
-                            "RARITY_SCORE",
-                        ].item()
-                        score_current_rank_RT = DF_RT.loc[
-                            DF_RT["Rank"] == rt_rank,
-                            "RARITY_SCORE",
-                        ].item()
-                        score_next_rank_RT = DF_RT.loc[
-                            DF_RT["Rank"] == rt_rank + 1,
-                            "RARITY_SCORE",
-                        ].item()
-
-                        if (
-                            (score_current_rank_HNFT == score_previous_rank_HNFT)
-                            or (score_current_rank_HNFT == score_next_rank_HNFT)
-                        ) and (
-                            (score_current_rank_RT == score_previous_rank_RT)
-                            or (score_current_rank_RT == score_next_rank_RT)
-                        ):
-                            pass
-
-                        else:
-                            self.fail(
-                                f"Ranks are not the same for token_id {token_id}.\nHonestNFT: {hnft_rank} vs RarityTools: {rt_rank}"
-                            )
+                    self.assertEqual(
+                        hnft_rank,
+                        rt_rank,
+                        f"Ranks are not the same for {collection['name']}, token_id {token_id}.\nHonestNFT: {hnft_rank} vs RarityTools: {rt_rank}",
+                    )
 
     @classmethod
     def tearDownClass(self):
