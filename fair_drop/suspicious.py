@@ -23,13 +23,22 @@ parser.add_argument(
     required=True,
 )
 parser.add_argument(
-    "-s",
-    "--sleep",
-    dest="sleep_timer",
-    help="Sleep parameter",
-    metavar="SLEEP",
+    "-r",
+    "--retries",
+    dest="retries",
+    help="Number of retry attempts",
+    metavar="RETRIES",
     required=False,
-    default=30,
+    default=3,
+)
+parser.add_argument(
+    "-b",
+    "--backoff",
+    dest="backoff",
+    help="Retries backoff parameter for failed requests",
+    metavar="RETRIES",
+    required=False,
+    default=3,
 )
 
 args = parser.parse_args()
@@ -40,10 +49,10 @@ scraper = cloudscraper.create_scraper()
 # Configration of cloudscraper underlying requests module
 # CloudScraper is a sub-class of Session
 retry_strategy = Retry(
-    total=3,
+    total=args.retries,
     status_forcelist=[429, 500, 502, 503, 504],
     allowed_methods=["HEAD", "GET", "OPTIONS"],
-    backoff_factor=8,
+    backoff_factor=args.backoff,
     raise_on_status=False,  # If retries fail, return response instead of raising exception
     respect_retry_after_header=True,
 )
