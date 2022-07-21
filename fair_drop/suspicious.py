@@ -130,12 +130,13 @@ def scrape_all_collection_suspicious_nfts(collection_address):
             logging.debug(f"NFT to be scraped already in cache. Skipping {nft['url']}")
             collection_nfts_urls.remove(nft["url"])
     logging.info(f"Scraping a list of {len(collection_nfts_urls)} NFTs")
+    BATCH_SIZE = int(args.batch_size)
     nft_urls_batches = [
-        collection_nfts_urls[i : i + args.batch_size]
-        for i in range(0, len(collection_nfts_urls), args.batch_size)
+        collection_nfts_urls[i : i + BATCH_SIZE]
+        for i in range(0, len(collection_nfts_urls), BATCH_SIZE)
     ]
     for index, batch in enumerate(nft_urls_batches):
-        print(f"Scraped {index * args.batch_size} NFT URLs so far")
+        print(f"Scraped {index * BATCH_SIZE} NFT URLs so far")
         with Pool(5) as p:
             # ! Multiple return values
             results = p.map(is_nft_suspicious, batch)
