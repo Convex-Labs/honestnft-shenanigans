@@ -113,8 +113,13 @@ def gen_rarity_score(
     # Compute aggregate rarity
     rarity_db["RARITY_SCORE"] = rarity_db[non_sum_traits].sum(axis=1)
 
+    # Set the type of column TOKEN_ID to string (for consistent sorting like Rarity.Tools)
+    rarity_db["TOKEN_ID"] = rarity_db["TOKEN_ID"].astype(str)
+
     # Sort database and assign rank
-    rarity_db = rarity_db.sort_values(["RARITY_SCORE"], ascending=False)
+    rarity_db = rarity_db.sort_values(
+        ["RARITY_SCORE", "TOKEN_ID"], ascending=[False, True]
+    )
     rarity_db["Rank"] = np.arange(1, len(rarity_db) + 1)
 
     # Set index as token name
