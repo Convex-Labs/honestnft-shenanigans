@@ -50,6 +50,12 @@ Table of Contents
    sales_data
 
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Contributing
+    
+   contributing/contributing
+
 Indices and tables
 ------------------
 
