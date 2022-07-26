@@ -461,23 +461,6 @@ def _cli_parser() -> argparse.ArgumentParser:
 
 if __name__ == "__main__":
 
-    """
-    Retrieve NFT metadata from remote server. A couple configurations are available.
-
-    1) Provide a contract address and infer all underlying parameters
-    python3 pulling.py -contract 0x09eqhc0iqy80eychq8hn8dhqwc
-
-    2) Provide a URI base, collection name, lower_id, and max_supply
-    python3 pulling.py -uri_base https://punks.com/api/ -collection punks -lower_id 0 -max_supply 10000
-
-    When retrieving metadata by inferring the URI directly from the contract function,  we assume:
-    1) Contract ABI is posted publicly on etherscan.
-    2) Contract address points to either an NFT contract or an associated proxy contract that
-       has an NFT contract as an implementation contract. Note that get_contract is called
-       recursively if the provided contract address yields and ABI that contains a function
-       called 'implementation'
-    """
-
     # Parse command line arguments
 
     ARGS = _cli_parser().parse_args()
