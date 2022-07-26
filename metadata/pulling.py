@@ -462,13 +462,6 @@ def _cli_parser() -> argparse.ArgumentParser:
 if __name__ == "__main__":
 
     """
-    There are some cases we have found that are not covered by this script:
-    https://etherscan.io/token/0xff9c1b15b16263c61d017ee9f65c50e4ae0113d7
-    https://etherscan.io/address/0x743f80dc76f862a27598140196cc610006b2be68
-    https://etherscan.io/address/0x8197c9d748287dc1ce7b35ad8dfff4a79a54a1c4
-    """
-
-    """
     Retrieve NFT metadata from remote server. A couple configurations are available.
 
     1) Provide a contract address and infer all underlying parameters
