@@ -3,17 +3,14 @@ import base64
 import concurrent.futures
 import json
 import os
+from pathlib import Path
 from typing import Union
-
 
 import pandas as pd
 from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
-from honestnft_utils import chain
-from honestnft_utils import config
-from honestnft_utils import ipfs
-from honestnft_utils import misc
+from honestnft_utils import chain, config, ipfs, misc
 
 """
 Metadata helper methods
@@ -91,10 +88,8 @@ def fetch_all_metadata(
 
     # First try to get all metadata files from ipfs in bulk
     if uri_base is not None and ipfs.is_valid_ipfs_uri(uri_base):
-        folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
-        _files = next(folder_walk)[2]
 
-        if len(_files) == 0:
+        if len(list(Path(folder).iterdir())) == 0:
             cid = ipfs.infer_cid_from_uri(uri_base)
             try:
                 ipfs.fetch_ipfs_folder(
@@ -103,19 +98,14 @@ def fetch_all_metadata(
                     parent_folder=config.ATTRIBUTES_FOLDER,
                     timeout=60,
                 )
-                folder_walk = os.walk(
-                    folder, topdown=True, onerror=None, followlinks=False
-                )
-                _files = next(folder_walk)[2]
-                first_file = _files[0]
-                file_suffix = ipfs.get_file_suffix(first_file)
                 bulk_ipfs_success = True
             except Exception:
                 print("Falling back to individual file downloads...")
-                file_suffix = ".json"
-                pass
-    else:
-        file_suffix = ".json"
+    try:
+        first_filename = misc.get_first_filename_in_dir(Path(folder))
+        file_suffix = ipfs.get_file_suffix(first_filename)
+    except FileNotFoundError:
+        pass
 
     if (
         bulk_ipfs_success is not True
@@ -134,7 +124,7 @@ def fetch_all_metadata(
                     token_ids_batch = list(
                         filter(
                             lambda token_id: not os.path.exists(
-                                f"{folder}/{token_id}.json"
+                                f"{folder}/{token_id}{file_suffix}"
                             ),
                             token_ids_batch,
                         )
