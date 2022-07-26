@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -41,3 +43,16 @@ def mount_session() -> requests.Session:
     session.mount(prefix="http://", adapter=adapter)
 
     return session
+
+
+def get_first_filename_in_dir(dir_path: Path) -> str:
+    """Get the first filename in a directory
+
+    :param dir_path: The path to the directory
+    :raises FileNotFoundError: if the directory is empty
+    :return: The name of the first file in the directory
+    """
+    for file_path in dir_path.iterdir():
+        if file_path.is_file():
+            return file_path.name
+    raise FileNotFoundError("No files found in directory")
