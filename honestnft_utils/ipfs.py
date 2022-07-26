@@ -103,13 +103,12 @@ def fetch_ipfs_folder(
 
     infura = "/dns/infura-ipfs.io/tcp/5001/https"
     ipfs_io = "/dns/ipfs.io/tcp/443/https"
-    ipfs_gateway_io = "/dns/gateway.ipfs.io/tcp/443/https"
     dweb_link = "/dns/dweb.link/tcp/443/https"
     pinata = "/dns/gateway.pinata.cloud/tcp/443/https"
     warnings.filterwarnings(
         "ignore", category=ipfshttpclient.exceptions.VersionMismatch
     )
-    gateways = [pinata, ipfs_gateway_io, infura, dweb_link, ipfs_io]
+    gateways = [ipfs_io, infura, dweb_link, pinata]
     print("Attempting to download metadata folder from IPFS...\nPlease wait...")
 
     for gateway in range(len(gateways)):
