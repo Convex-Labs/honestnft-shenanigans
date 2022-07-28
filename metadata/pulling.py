@@ -60,6 +60,7 @@ def fetch_all_metadata(
     uri_suffix: str,
     blockchain: str,
     threads: int,
+    skip_ipfs_folder: bool,
 ) -> list:
 
     # Create raw attribute folder for collection if it doesnt already exist
@@ -87,7 +88,11 @@ def fetch_all_metadata(
             uri_base = config.IPFS_GATEWAY + cid + "/"
 
     # First try to get all metadata files from ipfs in bulk
-    if uri_base is not None and ipfs.is_valid_ipfs_uri(uri_base):
+    if (
+        skip_ipfs_folder == False
+        and uri_base is not None
+        and ipfs.is_valid_ipfs_uri(uri_base)
+    ):
 
         if len(list(Path(folder).iterdir())) == 0:
             cid = ipfs.infer_cid_from_uri(uri_base)
@@ -101,6 +106,7 @@ def fetch_all_metadata(
                 bulk_ipfs_success = True
             except Exception:
                 print("Falling back to individual file downloads...")
+
     try:
         first_filename = misc.get_first_filename_in_dir(Path(folder))
         file_suffix = ipfs.get_file_suffix(first_filename)
@@ -334,6 +340,7 @@ def pull_metadata(args: argparse.Namespace) -> None:
         uri_suffix=args.uri_suffix,
         blockchain=args.blockchain,
         threads=args.threads,
+        skip_ipfs_folder=args.skip_ipfs_folder,
     )
 
     # Generate traits DataFrame and save to disk as csv
@@ -444,6 +451,11 @@ def _cli_parser() -> argparse.ArgumentParser:
         type=int,
         default=None,
         help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",  # type: ignore
+    )
+    parser.add_argument(
+        "--skip_ipfs_folder",
+        action="store_true",
+        help="Skip IPFS folder download.",
     )
 
     return parser
