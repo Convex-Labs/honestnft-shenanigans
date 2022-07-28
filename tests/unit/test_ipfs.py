@@ -136,6 +136,8 @@ class TestCase(unittest.TestCase):
             "",
             None,
             218983,
+            "ipfs://QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+            "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
         ]
 
         for entry in valid_pinata_gateways:
