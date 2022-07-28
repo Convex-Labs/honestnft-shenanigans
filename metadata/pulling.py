@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 from typing import Union
+from urllib.parse import urlparse
 
 import pandas as pd
 from web3.contract import Contract
@@ -72,20 +73,31 @@ def fetch_all_metadata(
     dictionary_list = []
     file_suffix = ""
     bulk_ipfs_success = False
-    uri = ""
+    dedicated_gateway = False
     if uri_base is None:
         for token_id in [0, 1]:
             try:
-                # Fetch the metadata url from the contract
-                uri = chain.get_token_uri_from_contract(
-                    contract, token_id, uri_func, abi
+                # Fetch the original metadata uri from the contract
+                original_uri = chain.get_token_uri_from_contract(
+                    contract=contract,
+                    token_id=token_id,
+                    uri_func=uri_func,
+                    abi=abi,
+                    format_uri=False,
                 )
                 break
             except Exception as err:
                 pass
-        cid = ipfs.infer_cid_from_uri(uri)
-        if cid is not None:
-            uri_base = config.IPFS_GATEWAY + cid + "/"
+        if ipfs.is_dedicated_pinata_gateway(original_uri):
+            skip_ipfs_folder = True
+            dedicated_gateway = True
+            parse_result = urlparse(original_uri)
+            uri_base = f"{parse_result.scheme}://{parse_result.netloc}/ipfs/{ipfs.infer_cid_from_uri(original_uri)}/"
+
+        else:
+            cid = ipfs.infer_cid_from_uri(original_uri)
+            if cid is not None:
+                uri_base = config.IPFS_GATEWAY + cid + "/"
 
     # First try to get all metadata files from ipfs in bulk
     if (
@@ -144,16 +156,13 @@ def fetch_all_metadata(
                         function_signature,
                         abi,
                         blockchain=blockchain,
+                        format_uri=not dedicated_gateway,
                     ).items():
                         executor.submit(
                             fetch,
                             token_id,
                             metadata_uri,
-                            filename="{folder}{token_id}{file_extension}".format(
-                                folder=folder,
-                                token_id=token_id,
-                                file_extension=file_suffix,
-                            ),
+                            filename=f"{folder}{token_id}{file_suffix}",
                         )
         except Exception as err:
             print(err)
@@ -189,7 +198,11 @@ def fetch_all_metadata(
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
                 metadata_uri = chain.get_token_uri_from_contract(
-                    contract, token_id, uri_func, abi
+                    contract,
+                    token_id,
+                    uri_func,
+                    abi,
+                    format_uri=not dedicated_gateway,
                 )
 
                 if isinstance(metadata_uri, ContractLogicError):

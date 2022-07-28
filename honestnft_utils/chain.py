@@ -254,15 +254,21 @@ def get_contract_function(contract: Contract, func_name: str, abi: list):
 
 
 def get_token_uri_from_contract(
-    contract: Contract, token_id: int, uri_func: str, abi: list
+    contract: Contract,
+    token_id: int,
+    uri_func: str,
+    abi: list,
+    format_uri: bool = False,
 ) -> str:
     """
     Given a contract, token ID, and URI function name, return the token URI.
+    Optionally, format the URI.
 
     :param contract: The contract object
     :param token_id: The token ID
     :param uri_func: The URI function name
     :param abi: The contract ABI
+    :param format_uri: Whether to format the URI
     :return: The token URI
     """
     # Fetch URI from contract
@@ -270,7 +276,10 @@ def get_token_uri_from_contract(
 
     try:
         uri = uri_contract_func(token_id).call()
-        return format_metadata_uri(uri)
+        if format_uri:
+            return format_metadata_uri(uri)
+        else:
+            return uri
     except ContractLogicError as err:
         raise Exception(err)
 
@@ -281,9 +290,11 @@ def get_token_uri_from_contract_batch(
     function_signature: str,
     abi: list,
     blockchain: str = "ethereum",
+    format_uri: bool = False,
 ) -> Dict[int, str]:
     """
     Given a contract, token IDs, and function signature, return the token URIs.
+    Optionally, format the URI.
 
     :param contract: The contract object
     :param token_ids: A list of token IDs
@@ -297,7 +308,7 @@ def get_token_uri_from_contract_batch(
         - fantom
         - optimism
         - polygon
-
+    :param format_uri: Whether to format the URI
     :return: A dictionary of token IDs and URIs
     """
     if blockchain == "arbitrum":
@@ -328,7 +339,7 @@ def get_token_uri_from_contract_batch(
             call = Call(
                 target=contract.address,
                 function=[function_signature, token_id],
-                returns=[[token_id, format_metadata_uri]],
+                returns=[[token_id, format_metadata_uri if format_uri else str]],
             )
             calls.append(call)
         multi = Multicall(calls, _w3=w3)
