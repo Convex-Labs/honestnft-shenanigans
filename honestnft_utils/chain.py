@@ -279,7 +279,7 @@ def get_token_uri_from_contract(
         if format_uri:
             return format_metadata_uri(uri)
         else:
-            return uri
+            return str(uri)
     except ContractLogicError as err:
         raise Exception(err)
 
