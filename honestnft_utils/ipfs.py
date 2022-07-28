@@ -162,3 +162,18 @@ def format_ipfs_uri(uri: str) -> str:
                 scheme="https", netloc=urlparse(gateway).netloc
             ).geturl()
     raise ValueError("No CID found in URI")
+
+
+def is_dedicated_pinata_gateway(url: str) -> bool:
+    """
+    Given a gateway, this function checks if it's a custom Pinata gateway.
+    """
+    pattern = r"^((?!-)[a-z0-9-]{0,63}[a-z0-9])\.mypinata\.cloud"
+
+    # if "mypinata.cloud" in url:
+    parse_result = urlparse(str(url))
+
+    if re.match(pattern, parse_result.netloc) or re.match(pattern, parse_result.path):
+        return True
+
+    return False
