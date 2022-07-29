@@ -1,5 +1,6 @@
 # See https://github.com/convex-labs/honestnft-shenanigans/issues/86 for more details
 # Given a collection of NFTs on OpenSea, detect suspicious NFTs
+# ! Note that this works only with NFT collections that have a friendly auto-incrementing IDs scheme
 import time
 from multiprocessing import Pool
 from argparse import ArgumentParser
@@ -9,6 +10,8 @@ import cloudscraper
 import pandas as pd
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter, Retry
+
+from honestnft_utils import chain
 
 
 logging.basicConfig(level=logging.INFO)
@@ -35,7 +38,7 @@ parser.add_argument(
     "--backoff",
     dest="backoff",
     help="Retries backoff parameter for failed requests",
-    metavar="RETRIES",
+    metavar="BACKOFF",
     required=False,
     default=3,
 )
@@ -44,12 +47,34 @@ parser.add_argument(
     "--batch-size",
     dest="batch_size",
     help="Batch size of NFT URLs to be processed in parallell",
-    metavar="RETRIES",
+    metavar="BATCHSIZE",
     required=False,
     default=50,
 )
 
 args = parser.parse_args()
+
+try:
+    # Get contract ABI and the contract object
+    abi = chain.get_contract_abi(address=args.collection_address)
+    abi, contract = chain.get_contract(address=args.collection_address, abi=abi)
+
+    # Get the lower token_id
+    lower_id = chain.get_lower_token_id(contract=contract, uri_func="tokenURI", abi=abi)
+
+    # Query the ABI for the total supply function
+    total_supply_func = chain.get_contract_function(
+        contract=contract, func_name="totalSupply", abi=abi
+    )
+    max_supply = total_supply_func().call()
+    upper_id = max_supply + lower_id - 1
+    logging.info(f"Lower ID of NFT collection: {lower_id}")
+    logging.info(f"Upper ID of NFT collection: {upper_id}")
+    logging.info(f"Max supply: {max_supply}")
+except Exception as e:
+    logging.error("Error while trying to get the lower/upper IDs")
+    logging.error(e)
+    raise e
 
 COLLECTION_CSV_PATH = f"fair_drop/suspicious_{args.collection_address}.csv"
 
@@ -112,12 +137,13 @@ def list_collection_nfts_urls(collection_address):
     """
     # ! This is just a mock function. It is to be replaced with a call to the OpenSea API
     nft_urls = []
-    for i in range(0, 9999):
+    for i in range(lower_id, upper_id + 1):
         nft_urls.append(f"{OPENSEA_BASE_URL}{collection_address}/{i}")
     return nft_urls
 
 
 def scrape_all_collection_suspicious_nfts(collection_address):
+    # TODO check that the collection address is valid
     collection_nfts_urls = list_collection_nfts_urls(collection_address)
     logging.info(f"Collection contains {len(collection_nfts_urls)} NFTs")
     collection_cache = load_scrape_cache(collection_nfts_urls)
