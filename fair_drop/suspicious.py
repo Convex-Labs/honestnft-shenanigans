@@ -3,10 +3,7 @@
 # ! Note that this works only with NFT collections that have a friendly auto-incrementing IDs scheme
 
 # TODO start
-# Save the results into a CSV: include collection, NFT, ID, date it was checked...
-# Resiliency: resume scraping from where it was left off if network breaks for example
-# Multithreading: distribute scraping to multiple processes (5-10) for performance improvements
-# ! Handle outliers: collections with IDs of NFTs that are unpredictable: https://opensea.io/assets/ethereum/0x495f947276749ce646f68ac8c248420045cb7b5e/1350204010727590036333503804244432743205262951888776484545241060344672026625
+# Handle outliers: collections with IDs of NFTs that are unpredictable: https://opensea.io/assets/ethereum/0x495f947276749ce646f68ac8c248420045cb7b5e/1350204010727590036333503804244432743205262951888776484545241060344672026625
 # Adjust depending on capabilities of the official OpenSea API
 # TODO end
 
@@ -14,7 +11,7 @@ import multiprocessing
 from argparse import ArgumentParser
 import logging
 
-import cloudscraper
+import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter, Retry
@@ -86,9 +83,12 @@ except Exception as e:
 
 COLLECTION_CSV_PATH = f"fair_drop/suspicious_{args.collection_address}.csv"
 
-scraper = cloudscraper.create_scraper()
-# Configration of cloudscraper underlying requests module
-# CloudScraper is a sub-class of Session
+session = requests.Session()
+session.headers.update(
+    {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101 Firefox/93.0"
+    }
+)
 retry_strategy = Retry(
     total=args.retries,
     status_forcelist=[429, 500, 502, 503, 504],
@@ -98,13 +98,13 @@ retry_strategy = Retry(
     respect_retry_after_header=True,
 )
 adapter = HTTPAdapter(max_retries=retry_strategy)
-scraper.mount("https://", adapter)
-scraper.mount("http://", adapter)
+session.mount("https://", adapter)
+session.mount("http://", adapter)
 
 
 def is_nft_suspicious(nft_url):
     logging.debug(f"Scraping NFT with link: {nft_url}")
-    res = scraper.get(nft_url)
+    res = session.get(nft_url)
 
     if res.status_code == 404:  # NFT not found
         logging.info("NFT not found. Probably reached the end of a collection")
@@ -211,9 +211,3 @@ def load_scrape_cache(collection_address):
 
 
 scrape_all_collection_suspicious_nfts(args.collection_address)
-
-
-# python fair_drop/suspicious.py -c 0xe21ebcd28d37a67757b9bc7b290f4c4928a430b1  # The Saudis
-# python fair_drop/suspicious.py -c 0x78d61c684a992b0289bbfe58aaa2659f667907f8  # Superplastic: supergucci
-# python fair_drop/suspicious.py -c 0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb  # CryptoPunks
-# python fair_drop/suspicious.py -c 0x60e4d786628fea6478f785a6d7e704777c86a7c6  # Mutant Ape Yacht Club

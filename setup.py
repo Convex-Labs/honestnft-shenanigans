@@ -35,7 +35,6 @@ setup(
         "python-dotenv==0.19.2",
         "plotly==5.6.0",
         "py-is_ipfs==0.5.1",
-        "cloudscraper==1.2.60",
         "beautifulsoup4==4.11.1",
     ],
 )
