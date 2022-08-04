@@ -126,10 +126,9 @@ def fetch_ipfs_folder(
                     "Failed to download metadata folder from IPFS. Trying next gateway..."
                 )
             else:
-                print("Failed to download metadata folder from IPFS.")
                 if Path.exists(cid_path):
                     cid_path.rename(collection_path)
-            pass
+                raise Exception("Failed to download metadata folder from IPFS.")
 
 
 def format_ipfs_uri(uri: str) -> str:

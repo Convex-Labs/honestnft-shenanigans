@@ -3,17 +3,14 @@ import base64
 import concurrent.futures
 import json
 import os
+from pathlib import Path
 from typing import Union
-
 
 import pandas as pd
 from web3.contract import Contract
 from web3.exceptions import ContractLogicError
 
-from honestnft_utils import chain
-from honestnft_utils import config
-from honestnft_utils import ipfs
-from honestnft_utils import misc
+from honestnft_utils import chain, config, ipfs, misc
 
 """
 Metadata helper methods
@@ -91,10 +88,8 @@ def fetch_all_metadata(
 
     # First try to get all metadata files from ipfs in bulk
     if uri_base is not None and ipfs.is_valid_ipfs_uri(uri_base):
-        folder_walk = os.walk(folder, topdown=True, onerror=None, followlinks=False)
-        _files = next(folder_walk)[2]
 
-        if len(_files) == 0:
+        if len(list(Path(folder).iterdir())) == 0:
             cid = ipfs.infer_cid_from_uri(uri_base)
             try:
                 ipfs.fetch_ipfs_folder(
@@ -103,19 +98,14 @@ def fetch_all_metadata(
                     parent_folder=config.ATTRIBUTES_FOLDER,
                     timeout=60,
                 )
-                folder_walk = os.walk(
-                    folder, topdown=True, onerror=None, followlinks=False
-                )
-                _files = next(folder_walk)[2]
-                first_file = _files[0]
-                file_suffix = ipfs.get_file_suffix(first_file)
                 bulk_ipfs_success = True
             except Exception:
                 print("Falling back to individual file downloads...")
-                file_suffix = ".json"
-                pass
-    else:
-        file_suffix = ".json"
+    try:
+        first_filename = misc.get_first_filename_in_dir(Path(folder))
+        file_suffix = ipfs.get_file_suffix(first_filename)
+    except FileNotFoundError:
+        pass
 
     if (
         bulk_ipfs_success is not True
@@ -134,7 +124,7 @@ def fetch_all_metadata(
                     token_ids_batch = list(
                         filter(
                             lambda token_id: not os.path.exists(
-                                f"{folder}/{token_id}.json"
+                                f"{folder}/{token_id}{file_suffix}"
                             ),
                             token_ids_batch,
                         )
@@ -460,30 +450,6 @@ def _cli_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-
-    """
-    There are some cases we have found that are not covered by this script:
-    https://etherscan.io/token/0xff9c1b15b16263c61d017ee9f65c50e4ae0113d7
-    https://etherscan.io/address/0x743f80dc76f862a27598140196cc610006b2be68
-    https://etherscan.io/address/0x8197c9d748287dc1ce7b35ad8dfff4a79a54a1c4
-    """
-
-    """
-    Retrieve NFT metadata from remote server. A couple configurations are available.
-
-    1) Provide a contract address and infer all underlying parameters
-    python3 pulling.py -contract 0x09eqhc0iqy80eychq8hn8dhqwc
-
-    2) Provide a URI base, collection name, lower_id, and max_supply
-    python3 pulling.py -uri_base https://punks.com/api/ -collection punks -lower_id 0 -max_supply 10000
-
-    When retrieving metadata by inferring the URI directly from the contract function,  we assume:
-    1) Contract ABI is posted publicly on etherscan.
-    2) Contract address points to either an NFT contract or an associated proxy contract that
-       has an NFT contract as an implementation contract. Note that get_contract is called
-       recursively if the provided contract address yields and ABI that contains a function
-       called 'implementation'
-    """
 
     # Parse command line arguments
 
