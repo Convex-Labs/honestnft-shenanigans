@@ -1,8 +1,7 @@
 # See https://github.com/convex-labs/honestnft-shenanigans/issues/86 for more details
 # Given a collection of NFTs on OpenSea, detect suspicious NFTs
 # ! Note that this works only with NFT collections that have a friendly auto-incrementing IDs scheme
-import time
-from multiprocessing import Pool
+import multiprocessing
 from argparse import ArgumentParser
 import logging
 
@@ -163,7 +162,7 @@ def scrape_all_collection_suspicious_nfts(collection_address):
     ]
     for index, batch in enumerate(nft_urls_batches):
         print(f"Scraped {index * BATCH_SIZE} NFT URLs so far")
-        with Pool(5) as p:
+        with multiprocessing.Pool(multiprocessing.cpu_count() - 1) as p:
             # ! Multiple return values
             results = p.map(is_nft_suspicious, batch)
             results = list(filter(((None, None)).__ne__, results))
