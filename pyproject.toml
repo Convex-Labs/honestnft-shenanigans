@@ -43,6 +43,7 @@ module = [
     "urllib3.*",
     "docutils",
     "docutils.*",
+    "bs4.*"
 ]
 ignore_missing_imports = true
 

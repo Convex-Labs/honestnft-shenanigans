@@ -31,4 +31,5 @@ As of now, most notebooks are undocumented or only contain inline documentation.
    fair_drop.rarity_vs_mintdate_map
    fair_drop.revenue_by_token_ids
    fair_drop.sales_data_moralis
+   fair_drop.suspicious
    fair_drop.wallets_average_rarity_rank_histogram

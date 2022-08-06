@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -24,21 +25,37 @@ def strtobool(val: str) -> bool:
         raise ValueError("invalid truth value %r" % (val,))
 
 
-def mount_session() -> requests.Session:
+def mount_session(
+    allowed_methods: List[str] = ["GET"],
+    total_retries: int = 5,
+    backoff_factor: float = 0.5,
+    raise_on_status: bool = True,
+    user_agent: str = None,
+) -> requests.Session:
     """Create a requests.session() with optimised strategy for retrying and respecting errors
 
+    :param allowed_methods: List of uppercased HTTP method verbs that we should retry on.
+    :param total_retries: Total number of retries to allow.
+    :param backoff_factor: A backoff factor to apply between attempts after the second try.
+    :param raise_on_status: Whether we should raise an exception, or return a response, if status falls in status_forcelist range and retries have been exhausted.
+    :param user_agent: The user agent to use for the session
     :return: A requests session with retry and error handling
     """
     retry_strategy = Retry(
-        total=5,
+        total=total_retries,
         respect_retry_after_header=True,
-        backoff_factor=0.5,
+        backoff_factor=backoff_factor,
         status_forcelist=[429, 500, 502, 503, 504, 520],
-        allowed_methods=["GET"],
+        allowed_methods=allowed_methods,
+        raise_on_status=raise_on_status,
     )
     retry_strategy.DEFAULT_BACKOFF_MAX = 5  # type: ignore
     adapter = HTTPAdapter(max_retries=retry_strategy)
     session = requests.Session()
+
+    if user_agent is not None:
+        session.headers.update({"User-Agent": user_agent})
+
     session.mount(prefix="https://", adapter=adapter)
     session.mount(prefix="http://", adapter=adapter)
 
