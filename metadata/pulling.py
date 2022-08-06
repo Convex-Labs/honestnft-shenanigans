@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 from typing import Union
+from urllib.parse import urlparse
 
 import pandas as pd
 from web3.contract import Contract
@@ -60,6 +61,7 @@ def fetch_all_metadata(
     uri_suffix: str,
     blockchain: str,
     threads: int,
+    skip_ipfs_folder: bool,
 ) -> list:
 
     # Create raw attribute folder for collection if it doesnt already exist
@@ -71,23 +73,38 @@ def fetch_all_metadata(
     dictionary_list = []
     file_suffix = ""
     bulk_ipfs_success = False
-    uri = ""
+    dedicated_gateway = False
     if uri_base is None:
         for token_id in [0, 1]:
             try:
-                # Fetch the metadata url from the contract
-                uri = chain.get_token_uri_from_contract(
-                    contract, token_id, uri_func, abi
+                # Fetch the original metadata uri from the contract
+                original_uri = chain.get_token_uri_from_contract(
+                    contract=contract,
+                    token_id=token_id,
+                    uri_func=uri_func,
+                    abi=abi,
+                    format_uri=False,
                 )
                 break
             except Exception as err:
                 pass
-        cid = ipfs.infer_cid_from_uri(uri)
-        if cid is not None:
-            uri_base = config.IPFS_GATEWAY + cid + "/"
+        if ipfs.is_dedicated_pinata_gateway(original_uri):
+            skip_ipfs_folder = True
+            dedicated_gateway = True
+            parse_result = urlparse(original_uri)
+            uri_base = f"{parse_result.scheme}://{parse_result.netloc}/ipfs/{ipfs.infer_cid_from_uri(original_uri)}/"
+
+        else:
+            cid = ipfs.infer_cid_from_uri(original_uri)
+            if cid is not None:
+                uri_base = config.IPFS_GATEWAY + cid + "/"
 
     # First try to get all metadata files from ipfs in bulk
-    if uri_base is not None and ipfs.is_valid_ipfs_uri(uri_base):
+    if (
+        skip_ipfs_folder == False
+        and uri_base is not None
+        and ipfs.is_valid_ipfs_uri(uri_base)
+    ):
 
         if len(list(Path(folder).iterdir())) == 0:
             cid = ipfs.infer_cid_from_uri(uri_base)
@@ -101,6 +118,7 @@ def fetch_all_metadata(
                 bulk_ipfs_success = True
             except Exception:
                 print("Falling back to individual file downloads...")
+
     try:
         first_filename = misc.get_first_filename_in_dir(Path(folder))
         file_suffix = ipfs.get_file_suffix(first_filename)
@@ -138,16 +156,13 @@ def fetch_all_metadata(
                         function_signature,
                         abi,
                         blockchain=blockchain,
+                        format_uri=not dedicated_gateway,
                     ).items():
                         executor.submit(
                             fetch,
                             token_id,
                             metadata_uri,
-                            filename="{folder}{token_id}{file_extension}".format(
-                                folder=folder,
-                                token_id=token_id,
-                                file_extension=file_suffix,
-                            ),
+                            filename=f"{folder}{token_id}{file_suffix}",
                         )
         except Exception as err:
             print(err)
@@ -183,7 +198,11 @@ def fetch_all_metadata(
             elif uri_func is not None and contract is not None and abi is not None:
                 # Fetch URI for the given token id from the contract
                 metadata_uri = chain.get_token_uri_from_contract(
-                    contract, token_id, uri_func, abi
+                    contract,
+                    token_id,
+                    uri_func,
+                    abi,
+                    format_uri=not dedicated_gateway,
                 )
 
                 if isinstance(metadata_uri, ContractLogicError):
@@ -334,6 +353,7 @@ def pull_metadata(args: argparse.Namespace) -> None:
         uri_suffix=args.uri_suffix,
         blockchain=args.blockchain,
         threads=args.threads,
+        skip_ipfs_folder=args.skip_ipfs_folder,
     )
 
     # Generate traits DataFrame and save to disk as csv
@@ -444,6 +464,11 @@ def _cli_parser() -> argparse.ArgumentParser:
         type=int,
         default=None,
         help=f"Number of threads to use for downloading metadata. (default: {min(32, os.cpu_count() + 4)})",  # type: ignore
+    )
+    parser.add_argument(
+        "--skip_ipfs_folder",
+        action="store_true",
+        help="Skip IPFS folder download.",
     )
 
     return parser

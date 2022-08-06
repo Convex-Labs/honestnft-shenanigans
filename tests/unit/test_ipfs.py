@@ -1,8 +1,7 @@
 import unittest
 import unittest.mock as mock
 
-from honestnft_utils import config
-from honestnft_utils import ipfs
+from honestnft_utils import config, ipfs
 
 VALID_URIS = [
     {
@@ -122,6 +121,30 @@ class TestCase(unittest.TestCase):
             ),
             "https://ipfs.io/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
         )
+
+    def test_is_dedicated_pinata_gateway(self):
+        valid_pinata_gateways = [
+            "https://hungrywolves.mypinata.cloud/ipfs/QmLoremIpsum",
+            "http://a-valid-gateway.mypinata.cloud/ipfs/QmLoremIpsum",
+            "also-valid.mypinata.cloud",
+        ]
+        invalid_pinata_gateways = [
+            "www.not-valid.mypinata.cloud",
+            "https://not-valid.mypinata.com",
+            "https://ipfs.io",
+            "https://ipfs.io/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+            "",
+            None,
+            218983,
+            "ipfs://QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+            "/ipfs/QmUCseQWXCSrhf9edzVKTvoj8o8Ts5aXFGNPameZRPJ6uR",
+        ]
+
+        for entry in valid_pinata_gateways:
+            self.assertTrue(ipfs.is_dedicated_pinata_gateway(entry), entry)
+
+        for entry in invalid_pinata_gateways:
+            self.assertFalse(ipfs.is_dedicated_pinata_gateway(entry), entry)
 
 
 if __name__ == "__main__":
