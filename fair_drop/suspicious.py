@@ -53,7 +53,12 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
     """
     logging.debug(f"Scraping NFT with link: {nft_url}")
 
-    res = session.get(nft_url)
+    try:
+        res = session.get(nft_url)
+    except requests.exceptions.ChunkedEncodingError as error:
+        logging.error(f"Error while trying to scrape {nft_url}")
+        logging.error(error)
+        return is_nft_suspicious(nft_url, session)
 
     if res.status_code == 200:
         soup = BeautifulSoup(res.text, "html.parser")
