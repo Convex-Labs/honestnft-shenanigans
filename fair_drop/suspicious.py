@@ -5,7 +5,6 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 import requests
-from bs4 import BeautifulSoup
 
 from honestnft_utils import chain, config, misc
 
@@ -61,19 +60,11 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
         return is_nft_suspicious(nft_url, session)
 
     if res.status_code == 200:
-        soup = BeautifulSoup(res.text, "html.parser")
-        collection_name = soup.find(class_="item--collection-detail").text
-        owner = soup.find(class_="AccountLink--ellipsis-overflow").text.replace(
-            "Owned by\xa0", ""
-        )
 
         is_suspicious = res.text.find("Reported for suspicious") > 0
         nft_data = {
-            "collection": args.contract,
-            "collection_name": collection_name,
-            "blockchain": "ethereum",
+            "token_id": nft_url.split("/")[-1],
             "url": nft_url,
-            "owner": owner,
             "is_suspicious": is_suspicious,
         }
 
@@ -181,16 +172,13 @@ def load_scrape_cache(contract_address: str) -> pd.DataFrame:
         logging.debug("Creating CSV with header for new collection to scrape")
         df = pd.DataFrame(
             columns=[
-                "collection",
-                "collection_name",
-                "blockchain",
+                "token_id",
                 "url",
-                "owner",
                 "is_suspicious",
             ]
         )
         df.to_csv(cache_file, index=False)
-        return pd.DataFrame()
+        return df
 
 
 def _cli_parser() -> argparse.ArgumentParser:
