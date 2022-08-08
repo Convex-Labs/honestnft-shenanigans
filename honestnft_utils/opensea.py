@@ -1,5 +1,4 @@
 import time
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import requests
@@ -95,3 +94,21 @@ def get_opensea_events(
             only_opensea=only_opensea,
             token_id=token_id,
         )
+
+
+def is_collection_delisted(contract_address: str) -> bool:
+    """Check if a collection is delisted on OpenSea.
+
+    :param contract_address: The NFT contract address
+    :return: A boolean indicating if the collection is delisted or not.
+    """
+    url = f"https://api.opensea.io/api/v1/asset_contract/{contract_address}"
+    headers = {"Accept": "application/json", "X-API-KEY": config.OPENSEA_API_KEY}
+
+    response = requests.request("GET", url, headers=headers)  # type: ignore
+    if response.status_code == 200:
+        decode_response = response.json()
+        listing_status: bool = decode_response["collection"]["hidden"]
+        return listing_status
+    else:
+        raise Exception(f"Error: {response.text}")
