@@ -194,18 +194,21 @@ def _cli_parser() -> argparse.ArgumentParser:
         "--contract",
         help="Collection contract address",
         required=True,
+        type=str,
     )
     parser.add_argument(
         "-r",
         "--retries",
         help="Number of retry attempts",
         required=False,
+        type=int,
         default=3,
     )
     parser.add_argument(
         "--backoff",
         help="Retries backoff parameter for failed requests",
         required=False,
+        type=int,
         default=3,
     )
     parser.add_argument(
@@ -213,6 +216,7 @@ def _cli_parser() -> argparse.ArgumentParser:
         "--batch-size",
         help="Batch size of NFT URLs to be processed",
         required=False,
+        type=int,
         default=50,
     )
 
