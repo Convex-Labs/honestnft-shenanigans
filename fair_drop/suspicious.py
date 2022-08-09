@@ -98,7 +98,12 @@ def list_collection_nfts_urls(
 
 
 def main(
-    contract_address: str, total_retries: int, backoff_factor: int, batch_size: int
+    contract_address: str,
+    total_retries: int,
+    backoff_factor: int,
+    batch_size: int,
+    lower_id: int,
+    upper_id: int,
 ) -> None:
     """Main function to scrape all NFTs in a collection and check if they are suspicious
 
@@ -114,8 +119,8 @@ def main(
         raise_on_status=False,
         user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101 Firefox/93.0",
     )
-
-    lower_id, upper_id = get_upper_lower(contract_address)
+    if lower_id is None and upper_id is None:
+        lower_id, upper_id = get_upper_lower(contract_address)
 
     collection_nfts_urls = list_collection_nfts_urls(
         contract_address=contract_address, lower_id=lower_id, upper_id=upper_id
@@ -220,6 +225,19 @@ def _cli_parser() -> argparse.ArgumentParser:
         default=50,
     )
 
+    parser.add_argument(
+        "--lower_id",
+        help="Lower bound token ID of the collection",
+        required=False,
+        type=int,
+    )
+
+    parser.add_argument(
+        "--upper_id",
+        help="Upper bound token ID of the collection",
+        required=False,
+        type=int,
+    )
     return parser
 
 
@@ -232,4 +250,6 @@ if __name__ == "__main__":
         total_retries=args.retries,
         backoff_factor=args.backoff,
         batch_size=args.batch_size,
+        lower_id=args.lower_id,
+        upper_id=args.upper_id,
     )
