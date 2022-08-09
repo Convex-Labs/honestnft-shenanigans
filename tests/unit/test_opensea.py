@@ -3,7 +3,6 @@ import unittest
 from honestnft_utils import opensea
 
 DELISTED_COLLECTIONS = [
-    "0xd2d6b889468e261aa7e1586ffceca338f1d7d104",
     "0x2ee6af0dff3a1ce3f7e3414c52c48fd50d73691e",
 ]
 LISTED_COLLECTIONS = [
