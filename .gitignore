@@ -73,6 +73,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+_build
 
 # PyBuilder
 target/
@@ -137,8 +138,7 @@ dmypy.json
 # OSX
 .DS_Store
 
-# sphinx build folder
-_build
-
 # development drafts folder
 .drafts
+
+!data/suspicious_nfts/.cache
