@@ -1,6 +1,7 @@
 import argparse
 import logging
 import multiprocessing
+import sys
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -8,14 +9,11 @@ import requests
 
 from honestnft_utils import chain, config, misc
 
-logging.basicConfig(level=logging.INFO)
-
 
 def get_upper_lower(contract_address: str) -> Tuple[int, int]:
     """Get the upper and lower bound of the NFTs in a collection (on-chain).
 
     :param contract_address: Contract address of the collection
-    :raises error: If on-chain fetching fails
     :return: A tuple with the lower and upper bound token id
     """
     try:
@@ -31,16 +29,16 @@ def get_upper_lower(contract_address: str) -> Tuple[int, int]:
         )
         max_supply = total_supply_func().call()
         upper_id = max_supply + lower_id - 1
-        logging.info(f"Lower ID of NFT collection: {lower_id}")
-        logging.info(f"Upper ID of NFT collection: {upper_id}")
-        logging.info(f"Max supply: {max_supply}")
+        logging.debug(f"Lower ID of NFT collection: {lower_id}")
+        logging.debug(f"Upper ID of NFT collection: {upper_id}")
+        logging.debug(f"Max supply: {max_supply}")
 
         return lower_id, upper_id
 
     except Exception as error:
         logging.error("Error while trying to get the lower/upper IDs")
         logging.error(error)
-        raise error
+        sys.exit(1)
 
 
 def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]:
@@ -55,8 +53,10 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
     try:
         res = session.get(nft_url)
     except requests.exceptions.ChunkedEncodingError as error:
-        logging.error(f"Error while trying to scrape {nft_url}")
-        logging.error(error)
+        logging.error(
+            f"Error while trying to scrape {nft_url}\nWill retry the request..."
+        )
+        logging.debug(error)
         return is_nft_suspicious(nft_url, session)
 
     if res.status_code == 200:
@@ -73,7 +73,7 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
 
         return nft_data
     elif res.status_code == 404:
-        logging.info("NFT not found. Probably reached the end of a collection")
+        logging.error(f"NFT not found at {nft_url}. Skipping...")
         return None
     else:
         logging.error(f"Error while trying to scrape NFT with link {nft_url}")
@@ -150,7 +150,7 @@ def main(
             results = p.starmap(is_nft_suspicious, batch)
             results = list(filter(None, results))
             if results == []:
-                print(f"Reached a batch of NFTs not found. Exiting...")
+                logging.info(f"Reached a batch of NFTs not found. Exiting...")
                 return
 
             df = pd.DataFrame(results)
@@ -173,8 +173,7 @@ def load_scrape_cache(contract_address: str) -> pd.DataFrame:
         df = pd.read_csv(cache_file)
         return df
     except FileNotFoundError:
-        logging.info("New collection to scrape. No cache detected.")
-        logging.debug("Creating CSV with header for new collection to scrape")
+        logging.debug("No cache file found. Creating a new one...")
         df = pd.DataFrame(
             columns=[
                 "token_id",
@@ -238,12 +237,24 @@ def _cli_parser() -> argparse.ArgumentParser:
         required=False,
         type=int,
     )
+
+    parser.add_argument(
+        "--log",
+        help="Set the desired log level",
+        required=False,
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+    )
+
     return parser
 
 
 if __name__ == "__main__":
 
     args = _cli_parser().parse_args()
+
+    logging.basicConfig(level=args.log)
 
     main(
         contract_address=args.contract,
