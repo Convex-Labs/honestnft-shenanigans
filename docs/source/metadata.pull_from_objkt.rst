@@ -10,10 +10,12 @@ Here is how to download Tezzardz metadata from the terminal:
    $ python3 metadata/pull_from_objkt.py -contract KT1LHHLso8zQWQWg1HUukajdxxbkGfNoHjh6
 
 
+Command Line
+------------
 .. autoprogram:: metadata.pull_from_objkt:_cli_parser()
    :prog: pull_from_objkt.py
    :no_description:
-   :custom_title: Command Line
+   :no_title:
 
 ------------
 

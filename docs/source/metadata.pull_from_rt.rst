@@ -11,10 +11,12 @@ Whereas most of our modules rely on the contract address, this one relies on the
    $ python3 metadata/pull_from_rt.py --collection cryptopunks
 
 
+Command Line
+------------
 .. autoprogram:: metadata.pull_from_rt:_cli_parser()
    :prog: pull_from_rt.py
    :no_description:
-   :custom_title: Command Line
+   :no_title:
 
 ------------
 
