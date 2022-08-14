@@ -1,10 +1,12 @@
 metadata.pulling
 ================
 
+Command Line
+------------
 .. autoprogram:: metadata.pulling:_cli_parser()
    :prog: pulling.py
    :no_description:
-   :custom_title: Command Line
+   :no_title:
 
 ------------
 

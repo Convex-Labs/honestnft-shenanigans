@@ -10,11 +10,12 @@ You will need an API key from :ref:`guides/api-keys:the index` to use this modul
    $ python3 metadata/pull_from_solana.py --contract DSwfRF1jhhu6HpSuzaig1G19kzP73PfLZBPLofkw6fLD --collection solana_degenerate_ape_academy
 
 
-
+Command Line
+------------
 .. autoprogram:: metadata.pull_from_solana:_cli_parser()
    :prog: pull_from_solana.py
    :no_description:
-   :custom_title: Command Line
+   :no_title:
 
 ------------
 

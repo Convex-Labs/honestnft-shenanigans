@@ -8,10 +8,13 @@ Scraped data is stored in `data/suspicious_nfts/`.
    * We currently only support collections with incrementing IDs
    * Only Ethereum NFTs can be scraped
 
+
+Command Line
+------------
 .. autoprogram:: fair_drop.suspicious:_cli_parser()
    :prog: suspicious.py
    :no_description:
-   :custom_title: Command Line
+   :no_title: 
 
 ------------
 
