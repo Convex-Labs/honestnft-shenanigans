@@ -31,6 +31,49 @@ class TestCase(unittest.TestCase):
             self.temp_path,
         )
 
+    def test_strtobool(self) -> None:
+        with self.subTest("Test truthy values"):
+            for value in [
+                "y",
+                "Y",
+                "yes",
+                "YES",
+                "yEs",
+                "t",
+                "T",
+                "true",
+                "TRUE",
+                "TrUe",
+                "on",
+                "ON",
+                "oN",
+                "1",
+            ]:
+                self.assertTrue(misc.strtobool(value))
+
+        with self.subTest("Test falsy values"):
+            for value in [
+                "n",
+                "N",
+                "no",
+                "NO",
+                "nO",
+                "f",
+                "F",
+                "false",
+                "FALSE",
+                "fAlSe",
+                "off",
+                "OFF",
+                "oFF",
+                "0",
+            ]:
+                self.assertFalse(misc.strtobool(value))
+
+        with self.subTest("Test with incorrect types"):
+            for value in ["", "test", True, 1, False, 0]:
+                self.assertRaises(ValueError, misc.strtobool, value)
+
     def tearDown(self) -> None:
         Path(self.temp_path, "testfile1.txt").unlink(missing_ok=True)
         Path(self.temp_path, "testfile2.txt").unlink(missing_ok=True)
