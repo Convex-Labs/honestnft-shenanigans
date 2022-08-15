@@ -74,6 +74,15 @@ class TestCase(unittest.TestCase):
             blockchain="lorem_ipsum",
         )
 
+        with self.subTest("Test with invalid ABI_ENDPOINT"):
+            with mock.patch("honestnft_utils.config.ABI_ENDPOINT", "localhost"):
+                self.assertRaises(
+                    Exception,
+                    chain.get_contract_abi,
+                    self.doodles_contract_address,
+                    blockchain="ethereum",
+                )
+
     def test_get_contract(self):
 
         self.assertIs(
@@ -122,9 +131,24 @@ class TestCase(unittest.TestCase):
                 token_id=1,
                 uri_func="tokenURI",
                 abi=self.doodles_abi,
+                format_uri=False,
             )
-            self.assertEqual(type(token_uri), str)
-            # Test if the URI is modified according to our ipfs gateway?
+            self.assertEqual(
+                token_uri, "ipfs://QmPMc4tcBsMqLRuCQtPmPe84bpSjrC3Ky7t3JWuHXYB4aS/1"
+            )
+
+        with self.subTest("Test with format_uri=True"):
+            token_uri = chain.get_token_uri_from_contract(
+                contract=self.doodles_contract,
+                token_id=1,
+                uri_func="tokenURI",
+                abi=self.doodles_abi,
+                format_uri=True,
+            )
+            self.assertEqual(
+                token_uri,
+                f"{config.IPFS_GATEWAY}QmPMc4tcBsMqLRuCQtPmPe84bpSjrC3Ky7t3JWuHXYB4aS/1",
+            )
 
         with self.subTest("Test with invalid tokenID"):
             self.assertRaises(
@@ -193,10 +217,36 @@ class TestCase(unittest.TestCase):
 
     @helpers.blockPrinting
     def test_get_lower_token_id(self):
-        lower_token_id = chain.get_lower_token_id(
-            self.doodles_contract, "tokenURI", self.doodles_abi
-        )
-        self.assertEqual(type(lower_token_id), int)
+        with self.subTest("Test with tokenID starting at 0"):
+
+            self.assertEqual(
+                chain.get_lower_token_id(
+                    self.doodles_contract, "tokenURI", self.doodles_abi
+                ),
+                0,
+            )
+        with self.subTest("Test with tokenID starting at 1"):
+            contract_address = "0x7bd29408f11d2bfc23c34f18275bbf23bb716bc7"
+            abi = chain.get_contract_abi(contract_address, blockchain="ethereum")
+            abi, contract = chain.get_contract(
+                contract_address, abi, blockchain="ethereum"
+            )
+            self.assertEqual(
+                chain.get_lower_token_id(contract, "tokenURI", abi),
+                1,
+            )
+
+        with self.subTest("test with tokenID starting at 160"):
+            contract_address = "0x42069abfe407c60cf4ae4112bedead391dba1cdb"
+            abi = chain.get_contract_abi(contract_address, blockchain="ethereum")
+            abi, contract = chain.get_contract(
+                contract_address, abi, blockchain="ethereum"
+            )
+            self.assertRaises(
+                Exception, chain.get_lower_token_id, contract, "tokenURI", abi
+            )
+
+    #   TODO "Test with non sequential integers"
 
     def test_get_base_uri(self):
         with self.subTest("Test without baseURI in ABI"):
@@ -222,7 +272,21 @@ class TestCase(unittest.TestCase):
             chain.get_token_standard(self.doodles_contract),
             "ERC-721",
         )
-        self.assertEqual(type(token_standard), str)
+
+    def test_format_metadata_uri(self):
+        self.assertEqual(
+            chain.format_metadata_uri(
+                "ipfs://QmTUNnsrqLAGouRPqDFjqR2W6iAziAqNVTc2BdW5EaBrRX/1",
+            ),
+            f"{config.IPFS_GATEWAY}QmTUNnsrqLAGouRPqDFjqR2W6iAziAqNVTc2BdW5EaBrRX/1",
+        )
+
+        self.assertEqual(
+            chain.format_metadata_uri(
+                "https://ipfs.io/ipfs/QmTUNnsrqLAGouRPqDFjqR2W6iAziAqNVTc2BdW5EaBrRX/1",
+            ),
+            f"{config.IPFS_GATEWAY}QmTUNnsrqLAGouRPqDFjqR2W6iAziAqNVTc2BdW5EaBrRX/1",
+        )
 
 
 if __name__ == "__main__":  # pragma: no cover
