@@ -3,9 +3,8 @@ from unittest import mock
 
 import web3
 
-from tests import constants
-from tests import helpers
-from honestnft_utils import chain
+from honestnft_utils import chain, config
+from tests import constants, helpers
 
 
 class TestCase(unittest.TestCase):
@@ -29,9 +28,6 @@ class TestCase(unittest.TestCase):
 
     def test_get_function_signature(self):
 
-        self.assertIs(
-            type(chain.get_function_signature("tokenURI", self.doodles_abi)), str
-        )
         self.assertEqual(
             chain.get_function_signature("tokenURI", self.doodles_abi),
             "tokenURI(uint256)(string)",
@@ -64,15 +60,11 @@ class TestCase(unittest.TestCase):
         )
 
     def test_get_contract_abi(self):
-        contract_abi = chain.get_contract_abi(
-            self.doodles_contract_address, blockchain="ethereum"
-        )
-
-        self.assertEqual(type(contract_abi), list)
-
         self.assertEqual(
-            contract_abi,
-            self.doodles_abi,
+            chain.get_contract_abi(
+                self.doodles_contract_address, blockchain="ethereum"
+            ),
+            constants.DOODLES_ABI,
         )
 
         self.assertRaises(
@@ -156,7 +148,7 @@ class TestCase(unittest.TestCase):
                 abi=self.doodles_abi,
                 blockchain="ethereum",
             )
-            self.assertEqual(type(token_uris), dict)
+            self.assertEqual(token_uris, constants.DOODLES_TOKEN_URIS_BATCH)
             self.assertEqual(len(token_ids), len(token_uris))
             self.assertEqual(type(token_uris[0]), str)
 
@@ -221,15 +213,13 @@ class TestCase(unittest.TestCase):
             base_uri = chain.get_base_uri(
                 contract=self.tubbycats_contract, abi=self.tubbycats_abi
             )
-            self.assertEqual(type(base_uri), str)
             self.assertEqual(
                 base_uri, "ipfs://QmeN7ZdrTGpbGoo8URqzvyiDtcgJxwoxULbQowaTGhTeZc/"
             )
 
     def test_get_token_standard(self):
-        token_standard = chain.get_token_standard(self.doodles_contract)
         self.assertEqual(
-            token_standard,
+            chain.get_token_standard(self.doodles_contract),
             "ERC-721",
         )
         self.assertEqual(type(token_standard), str)
