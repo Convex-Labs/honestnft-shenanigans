@@ -16,12 +16,15 @@ def strtobool(val: str) -> bool:
     :raises ValueError: if val can't be converted to a truthish value
     :return: True or False
     """
-    val = val.lower()
-    if val in ("y", "yes", "t", "true", "on", "1"):
-        return True
-    elif val in ("n", "no", "f", "false", "off", "0"):
-        return False
-    else:
+    try:
+        val = val.lower()
+        if val in ("y", "yes", "t", "true", "on", "1"):
+            return True
+        elif val in ("n", "no", "f", "false", "off", "0"):
+            return False
+        else:
+            raise ValueError("invalid truth value %r" % (val,))
+    except Exception:
         raise ValueError("invalid truth value %r" % (val,))
 
 
