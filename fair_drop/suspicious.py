@@ -58,7 +58,7 @@ def get_collection_name(contract_address: str) -> str:
         name_func = chain.get_contract_function(
             contract=contract, func_name="name", abi=abi
         )
-        name = name_func().call()
+        name: str = name_func().call()
 
         return name
 
@@ -131,6 +131,7 @@ def main(
     batch_size: int,
     lower_id: int,
     upper_id: int,
+    total_supply: int,
     keep_cache: bool,
 ) -> None:
     """Main function to scrape all NFTs in a collection and check if they are suspicious
@@ -147,7 +148,7 @@ def main(
         raise_on_status=False,
         user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101 Firefox/93.0",
     )
-    if lower_id is None and upper_id is None:
+    if lower_id is None and upper_id is None and total_supply is None:
         upper_lower_total = get_upper_lower_total(contract_address)
         lower_id = upper_lower_total["lower_id"]
         upper_id = upper_lower_total["upper_id"]
@@ -295,6 +296,13 @@ def _cli_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        "--total_supply",
+        help="Total supply of the collection",
+        required=False,
+        type=int,
+    )
+
+    parser.add_argument(
         "--log",
         help="Set the desired log level",
         required=False,
@@ -329,5 +337,6 @@ if __name__ == "__main__":
         batch_size=args.batch_size,
         lower_id=args.lower_id,
         upper_id=args.upper_id,
+        total_supply=args.total_supply,
         keep_cache=args.keep_cache,
     )
