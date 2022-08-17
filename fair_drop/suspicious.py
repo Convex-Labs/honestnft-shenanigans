@@ -1,23 +1,24 @@
 import argparse
+import json
 import logging
 import multiprocessing
+import os
+import sys
+import time
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 import requests
-from bs4 import BeautifulSoup
 
 from honestnft_utils import chain, config, misc
 
-logging.basicConfig(level=logging.INFO)
 
-
-def get_upper_lower(contract_address: str) -> Tuple[int, int]:
-    """Get the upper and lower bound of the NFTs in a collection (on-chain).
+def get_upper_lower_total(contract_address: str) -> Dict[str, int]:
+    """Get the upper and lower bound, and the total supply of the NFTs
+    in a collection (on-chain).
 
     :param contract_address: Contract address of the collection
-    :raises error: If on-chain fetching fails
-    :return: A tuple with the lower and upper bound token id
+    :return: A dictionary with the lower and upper bound token id and the total supply
     """
     try:
         abi = chain.get_contract_abi(address=contract_address)
@@ -32,16 +33,39 @@ def get_upper_lower(contract_address: str) -> Tuple[int, int]:
         )
         max_supply = total_supply_func().call()
         upper_id = max_supply + lower_id - 1
-        logging.info(f"Lower ID of NFT collection: {lower_id}")
-        logging.info(f"Upper ID of NFT collection: {upper_id}")
-        logging.info(f"Max supply: {max_supply}")
+        logging.debug(f"Lower ID of NFT collection: {lower_id}")
+        logging.debug(f"Upper ID of NFT collection: {upper_id}")
+        logging.debug(f"Max supply: {max_supply}")
 
-        return lower_id, upper_id
+        return {"lower_id": lower_id, "upper_id": upper_id, "total_supply": max_supply}
 
     except Exception as error:
-        logging.error("Error while trying to get the lower/upper IDs")
+        logging.error("Error while trying to get the lower/upper IDs and total supply.")
         logging.error(error)
-        raise error
+        sys.exit(1)
+
+
+def get_collection_name(contract_address: str) -> str:
+    """Get the name of the collection from the contract.
+
+    :param contract_address: Contract address of the collection
+    :return: Name of the collection
+    """
+    try:
+        abi = chain.get_contract_abi(address=contract_address)
+        abi, contract = chain.get_contract(address=contract_address, abi=abi)
+
+        name_func = chain.get_contract_function(
+            contract=contract, func_name="name", abi=abi
+        )
+        name: str = name_func().call()
+
+        return name
+
+    except Exception as error:
+        logging.error("Error while trying to get collection name from contract")
+        logging.error(error)
+        sys.exit(1)
 
 
 def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]:
@@ -56,24 +80,18 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
     try:
         res = session.get(nft_url)
     except requests.exceptions.ChunkedEncodingError as error:
-        logging.error(f"Error while trying to scrape {nft_url}")
-        logging.error(error)
+        logging.error(
+            f"Error while trying to scrape {nft_url}\nWill retry the request..."
+        )
+        logging.debug(error)
         return is_nft_suspicious(nft_url, session)
 
     if res.status_code == 200:
-        soup = BeautifulSoup(res.text, "html.parser")
-        collection_name = soup.find(class_="item--collection-detail").text
-        owner = soup.find(class_="AccountLink--ellipsis-overflow").text.replace(
-            "Owned by\xa0", ""
-        )
 
         is_suspicious = res.text.find("Reported for suspicious") > 0
         nft_data = {
-            "collection": args.contract,
-            "collection_name": collection_name,
-            "blockchain": "ethereum",
+            "token_id": nft_url.split("/")[-1],
             "url": nft_url,
-            "owner": owner,
             "is_suspicious": is_suspicious,
         }
 
@@ -82,7 +100,7 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
 
         return nft_data
     elif res.status_code == 404:
-        logging.info("NFT not found. Probably reached the end of a collection")
+        logging.error(f"NFT not found at {nft_url}. Skipping...")
         return None
     else:
         logging.error(f"Error while trying to scrape NFT with link {nft_url}")
@@ -107,7 +125,14 @@ def list_collection_nfts_urls(
 
 
 def main(
-    contract_address: str, total_retries: int, backoff_factor: int, batch_size: int
+    contract_address: str,
+    total_retries: int,
+    backoff_factor: int,
+    batch_size: int,
+    lower_id: int,
+    upper_id: int,
+    total_supply: int,
+    keep_cache: bool,
 ) -> None:
     """Main function to scrape all NFTs in a collection and check if they are suspicious
 
@@ -123,8 +148,11 @@ def main(
         raise_on_status=False,
         user_agent="Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101 Firefox/93.0",
     )
-
-    lower_id, upper_id = get_upper_lower(contract_address)
+    if lower_id is None and upper_id is None and total_supply is None:
+        upper_lower_total = get_upper_lower_total(contract_address)
+        lower_id = upper_lower_total["lower_id"]
+        upper_id = upper_lower_total["upper_id"]
+        total_supply = upper_lower_total["total_supply"]
 
     collection_nfts_urls = list_collection_nfts_urls(
         contract_address=contract_address, lower_id=lower_id, upper_id=upper_id
@@ -154,16 +182,41 @@ def main(
             results = p.starmap(is_nft_suspicious, batch)
             results = list(filter(None, results))
             if results == []:
-                print(f"Reached a batch of NFTs not found. Exiting...")
+                logging.info(f"Reached a batch of NFTs not found. Exiting...")
                 return
 
             df = pd.DataFrame(results)
             df.to_csv(
-                f"{config.SUSPICIOUS_NFTS_FOLDER}/{contract_address}.csv",
+                f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv",
                 mode="a",
                 header=False,
                 index=False,
             )
+
+    df = pd.read_csv(f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv")
+    total_scraped_urls = df.shape[0]
+    if total_scraped_urls != total_supply:
+        logging.warning(
+            f"Total scraped NFTs ({total_scraped_urls}) does not match total supply ({total_supply})"
+        )
+        logging.info("Cache will not be removed. Please retry...")
+        keep_cache = True
+    else:
+        logging.info(f"Finished scraping {df.shape[0]} NFT URLs")
+
+    collection_name = get_collection_name(contract_address)
+    with open(f"{config.SUSPICIOUS_NFTS_FOLDER}/{collection_name}.json", "w") as f:
+        json.dump(
+            {
+                "contract": contract_address,
+                "name": collection_name,
+                "scraped_on": int(time.time()),
+                "data": json.loads(df.to_json(orient="records")),
+            },
+            f,
+        )
+    if not keep_cache:
+        os.remove(f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv")
 
 
 def load_scrape_cache(contract_address: str) -> pd.DataFrame:
@@ -172,25 +225,21 @@ def load_scrape_cache(contract_address: str) -> pd.DataFrame:
     :param contract_address: Contract address of the collection
     :return: Either a DataFrame with the scraped NFTs or an empty DataFrame if no cache is found
     """
-    cache_file = f"{config.SUSPICIOUS_NFTS_FOLDER}/{contract_address}.csv"
+    cache_file = f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv"
     try:
         df = pd.read_csv(cache_file)
         return df
     except FileNotFoundError:
-        logging.info("New collection to scrape. No cache detected.")
-        logging.debug("Creating CSV with header for new collection to scrape")
+        logging.debug("No cache file found. Creating a new one...")
         df = pd.DataFrame(
             columns=[
-                "collection",
-                "collection_name",
-                "blockchain",
+                "token_id",
                 "url",
-                "owner",
                 "is_suspicious",
             ]
         )
         df.to_csv(cache_file, index=False)
-        return pd.DataFrame()
+        return df
 
 
 def _cli_parser() -> argparse.ArgumentParser:
@@ -206,18 +255,21 @@ def _cli_parser() -> argparse.ArgumentParser:
         "--contract",
         help="Collection contract address",
         required=True,
+        type=str,
     )
     parser.add_argument(
         "-r",
         "--retries",
         help="Number of retry attempts",
         required=False,
+        type=int,
         default=3,
     )
     parser.add_argument(
         "--backoff",
         help="Retries backoff parameter for failed requests",
         required=False,
+        type=int,
         default=3,
     )
     parser.add_argument(
@@ -225,7 +277,48 @@ def _cli_parser() -> argparse.ArgumentParser:
         "--batch-size",
         help="Batch size of NFT URLs to be processed",
         required=False,
+        type=int,
         default=50,
+    )
+
+    parser.add_argument(
+        "--lower_id",
+        help="Lower bound token ID of the collection",
+        required=False,
+        type=int,
+    )
+
+    parser.add_argument(
+        "--upper_id",
+        help="Upper bound token ID of the collection",
+        required=False,
+        type=int,
+    )
+
+    parser.add_argument(
+        "--total_supply",
+        help="Total supply of the collection",
+        required=False,
+        type=int,
+    )
+
+    parser.add_argument(
+        "--log",
+        help="Set the desired log level",
+        required=False,
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+    )
+
+    parser.add_argument(
+        "--keep-cache",
+        help="Keep the cache file after scraping",
+        type=misc.strtobool,
+        const=True,
+        nargs="?",
+        default=False,
+        choices=[True, False],
     )
 
     return parser
@@ -235,9 +328,15 @@ if __name__ == "__main__":
 
     args = _cli_parser().parse_args()
 
+    logging.basicConfig(level=args.log)
+
     main(
         contract_address=args.contract,
         total_retries=args.retries,
         backoff_factor=args.backoff,
         batch_size=args.batch_size,
+        lower_id=args.lower_id,
+        upper_id=args.upper_id,
+        total_supply=args.total_supply,
+        keep_cache=args.keep_cache,
     )
