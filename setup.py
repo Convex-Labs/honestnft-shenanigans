@@ -1,24 +1,40 @@
 from setuptools import setup, find_packages
 
+extras_require = {
+    "dev": [
+        "pre-commit",
+        "black[jupyter]",
+    ],
+    "test": [
+        "tox",
+        "coverage[toml]",
+        "mypy",
+        "nbqa",
+    ],
+    "doc": [
+        "Sphinx==5.0.2",
+        "sphinx-rtd-theme==1.0.0",
+        "sphinx-autodoc-typehints==1.18.3",
+        "pandoc",
+        "nbsphinx==0.8.9",
+        "sphinxcontrib-youtube==1.2.0",
+        "sphinxcontrib-autoprogram @ git+https://github.com/Barabazs/autoprogram#egg=sphinxcontrib-autoprogram",
+    ],
+}
+
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name="honestnft-shenanigans",
-    version="0.0.1",
+    version="0.1.0",
     description="HonestNFT Shenanigan Scanning Tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Convex-Labs/honestnft-shenanigans",
     author="Convex Labs",
     author_email="hello@convexlabs.xyz",
-    classifiers=[
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-    ],
+    url="https://github.com/Convex-Labs/honestnft-shenanigans",
     packages=find_packages(exclude=["tests", "tests.*"]),
     include_package_data=True,
     install_requires=[
@@ -36,5 +52,19 @@ setup(
         "plotly==5.6.0",
         "py-is_ipfs==0.5.1",
         "beautifulsoup4==4.11.1",
+    ],
+    python_requires=">=3.8.0",
+    extras_require=extras_require,
+    license="MIT",
+    keywords="honestnft blockchain ethereum web3 nft analysis",
+    classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Operating System :: POSIX",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
 )
