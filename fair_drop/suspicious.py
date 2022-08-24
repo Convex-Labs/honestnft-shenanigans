@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 import requests
-
+from bs4 import BeautifulSoup
 from honestnft_utils import chain, config, misc
 
 
@@ -88,7 +88,10 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
 
     if res.status_code == 200:
 
-        is_suspicious = res.text.find("Reported for suspicious") > 0
+        soup = BeautifulSoup(res.text, "html.parser")
+        soup.script.decompose()
+        is_suspicious = soup.text.find("Reported for suspicious") > 0
+
         nft_data = {
             "token_id": nft_url.split("/")[-1],
             "url": nft_url,
