@@ -202,24 +202,25 @@ def main(
         logging.warning(
             f"Total scraped NFTs ({total_scraped_urls}) does not match total supply ({total_supply})"
         )
-        logging.info("Cache will not be removed. Please retry...")
+        logging.warning("Cache will not be removed. Please retry...")
         keep_cache = True
+        raise Exception("Total scraped NFTs does not match total supply")
     else:
         logging.info(f"Finished scraping {df.shape[0]} NFT URLs")
 
-    collection_name = get_collection_name(contract_address)
-    with open(f"{config.SUSPICIOUS_NFTS_FOLDER}/{collection_name}.json", "w") as f:
-        json.dump(
-            {
-                "contract": contract_address,
-                "name": collection_name,
-                "scraped_on": int(time.time()),
-                "data": json.loads(df.to_json(orient="records")),
-            },
-            f,
-        )
-    if not keep_cache:
-        os.remove(f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv")
+        collection_name = get_collection_name(contract_address)
+        with open(f"{config.SUSPICIOUS_NFTS_FOLDER}/{collection_name}.json", "w") as f:
+            json.dump(
+                {
+                    "contract": contract_address,
+                    "name": collection_name,
+                    "scraped_on": int(time.time()),
+                    "data": json.loads(df.to_json(orient="records")),
+                },
+                f,
+            )
+        if not keep_cache:
+            os.remove(f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv")
 
 
 def load_scrape_cache(contract_address: str) -> pd.DataFrame:
