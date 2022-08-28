@@ -207,7 +207,15 @@ def main(
     else:
         logging.info(f"Finished scraping {df.shape[0]} NFT URLs")
 
-        collection_name = get_collection_name(contract_address)
+        try:
+            collection_name = get_collection_name(contract_address)
+        except Exception as e:
+            logging.info(
+                "Failed to query collection name. File will be saved with contract_address as filename."
+            )
+            logging.error(e)
+            collection_name = contract_address
+
         with open(f"{config.SUSPICIOUS_NFTS_FOLDER}/{collection_name}.json", "w") as f:
             json.dump(
                 {
