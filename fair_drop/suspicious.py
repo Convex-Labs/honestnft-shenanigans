@@ -184,7 +184,7 @@ def main(
             results = p.starmap(is_nft_suspicious, batch)
             results = list(filter(None, results))
             if results == []:
-                logging.info(f"Reached a batch of NFTs not found. Exiting...")
+                logging.info("Reached a batch of NFTs not found. Exiting...")
                 return
 
             df = pd.DataFrame(results)
