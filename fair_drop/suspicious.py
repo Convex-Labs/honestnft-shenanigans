@@ -3,9 +3,8 @@ import json
 import logging
 import multiprocessing
 import os
-import sys
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import pandas as pd
 import requests
@@ -42,7 +41,7 @@ def get_upper_lower_total(contract_address: str) -> Dict[str, int]:
     except Exception as error:
         logging.error("Error while trying to get the lower/upper IDs and total supply.")
         logging.error(error)
-        sys.exit(1)
+        raise Exception(error)
 
 
 def get_collection_name(contract_address: str) -> str:
@@ -65,7 +64,7 @@ def get_collection_name(contract_address: str) -> str:
     except Exception as error:
         logging.error("Error while trying to get collection name from contract")
         logging.error(error)
-        sys.exit(1)
+        raise Exception(error)
 
 
 def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]:
