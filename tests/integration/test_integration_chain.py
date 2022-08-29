@@ -29,7 +29,11 @@ class TestCase(unittest.TestCase):
                     ctr_blockchain = value["chain_name"]
                     ctr_token_ids = contract_value["token_ids"]
 
-                    with self.subTest("Test get_contract_abi"):
+                    with self.subTest(
+                        msg="Test get_contract_abi",
+                        blockchain=ctr_blockchain,
+                        address=ctr_address,
+                    ):
                         result_abi = chain.get_contract_abi(
                             address=ctr_address, blockchain=ctr_blockchain
                         )
@@ -37,7 +41,11 @@ class TestCase(unittest.TestCase):
                             self.assertEqual(result_abi, ctr_abi)
                         time.sleep(5)
 
-                    with self.subTest("Test get_contract"):
+                    with self.subTest(
+                        msg="Test get_contract",
+                        blockchain=ctr_blockchain,
+                        address=ctr_address,
+                    ):
 
                         get_contract_result = chain.get_contract(
                             address=ctr_address,
@@ -60,7 +68,11 @@ class TestCase(unittest.TestCase):
                         ctr_impl_abi = contract_value["implementation_abi"]
                         self.assertEqual(result_abi, ctr_impl_abi)
 
-                with self.subTest("Test get_token_standard"):
+                with self.subTest(
+                    msg="Test get_token_standard",
+                    blockchain=ctr_blockchain,
+                    address=ctr_address,
+                ):
                     if len(result_abi) > 0:
                         self.assertEqual(
                             chain.get_token_standard(result_contract),
@@ -71,7 +83,11 @@ class TestCase(unittest.TestCase):
                             ValueError, chain.get_token_standard, result_contract
                         )
 
-                with self.subTest("Test get_token_uri_from_contract_batch"):
+                with self.subTest(
+                    msg="Test get_token_uri_from_contract_batch",
+                    blockchain=ctr_blockchain,
+                    address=ctr_address,
+                ):
                     uri_func = chain.get_function_signature("tokenURI", result_abi)
 
                     if ctr_blockchain in [
