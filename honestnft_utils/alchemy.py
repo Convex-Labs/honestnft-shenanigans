@@ -43,6 +43,8 @@ def get_all_token_ids(
             )
         else:
             return all_data
+    elif response.status_code == 401:
+        raise Exception("Invalid or missing Alchemy API key")
     else:
         print(response.text)
         raise Exception(f"Failed to get token IDs for contract {contract_address}")
