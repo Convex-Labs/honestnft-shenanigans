@@ -2,8 +2,8 @@ import json
 import time
 import unittest
 
-from tests import helpers
 from honestnft_utils import chain
+from tests import helpers
 
 
 class TestCase(unittest.TestCase):
