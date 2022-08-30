@@ -1,11 +1,12 @@
 --- config.py
 +++ config.py
-@@ -3,7 +3,18 @@
+@@ -3,7 +3,19 @@
  from dotenv import dotenv_values
  
  ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 -config = dotenv_values(f"{ROOT_DIR}/.env")
 +config = {
++    "alchemy_api_key": os.environ["ALCHEMY_API_KEY"],
 +    "arbitrum_web3_provider": os.environ["ARBITRUM_ENDPOINT"],
 +    "avalanche_web3_provider": os.environ["AVALANCHE_ENDPOINT"],
 +    "binance_web3_provider": os.environ["BINANCE_ENDPOINT"],
