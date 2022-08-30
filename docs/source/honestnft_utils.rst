@@ -14,6 +14,7 @@ Each module serves a specific purpose, e.g. honestnft_utils.chain can be used to
 .. toctree::
    :maxdepth: 1
 
+   honestnft_utils.alchemy
    honestnft_utils.chain
    honestnft_utils.config
    honestnft_utils.constants
