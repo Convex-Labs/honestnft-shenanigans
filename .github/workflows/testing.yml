@@ -35,6 +35,7 @@ jobs:
         run: cd honestnft_utils && patch < ../tests/gh-actions.patch
       - name: Test with coverage
         env:
+          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           ARBITRUM_ENDPOINT: ${{ secrets.ARBITRUM_ENDPOINT }}
           AVALANCHE_ENDPOINT: ${{ secrets.AVALANCHE_ENDPOINT }}
           BINANCE_ENDPOINT: ${{ secrets.BINANCE_ENDPOINT }}
