@@ -3,9 +3,8 @@ import json
 import logging
 import multiprocessing
 import os
-import sys
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import pandas as pd
 import requests
@@ -42,7 +41,7 @@ def get_upper_lower_total(contract_address: str) -> Dict[str, int]:
     except Exception as error:
         logging.error("Error while trying to get the lower/upper IDs and total supply.")
         logging.error(error)
-        sys.exit(1)
+        raise Exception(error)
 
 
 def get_collection_name(contract_address: str) -> str:
@@ -65,7 +64,7 @@ def get_collection_name(contract_address: str) -> str:
     except Exception as error:
         logging.error("Error while trying to get collection name from contract")
         logging.error(error)
-        sys.exit(1)
+        raise Exception(error)
 
 
 def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]:
@@ -185,7 +184,7 @@ def main(
             results = p.starmap(is_nft_suspicious, batch)
             results = list(filter(None, results))
             if results == []:
-                logging.info(f"Reached a batch of NFTs not found. Exiting...")
+                logging.info("Reached a batch of NFTs not found. Exiting...")
                 return
 
             df = pd.DataFrame(results)
@@ -202,24 +201,33 @@ def main(
         logging.warning(
             f"Total scraped NFTs ({total_scraped_urls}) does not match total supply ({total_supply})"
         )
-        logging.info("Cache will not be removed. Please retry...")
+        logging.warning("Cache will not be removed. Please retry...")
         keep_cache = True
+        raise Exception("Total scraped NFTs does not match total supply")
     else:
         logging.info(f"Finished scraping {df.shape[0]} NFT URLs")
 
-    collection_name = get_collection_name(contract_address)
-    with open(f"{config.SUSPICIOUS_NFTS_FOLDER}/{collection_name}.json", "w") as f:
-        json.dump(
-            {
-                "contract": contract_address,
-                "name": collection_name,
-                "scraped_on": int(time.time()),
-                "data": json.loads(df.to_json(orient="records")),
-            },
-            f,
-        )
-    if not keep_cache:
-        os.remove(f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv")
+        try:
+            collection_name = get_collection_name(contract_address)
+        except Exception as e:
+            logging.info(
+                "Failed to query collection name. File will be saved with contract_address as filename."
+            )
+            logging.error(e)
+            collection_name = contract_address
+
+        with open(f"{config.SUSPICIOUS_NFTS_FOLDER}/{collection_name}.json", "w") as f:
+            json.dump(
+                {
+                    "contract": contract_address,
+                    "name": collection_name,
+                    "scraped_on": int(time.time()),
+                    "data": json.loads(df.to_json(orient="records")),
+                },
+                f,
+            )
+        if not keep_cache:
+            os.remove(f"{config.SUSPICIOUS_NFTS_FOLDER}/.cache/{contract_address}.csv")
 
 
 def load_scrape_cache(contract_address: str) -> pd.DataFrame:
