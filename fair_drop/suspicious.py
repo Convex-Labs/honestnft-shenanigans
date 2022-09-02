@@ -89,7 +89,7 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
 
         soup = BeautifulSoup(res.text, "html.parser")
         soup.script.decompose()
-        is_suspicious = soup.text.find("Reported for suspicious") > 0
+        is_suspicious = len(soup.select("i.sc-1gugx8q-0.jMbpKx.material-icons")) > 0
 
         nft_data = {
             "token_id": nft_url.split("/")[-1],
