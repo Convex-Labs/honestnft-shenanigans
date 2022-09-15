@@ -60,13 +60,14 @@ class TestCase(unittest.TestCase):
                         self.assertEqual(
                             result_contract.address.lower(), ctr_address.lower()
                         )
-                    if _key == "regular":
-                        if len(ctr_abi) > 0:
-                            self.assertEqual(result_abi, ctr_abi)
 
-                    elif _key == "proxy":
-                        ctr_impl_abi = contract_value["implementation_abi"]
-                        self.assertEqual(result_abi, ctr_impl_abi)
+                        if _key == "regular":
+                            if len(ctr_abi) > 0:
+                                self.assertEqual(result_abi, ctr_abi)
+
+                        elif _key == "proxy":
+                            ctr_impl_abi = contract_value["implementation_abi"]
+                            self.assertEqual(result_abi, ctr_impl_abi)
 
                 with self.subTest(
                     msg="Test get_token_standard",
