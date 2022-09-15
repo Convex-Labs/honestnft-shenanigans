@@ -67,14 +67,20 @@ def get_collection_name(contract_address: str) -> str:
         raise Exception(error)
 
 
-def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]:
+def is_nft_suspicious(
+    nft_url: str, session: requests.Session, selector: str
+) -> Optional[Dict]:
     """Download and parse the NFT page to check if it is flagged as suspicious
 
     :param nft_url: URL of the NFT page
     :param session: A requests.Session object
+    :param selector: CSS selector to find the suspicious flag
     :return: A dict with relevant information about the NFT and whether it is suspicious or not
     """
     logging.debug(f"Scraping NFT with link: {nft_url}")
+    if selector is None or selector == "":
+        logging.error("No selector provided")
+        raise Exception("No selector provided")
 
     try:
         res = session.get(nft_url)
@@ -83,13 +89,13 @@ def is_nft_suspicious(nft_url: str, session: requests.Session) -> Optional[Dict]
             f"Error while trying to scrape {nft_url}\nWill retry the request..."
         )
         logging.debug(error)
-        return is_nft_suspicious(nft_url, session)
+        return is_nft_suspicious(nft_url, session, selector)
 
     if res.status_code == 200:
 
         soup = BeautifulSoup(res.text, "html.parser")
         soup.script.decompose()
-        is_suspicious = len(soup.select("i.sc-1gugx8q-0.jMbpKx.material-icons")) > 0
+        is_suspicious = len(soup.select(selector)) > 0
 
         nft_data = {
             "token_id": nft_url.split("/")[-1],
@@ -128,6 +134,7 @@ def list_collection_nfts_urls(
 
 def main(
     contract_address: str,
+    selector: str,
     total_retries: int,
     backoff_factor: int,
     batch_size: int,
@@ -139,6 +146,7 @@ def main(
     """Main function to scrape all NFTs in a collection and check if they are suspicious
 
     :param contract_address: Contract address of the collection
+    :param selector: CSS selector to find the suspicious flag
     :param total_retries: Total number of retries to allow.
     :param backoff_factor: A backoff factor to apply between attempts after the second try.
     :param batch_size: Batch size of NFT URLs to be processed
@@ -178,7 +186,7 @@ def main(
     for index, url_batch in enumerate(nft_urls_batches):
         logging.info(f"Scraped {index * batch_size} NFT URLs so far")
 
-        batch = [(url, session) for url in list(url_batch)]
+        batch = [(url, session, selector) for url in list(url_batch)]
 
         with multiprocessing.Pool(multiprocessing.cpu_count() - 1) as p:
             results = p.starmap(is_nft_suspicious, batch)
@@ -269,6 +277,12 @@ def _cli_parser() -> argparse.ArgumentParser:
         type=str,
     )
     parser.add_argument(
+        "--selector",
+        help="CSS selector to find the suspicious flag",
+        required=True,
+        type=str,
+    )
+    parser.add_argument(
         "-r",
         "--retries",
         help="Number of retry attempts",
@@ -291,28 +305,24 @@ def _cli_parser() -> argparse.ArgumentParser:
         type=int,
         default=50,
     )
-
     parser.add_argument(
         "--lower_id",
         help="Lower bound token ID of the collection",
         required=False,
         type=int,
     )
-
     parser.add_argument(
         "--upper_id",
         help="Upper bound token ID of the collection",
         required=False,
         type=int,
     )
-
     parser.add_argument(
         "--total_supply",
         help="Total supply of the collection",
         required=False,
         type=int,
     )
-
     parser.add_argument(
         "--log",
         help="Set the desired log level",
@@ -321,7 +331,6 @@ def _cli_parser() -> argparse.ArgumentParser:
         default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
     )
-
     parser.add_argument(
         "--keep-cache",
         help="Keep the cache file after scraping",
@@ -343,6 +352,7 @@ if __name__ == "__main__":
 
     main(
         contract_address=args.contract,
+        selector=args.selector,
         total_retries=args.retries,
         backoff_factor=args.backoff,
         batch_size=args.batch_size,

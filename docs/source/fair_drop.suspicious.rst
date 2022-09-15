@@ -4,6 +4,7 @@ fair_drop.suspicious
 .. note::
    * We currently only support collections with incrementing IDs
    * Only Ethereum NFTs can be scraped
+   * A CSS selector is now required to find the correct DOM element
 
 
 This module can be used to scrape a NFT collection on OpenSea for tokens flagged as suspicious.
@@ -37,11 +38,11 @@ The scraped_on field is a UNIX timestamp (epoch) for when the file was created.
 
 Example
 -------
-To scrape the BAYC collection from OpenSea, you only need to supply the contract address. All other CLI arguments are optional.
+To scrape the BAYC collection from OpenSea, you only need to supply the contract address and the CSS selector to find the "suspicious flag". All other CLI arguments are optional.
 
 .. code-block:: shell
 
-   $ python3 fair_drop/suspicious.py --contract 0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d 
+   $ python3 fair_drop/suspicious.py --contract 0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d --selector "i.sc-e8292ad1-0.gZavKY.material-icons"
 
 
 Command Line
