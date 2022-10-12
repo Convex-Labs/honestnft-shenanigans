@@ -1,5 +1,7 @@
-library(tidyverse)
-library(patchwork)
+require(tidyverse)
+require(patchwork)
+require(sp)
+require(spatialEco)
 options(scipen = 999)
 
 collection_name <- "quaks"
