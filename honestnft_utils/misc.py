@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -33,7 +33,7 @@ def mount_session(
     total_retries: int = 5,
     backoff_factor: float = 0.5,
     raise_on_status: bool = True,
-    user_agent: str = None,
+    user_agent: Optional[str] = None,
 ) -> requests.Session:
     """Create a requests.session() with optimised strategy for retrying and respecting errors
 
